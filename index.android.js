@@ -21,7 +21,7 @@ class tp_react_native extends Component {
   
   render() {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <StatusBar
             translucent={true}
             backgroundColor="rgba(0, 0, 0, 0.2)"
