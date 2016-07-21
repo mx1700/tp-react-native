@@ -45,18 +45,30 @@ export default class HomePage extends Component {
         if (page > 1) {
             this.setState({ loading_more: true });
         }
-        var data = await Api.getTodayDiaries(page, this.state.page_size);
+        try {
+            var data = await Api.getTodayDiaries(page, this.state.page_size);
+        } catch(e) {
+            console.warn(e);
+        } 
         console.log(data);
-        var diaries = page === 1 ? data.diaries : this.state.diaries.concat(data.diaries);
-        this.setState({
-            diaries: diaries,
-            diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
-            page: data.page,
-            count: data.count,
-            more: data.page_size == data.diaries.length,
-            refreshing: false,
-            loading_more: false,
-        });
+        if (data) {
+            var diaries = page === 1 ? data.diaries : this.state.diaries.concat(data.diaries);
+            this.setState({
+                diaries: diaries,
+                diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
+                page: data.page,
+                count: data.count,
+                more: data.page_size == data.diaries.length,
+                refreshing: false,
+                loading_more: false,
+            });
+        } else {
+            this.setState({
+                refreshing: false,
+                loading_more: false,
+            });
+            //TODO:提示加载失败，如果列表没内容，显示出错页面，有刷新按钮
+        }
     }
 
     _onRefresh() {
@@ -81,7 +93,7 @@ export default class HomePage extends Component {
                         style={styles.toolbar}
                         title={this.state.title}
                         titleColor="white">
-                        <Text>Hello</Text>
+                        <Text></Text>
                     </ToolbarAndroid>
                 </View>
                 <ListView
@@ -105,23 +117,16 @@ export default class HomePage extends Component {
         if (this.state.refreshing) {
             return null;
         }
-        if (this.state.more) {
-            return (
-                <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                    <ActivityIndicator
-                        animating={true}
-                        color="#39E"
-                        size="large"
-                    />
-                </View>
-            );
-        } else {
-            return (
-                <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                    <Text>End</Text>
-                </View>
-            );
-        }
+        var content = this.state.more ? 
+                        (<ActivityIndicator animating={true} color="#39E" size="large" />)
+                        : 
+                        (<Text>End</Text>);
+                    
+        return (
+            <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+                {content}
+            </View>
+        );
     }
 }
 

@@ -17,14 +17,13 @@ var moment = require('moment');
 export default class Diary extends Component {
 
     render() {
-        console.log(this)
         var diary = this.props.diary;
         const img = diary.photoUrl ? 
             (<Image style={styles.photo} resizeMode="cover" source={{uri: diary.photoUrl}} />) 
             : null;
 
         return (
-            <TouchableHighlight onPress={() => this.props.onPress(diary)} underlayColor="#ebf9ff">
+            <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#ebf9ff">
                 <View>
                     <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
                         <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
@@ -37,7 +36,7 @@ export default class Diary extends Component {
                             <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{diary.content}</Text>
                             {img}
                             <View>
-                            <Text>{diary.comment_count} 回复</Text>
+                            <Text style={{fontSize: 12, marginTop: 2}}>{diary.comment_count} 回复</Text>
                             </View>
                         </View>
                     </View>

@@ -16,6 +16,7 @@ import {
   Platform
 } from 'react-native';
 import HomePage from './js/components/HomePage'
+import LoginPage from './js/components/LoginPage'
 
 class tp_react_native extends Component {
   
@@ -26,7 +27,7 @@ class tp_react_native extends Component {
             translucent={true}
             backgroundColor="rgba(0, 0, 0, 0.2)"
             barStyle="light-content"/>
-        <HomePage />
+        <LoginPage />
       </View>
       )
     // return (
