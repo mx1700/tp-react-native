@@ -11,7 +11,7 @@ import {
   TouchableHighlight,RefreshControl, 
   ActivityIndicator
 } from 'react-native';
-import * as Api from '../Api'
+import * as Api from 'Api'
 import Diary from './Diary'
 
 var moment = require('moment');
@@ -48,6 +48,7 @@ export default class HomePage extends Component {
         try {
             var data = await Api.getTodayDiaries(page, this.state.page_size);
         } catch(e) {
+            console.log('errrrr')
             console.warn(e);
         } 
         console.log(data);
@@ -114,7 +115,7 @@ export default class HomePage extends Component {
     }
 
     renderFooter() {
-        if (this.state.refreshing) {
+        if (this.state.refreshing || this.state.diaries.length == 0) {
             return null;
         }
         var content = this.state.more ? 

@@ -27,7 +27,7 @@ class tp_react_native extends Component {
             translucent={true}
             backgroundColor="rgba(0, 0, 0, 0.2)"
             barStyle="light-content"/>
-        <LoginPage />
+        <HomePage />
       </View>
       )
     // return (
