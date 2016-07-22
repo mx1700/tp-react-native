@@ -1,5 +1,5 @@
 /**
- * @providesModule TPColor
+ * @providesModule TPColors
  */
 
 const LOCATION_COLORS = {
@@ -40,4 +40,5 @@ module.exports = {
   darkBackground: '#183E63',
   colorForLocation,
   colorForTopic,
+  spaceBackground: 'rgba(211, 214, 219, 0.5)'
 };

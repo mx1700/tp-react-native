@@ -13,13 +13,14 @@ import {
 } from 'react-native';
 import * as Api from 'Api'
 import Diary from './Diary'
+import DiaryPage from './DiaryPage'
 
 var moment = require('moment');
 
 export default class HomePage extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = ({
             diaries: [],
@@ -48,10 +49,8 @@ export default class HomePage extends Component {
         try {
             var data = await Api.getTodayDiaries(page, this.state.page_size);
         } catch(e) {
-            console.log('errrrr')
             console.warn(e);
         } 
-        console.log(data);
         if (data) {
             var diaries = page === 1 ? data.diaries : this.state.diaries.concat(data.diaries);
             this.setState({
@@ -82,10 +81,20 @@ export default class HomePage extends Component {
         }
         this._loadTodayDiaries(this.state.page + 1);
     }
+
+    _toDiaryPage(diary) {
+        this.props.navigator.push({
+            name: 'DiaryPage',
+            component: DiaryPage,
+            params: {
+                diary: diary
+            }
+        })
+    }
     
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
                 <View style={[styles.toolbarContainer, this.props.style]}>
                     <ToolbarAndroid
                         navIcon={require('./img/back_white.png')}
@@ -99,14 +108,14 @@ export default class HomePage extends Component {
                 </View>
                 <ListView
                     dataSource={this.state.diariesDateSource}
-                    renderRow={(rowData) => <Diary diary={rowData} />}
+                    renderRow={(rowData) => <Diary data={rowData} onPress={this._toDiaryPage.bind(this)} />}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh.bind(this)}/>
                     }
                     onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={150}
+                    onEndReachedThreshold={200}
                     renderFooter={this.renderFooter.bind(this)}
                     renderHeader={() => <View style={{height: 4}}></View>}
                 />
@@ -119,8 +128,7 @@ export default class HomePage extends Component {
             return null;
         }
         var content = this.state.more ? 
-                        (<ActivityIndicator animating={true} color="#39E" size="large" />)
-                        : 
+                        (<ActivityIndicator animating={true} color="#39E" size="large" />) : 
                         (<Text>End</Text>);
                     
         return (

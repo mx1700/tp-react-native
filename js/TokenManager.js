@@ -10,7 +10,7 @@ class TokenManager {
     }
 
     async setToken(token) {
-        await AsyncStorage.setItem('user_token', toke);
+        await AsyncStorage.setItem('user_token', token);
         this.token = token;
     }
 

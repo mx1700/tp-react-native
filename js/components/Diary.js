@@ -11,19 +11,24 @@ import {
   TouchableHighlight,RefreshControl, 
   ActivityIndicator
 } from 'react-native';
+import TPColors from 'TPColors'
 
 var moment = require('moment');
 
 export default class Diary extends Component {
 
+    // constructor(props) {
+    //     console.log(props)
+    //     super(props);
+    // }
     render() {
-        var diary = this.props.diary;
+        var diary = this.props.data;
         const img = diary.photoUrl ? 
             (<Image style={styles.photo} resizeMode="cover" source={{uri: diary.photoUrl}} />) 
             : null;
 
         return (
-            <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#ebf9ff">
+            <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
                 <View>
                     <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
                         <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
@@ -40,7 +45,7 @@ export default class Diary extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{height: 1, backgroundColor: "rgba(211, 214, 219, 0.5)", marginHorizontal: 20}}></View>
+                    <View style={{height: 1, backgroundColor: TPColors.spaceBackground, marginHorizontal: 20}}></View>
                 </View>
             </TouchableHighlight>
         );
@@ -53,13 +58,14 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     marginRight: 10,
+    borderColor : TPColors.spaceBackground,
   },
   photo: {
-    height: 144, 
-    width: 144, 
+    width: 208, 
+    height: 156, 
     marginVertical: 5,
-    backgroundColor : "rgba(211, 214, 219, 0.2)",
-    borderColor: "rgba(211, 214, 219, 0.2)",
+    backgroundColor : TPColors.spaceBackground,
+    borderColor: TPColors.spaceBackground,
     borderWidth: 1,
   }
 });
