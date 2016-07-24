@@ -3,9 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Image, 
-  ToolbarAndroid, 
-  Platform, 
+  Image,
+  ToolbarAndroid,
+  Platform,
   ActivityIndicator,
   TextInput,
   Modal,
@@ -20,7 +20,7 @@ export default class LoginPage extends Component {
         this.state = ({
             username: '',
             passwrod: '',
-            loading: false, 
+            loading: false,
         });
     }
 
@@ -44,14 +44,18 @@ export default class LoginPage extends Component {
         this.setState({ loading: false })
         if (result) {
             console.warn('登陆成功')
+            this.props.onLogin();
+            this.props.navigator.pop();
+        } else {
+          console.warn('登录失败'); //TODO:展示具体失败原因
         }
     }
 
-    
+
     render() {
         return (
-            <View style={{flex: 1, paddingTop: 120, paddingHorizontal: 20}}>
-                <Modal 
+            <View style={{flex: 1, paddingTop: 120, paddingHorizontal: 20, backgroundColor: 'white'}}>
+                <Modal
                     visible={this.state.loading}
                     transparent={true}
                     onRequestClose={this._cancel.bind(this)}
@@ -80,10 +84,10 @@ export default class LoginPage extends Component {
                     secureTextEntry={true}
                     selectTextOnFocus={true}
                 />
-                <TPButton 
-                    caption="登陆" 
-                    onPress={this._login.bind(this)} 
-                    type="bordered" 
+                <TPButton
+                    caption="登陆"
+                    onPress={this._login.bind(this)}
+                    type="bordered"
                     style={{}}/>
             </View>
         );

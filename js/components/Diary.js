@@ -4,11 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image, 
-  ToolbarAndroid, 
-  Platform, 
-  ListView, 
-  TouchableHighlight,RefreshControl, 
+  Image,
+  ToolbarAndroid,
+  Platform,
+  ListView,
+  TouchableHighlight,RefreshControl,
   ActivityIndicator
 } from 'react-native';
 import TPColors from 'TPColors'
@@ -23,8 +23,8 @@ export default class Diary extends Component {
     // }
     render() {
         var diary = this.props.data;
-        const img = diary.photoUrl ? 
-            (<Image style={styles.photo} resizeMode="cover" source={{uri: diary.photoUrl}} />) 
+        const img = diary.photoUrl ?
+            (<Image style={styles.photo} resizeMode="cover" source={{uri: diary.photoUrl}} />)
             : null;
 
         return (
@@ -41,11 +41,11 @@ export default class Diary extends Component {
                             <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{diary.content}</Text>
                             {img}
                             <View>
-                            <Text style={{fontSize: 12, marginTop: 2}}>{diary.comment_count} 回复</Text>
+                            <Text style={{fontSize: 12, marginTop: 10}}>{diary.comment_count} 回复</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={{height: 1, backgroundColor: TPColors.spaceBackground, marginHorizontal: 20}}></View>
+                    <View style={{height: 1, backgroundColor: TPColors.spaceBackground}}></View>
                 </View>
             </TouchableHighlight>
         );
@@ -54,18 +54,16 @@ export default class Diary extends Component {
 
 const styles = StyleSheet.create({
   user_icon: {
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
     borderRadius: 18,
     marginRight: 10,
-    borderColor : TPColors.spaceBackground,
+    backgroundColor : TPColors.spaceBackground,
   },
   photo: {
-    width: 208, 
-    height: 156, 
+    width: 208,
+    height: 156,
     marginVertical: 5,
     backgroundColor : TPColors.spaceBackground,
-    borderColor: TPColors.spaceBackground,
-    borderWidth: 1,
   }
 });
