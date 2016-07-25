@@ -4,11 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image, 
-  ToolbarAndroid, 
-  Platform, 
-  ListView, 
-  TouchableHighlight,RefreshControl, 
+  Image,
+  ToolbarAndroid,
+  Platform,
+  ListView,
+  TouchableHighlight,RefreshControl,
   ActivityIndicator,
   TextInput
 } from 'react-native';
@@ -20,107 +20,107 @@ var moment = require('moment');
 
 export default class DiaryPage extends Component {
 
-    constructor(props) {
-        super(props);
-        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        this.state = ({
-            commentsDateSource: ds,
-            loading_comments: true,
-        });
+  constructor(props) {
+    super(props);
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.state = ({
+      commentsDateSource: ds,
+      loading_comments: true,
+    });
+  }
+
+  componentDidMount(){
+    this._loadComments();
+  }
+
+  async _loadComments() {
+    console.log(this.props.diary);
+    try {
+      var comments = await Api.getDiaryComments(this.props.diary.id);
+    } catch(e) {
+      console.warn(e);
     }
 
-    componentDidMount(){
-        this._loadComments();
+    if (comments) {
+      comments = comments.reverse();
     }
 
-    async _loadComments() {
-        console.log(this.props.diary);
-        try {
-            var comments = await Api.getDiaryComments(this.props.diary.id);
-        } catch(e) {
-            console.warn(e);
-        }
+    this.setState({
+      commentsDateSource: this.state.commentsDateSource.cloneWithRows(comments),
+      loading_comments: false,
+    });
+  }
 
-        if (comments) {
-            comments = comments.reverse();
-        }
+  _reply() {
+    console.warn('reply')
+  }
 
-        this.setState({
-            commentsDateSource: this.state.commentsDateSource.cloneWithRows(comments),
-            loading_comments: false,
-        });
-    }
+  _onRefresh() {
+    console.warn('_onRefresh')
+  }
 
-    _reply() {
-        console.warn('reply')
-    }
+  render() {
+    //enableEmptySections 不加会报一个不理解的警告
+    //TODO:评论功能未完成
+    return (
+      <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
+        <ListView
+          dataSource={this.state.commentsDateSource}
+          renderRow={this.renderComment.bind(this)}
+          renderFooter={this.renderFooter.bind(this)}
+          renderHeader={this.renderTop.bind(this)}
+          enableEmptySections={true}
+        />
+        <View style={{ height: 60, backgroundColor: "red", flexDirection: 'row'}}>
+          <TextInput style={{flex: 1}} />
+          <TPButton caption="回复" style={{ width: 60}} />
+        </View>
+      </View>
+    );
+  }
 
-    _onRefresh() {
-        console.warn('_onRefresh')
-    }
+  renderTop() {
+    return (<Diary data={this.props.diary} />)
+  }
 
-    render() {
-        //enableEmptySections 不加会报一个不理解的警告
-        //TODO:评论功能未完成
-        return (
-            <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
-                <ListView
-                    dataSource={this.state.commentsDateSource}
-                    renderRow={this.renderComment.bind(this)}
-                    renderFooter={this.renderFooter.bind(this)}
-                    renderHeader={this.renderTop.bind(this)}
-                    enableEmptySections={true}
-                />
-                <View style={{ height: 60, backgroundColor: "red", flexDirection: 'row'}}>
-                    <TextInput style={{flex: 1}} />
-                    <TPButton caption="回复" style={{ width: 60}} />
-                </View>
+  renderComment(comment) {
+    console.log(comment)
+    return (
+      <View>
+        <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
+          <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
+              <Text style={{ fontWeight: 'bold', color: '#333', marginRight: 10}}>{comment.user.name}</Text>
+              <Text style={{fontSize: 12}}>{moment(comment.created).format('H:m')}</Text>
             </View>
-        );
-    }
-
-    renderTop() {
-        return (<Diary data={this.props.diary} />)
-    }
-
-    renderComment(comment) {
-        console.log(comment)
-        return (
-                <View>
-                    <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
-                        <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
-                        <View style={{ flexDirection: "column", flex: 1 }}>
-                            <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
-                                <Text style={{ fontWeight: 'bold', color: '#333', marginRight: 10}}>{comment.user.name}</Text>
-                                <Text style={{fontSize: 12}}>{moment(comment.created).format('H:m')}</Text>
-                            </View>
-                            <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{comment.content}</Text>
-                        </View>
-                    </View>
-                    <View style={{height: 1, backgroundColor: TPColors.spaceBackground, marginHorizontal: 20}}></View>
-                </View>
-            )
-    }
+            <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{comment.content}</Text>
+          </View>
+        </View>
+        <View style={{height: 1, backgroundColor: TPColors.spaceBackground, marginHorizontal: 20}}></View>
+      </View>
+    );
+  }
 
     renderFooter() {
-        //TODO:如果评论数量为0，则不显示加载
-        if (!this.state.loading_comments && this.props.diary.comment_count == 0) {
-            return (
-            <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                <Text>没有回复</Text>
-            </View>
-            );
-        }
-
-        if (!this.state.loading_comments || this.props.diary.comment_count == 0) {
-            return null;
-        }
-                    
+      //TODO:如果评论数量为0，则不显示加载
+      if (!this.state.loading_comments && this.props.diary.comment_count == 0) {
         return (
-            <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                <ActivityIndicator animating={true} color="#39E" size="large" />
-            </View>
+          <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+            <Text>没有回复</Text>
+          </View>
         );
+      }
+
+      if (!this.state.loading_comments || this.props.diary.comment_count == 0) {
+        return null;
+      }
+
+      return (
+        <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+          <ActivityIndicator animating={true} color="#39E" size="large" />
+        </View>
+      );
     }
 }
 

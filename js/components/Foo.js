@@ -8,14 +8,13 @@ import {
 } from 'react-native';
 
 class Foo extends Component {
-
-    render() {
-        return (
-            <View>
-                        <Text>Hello</Text>
-            </View>
-        );
-    }
+  render() {
+    return (
+      <View>
+        <Text>Hello</Text>
+      </View>
+    );
+  }
 }
 
 module.exports = Foo;

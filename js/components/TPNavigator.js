@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
   View,
-  Image, 
-  Platform, 
+  Image,
+  Platform,
   Navigator,
   BackAndroid,
   StyleSheet,
@@ -12,13 +12,15 @@ import HomePage from './HomePage'
 
 class DefaultPage extends Component {
   render() {
-    return (<View style={{flex: 1}}>
-              <StatusBar
-                  translucent={true}
-                  backgroundColor="rgba(0, 0, 0, 0.2)"
-                  barStyle="light-content"/>
-              <HomePage navigator={this.props.navigator} />
-            </View>)
+    return (
+      <View style={{flex: 1}}>
+        <StatusBar
+          translucent={true}
+          backgroundColor="rgba(0, 0, 0, 0.2)"
+          barStyle="light-content"/>
+        <HomePage navigator={this.props.navigator} />
+      </View>
+    )
   }
 }
 
@@ -54,14 +56,14 @@ export default class TPNavigator extends Component {
   }
 
   render() {
-      //TODO:根据平台更换动画效果，ios 使用 PushFromRight ， android 用 FloatFromBottomAndroid
+    //TODO:根据平台更换动画效果，ios 使用 PushFromRight ， android 用 FloatFromBottomAndroid
     return (
       <Navigator
         ref="navigator"
         style={styles.container}
         initialRoute={{ name: 'DefaultPage', component: DefaultPage }}
         configureScene={(route) => {
-          return Navigator.SceneConfigs.FloatFromBottomAndroid;    
+          return Navigator.SceneConfigs.FloatFromBottomAndroid;
         }}
         renderScene={(route, navigator) => {
           let Component = route.component;
