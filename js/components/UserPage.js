@@ -18,7 +18,7 @@ import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
 import DiaryList from './DiaryList'
 
-export default class HomePage extends Component {
+export default class UserPage extends Component {
 
   constructor(props) {
     super(props);
@@ -29,12 +29,13 @@ export default class HomePage extends Component {
   }
 
   async loadDiary(page, page_size) {
-    const data = await Api.getTodayDiaries(page, page_size);
+    console.log(this.props)
+    const data = await Api.getUserTodayDiaries(this.props.user.id, page, page_size);
     console.log(data);
     return {
-      diaries: data.diaries,
-      page: data.page,
-      more: data.diaries.length === page_size
+      diaries: data,
+      page: 1,
+      more: false
     }
   }
 

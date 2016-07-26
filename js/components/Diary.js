@@ -23,7 +23,7 @@ export default class Diary extends Component {
     const img = diary.photoUrl ?
       (
         //去除  navigator={this.props.navigator} 属性，可以禁止后退键，但是无法遮挡状态条
-        <Lightbox underlayColor="white">
+        <Lightbox underlayColor="white" padding={5} style={{ width: 220, marginTop: 5, backgroundColor: "#f8f8f8", padding: 5 }}>
           <Image style={styles.photo} 
             resizeMode="contain"
             source={{uri: diary.photoUrl}} />
@@ -35,7 +35,7 @@ export default class Diary extends Component {
       <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
         <View>
           <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
-            <TouchableHighlight style={styles.user_icon_box} onPress={() => this.props.onPress && this.props.onPress(diary)}>
+            <TouchableHighlight style={styles.user_icon_box} onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
               <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
             </TouchableHighlight>
             <View style={{ flexDirection: "column", flex: 1 }}>
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 1,
-    height: 150,
+    height: 160,
   }
 });

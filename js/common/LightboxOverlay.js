@@ -43,6 +43,7 @@ var LightboxOverlay = React.createClass({
     onOpen:          PropTypes.func,
     onClose:         PropTypes.func,
     swipeToDismiss:  PropTypes.bool,
+    padding:         PropTypes.number,
   },
 
   getInitialState: function() {
@@ -61,8 +62,9 @@ var LightboxOverlay = React.createClass({
 
   getDefaultProps: function() {
     return {
-      springConfig: { tension: 30, friction: 7 },
+      springConfig: { tension: 50, friction: 10 },
       backgroundColor: 'black',
+      padding: 0,
     };
   },
 
@@ -184,11 +186,12 @@ var LightboxOverlay = React.createClass({
       lightboxOpacityStyle.opacity = this.state.pan.interpolate({inputRange: [-WINDOW_HEIGHT, 0, WINDOW_HEIGHT], outputRange: [0, 1, 0]});
     }
 
+    var padding = this.props.padding;
     var openStyle = [styles.open, {
-      left:   openVal.interpolate({inputRange: [0, 1], outputRange: [origin.x, target.x]}),
-      top:    openVal.interpolate({inputRange: [0, 1], outputRange: [origin.y + STATUS_BAR_OFFSET, target.y + STATUS_BAR_OFFSET]}),
-      width:  openVal.interpolate({inputRange: [0, 1], outputRange: [origin.width, WINDOW_WIDTH]}),
-      height: openVal.interpolate({inputRange: [0, 1], outputRange: [origin.height, WINDOW_HEIGHT]}),
+      left:   openVal.interpolate({inputRange: [0, 1], outputRange: [origin.x + padding, target.x]}),
+      top:    openVal.interpolate({inputRange: [0, 1], outputRange: [origin.y + padding + STATUS_BAR_OFFSET, target.y + STATUS_BAR_OFFSET]}),
+      width:  openVal.interpolate({inputRange: [0, 1], outputRange: [origin.width - padding*2, WINDOW_WIDTH]}),
+      height: openVal.interpolate({inputRange: [0, 1], outputRange: [origin.height - padding*2, WINDOW_HEIGHT]}),
     }];
 
     var background = (<Animated.View style={[styles.background, { backgroundColor: backgroundColor }, lightboxOpacityStyle]}></Animated.View>);
@@ -215,7 +218,7 @@ var LightboxOverlay = React.createClass({
       );
     }
     return (
-      <Modal visible={isOpen} transparent={true}>
+      <Modal visible={isOpen} transparent={true} onRequestClose={() => {}}>
         {background}
         {content}
         {header}

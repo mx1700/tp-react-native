@@ -33,11 +33,13 @@ var Lightbox = React.createClass({
       tension:       PropTypes.number,
       friction:      PropTypes.number,
     }),
+    padding:         PropTypes.number,
     swipeToDismiss:  PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
+      padding: 0,
       swipeToDismiss: true,
       onOpen: () => {},
       onClose: () => {},
@@ -79,6 +81,7 @@ var Lightbox = React.createClass({
       backgroundColor: this.props.backgroundColor,
       children: this.getContent(),
       onClose: this.onClose,
+      padding: this.props.padding,
     };
   },
 

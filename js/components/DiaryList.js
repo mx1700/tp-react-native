@@ -16,6 +16,7 @@ import * as Api from 'Api'
 import Diary from './Diary'
 import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
+import UserPage from './UserPage'
 
 export default class DiaryList extends Component {
 
@@ -93,6 +94,15 @@ export default class DiaryList extends Component {
   _onDiaryPress(diary) {
     this.props.onDiaryPress && this.props.onDiaryPress(diary)
   }
+  _onIconPress(diary) {
+    this.props.navigator.push({
+      name: 'UserPage',
+      component: UserPage,
+      params: {
+        user: diary.user
+      }
+    })
+  }
 
   _onRefresh() {
     this._loadTodayDiaries(1);
@@ -112,6 +122,7 @@ export default class DiaryList extends Component {
         renderRow={(rowData) => 
           <Diary data={rowData} 
             onPress={this._onDiaryPress.bind(this)} 
+            onIconPress={this._onIconPress.bind(this)}
             navigator={this.props.navigator} />
         }
         refreshControl={
