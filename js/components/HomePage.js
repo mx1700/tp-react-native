@@ -16,86 +16,30 @@ import * as Api from 'Api'
 import Diary from './Diary'
 import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
-
-var moment = require('moment');
+import DiaryList from './DiaryList'
 
 export default class HomePage extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    this.state = ({
-      diaries: [],
-      diariesDateSource: ds,
-      page: 1,
-      page_size: 20,
-      count: 0,
-      more: false,
-      loading_more: false,
-      refreshing: true,
-      title: "首页"
-    });
   }
 
   componentDidMount(){
-    this._loadTodayDiaries(this.state.page);
+    //this._loadTodayDiaries(this.state.page);
   }
 
-  async _loadTodayDiaries(page) {
-    if (page === 1 && this.state.refreshing === false) {
-      this.setState({refreshing: true});
-    }
-    if (page > 1) {
-      this.setState({ loading_more: true });
-    }
-    try {
-      var data = await Api.getTodayDiaries(page, this.state.page_size);
-    } catch(e) {
-      if(e.response.status == 401) {
-        //TODO:登录
-        this.props.navigator.push({
-          name: 'LoginPage',
-          component: LoginPage,
-          params: {
-            onLogin: () => {
-              this._loadTodayDiaries(1);
-            }
-          }
-        });
-      } else {
-        console.log(e.response);
-        //TODO:提示出错
-      }
-    }
-    if (data) {
-      var diaries = page === 1 ? data.diaries : this.state.diaries.concat(data.diaries);
-      this.setState({
-        diaries: diaries,
-        diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
-        page: data.page,
-        count: data.count,
-        more: data.page_size == data.diaries.length,
-        refreshing: false,
-        loading_more: false,
-      });
-    } else {
-      this.setState({
-          refreshing: false,
-          loading_more: false,
-      });
-      //TODO:提示加载失败，如果列表没内容，显示出错页面，有刷新按钮
-    }
+  _loadTodayDiaries(page, page_size) {
+    return this.loadDiary(page, page_size);
   }
 
-  _onRefresh() {
-    this._loadTodayDiaries(1);
-  }
-
-  _onEndReached() {
-    if(this.state.refreshing || this.state.loading_more || !this.state.more) {
-      return;
+  async loadDiary(page, page_size) {
+    const data = await Api.getTodayDiaries(page, page_size);
+    console.log(data);
+    return {
+      diaries: data.diaries,
+      page: data.page,
+      more: data.diaries.length === page_size
     }
-    this._loadTodayDiaries(this.state.page + 1);
   }
 
   _toDiaryPage(diary) {
@@ -117,39 +61,15 @@ export default class HomePage extends Component {
             onActionSelected={this._onActionSelected}
             onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
             style={styles.toolbar}
-            title={this.state.title}
+            title="首页"
             titleColor="white">
             <Text></Text>
           </ToolbarAndroid>
         </View>
-        <ListView
-          dataSource={this.state.diariesDateSource}
-          renderRow={(rowData) => <Diary data={rowData} onPress={this._toDiaryPage.bind(this)} />}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}/>
-          }
-          onEndReached={this._onEndReached.bind(this)}
-          onEndReachedThreshold={200}
-          renderFooter={this.renderFooter.bind(this)}
-          renderHeader={() => <View style={{height: 4}}></View>}
-        />
-      </View>
-    );
-  }
-
-  renderFooter() {
-    if (this.state.refreshing || this.state.diaries.length == 0) {
-      return null;
-    }
-    var content = this.state.more ?
-                    (<ActivityIndicator animating={true} color="#39E" size="large" />) :
-                    (<Text>End</Text>);
-
-    return (
-      <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-        {content}
+        <DiaryList 
+          navigator={this.props.navigator} 
+          getDiarirsPage={this._loadTodayDiaries.bind(this)} 
+          onDiaryPress={this._toDiaryPage.bind(this)}/>
       </View>
     );
   }

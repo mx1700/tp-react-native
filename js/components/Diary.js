@@ -12,6 +12,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import TPColors from 'TPColors'
+var Lightbox = require('Lightbox');
 
 var moment = require('moment');
 
@@ -20,14 +21,23 @@ export default class Diary extends Component {
   render() {
     var diary = this.props.data;
     const img = diary.photoUrl ?
-      (<Image style={styles.photo} resizeMode="cover" source={{uri: diary.photoUrl}} />)
+      (
+        //去除  navigator={this.props.navigator} 属性，可以禁止后退键，但是无法遮挡状态条
+        <Lightbox underlayColor="white">
+          <Image style={styles.photo} 
+            resizeMode="contain"
+            source={{uri: diary.photoUrl}} />
+        </Lightbox>
+      )
       : null;
 
     return (
       <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
         <View>
           <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
-            <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
+            <TouchableHighlight style={styles.user_icon_box} onPress={() => this.props.onPress && this.props.onPress(diary)}>
+              <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
+            </TouchableHighlight>
             <View style={{ flexDirection: "column", flex: 1 }}>
               <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
                 <Text style={{ fontWeight: 'bold', color: '#333' }}>{diary.user.name}</Text>
@@ -49,17 +59,21 @@ export default class Diary extends Component {
 }
 
 const styles = StyleSheet.create({
-  user_icon: {
+  user_icon_box: {
     width: 32,
     height: 32,
     borderRadius: 18,
     marginRight: 10,
     backgroundColor : TPColors.spaceBackground,
+
+  },
+  user_icon: {
+    width: 32,
+    height: 32,
+    borderRadius: 18,
   },
   photo: {
-    width: 208,
-    height: 156,
-    marginVertical: 5,
-    backgroundColor : TPColors.spaceBackground,
+    flex: 1,
+    height: 150,
   }
 });

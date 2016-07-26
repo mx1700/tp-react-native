@@ -10,6 +10,7 @@
     "js-md5": "^0.4.1",
     "moment": "^2.14.1",
     "react": "15.2.1",
-    "react-native": "^0.30.0"
+    "react-native": "^0.30.0",
+    "react-timer-mixin": "^0.13.3"
   }
 }

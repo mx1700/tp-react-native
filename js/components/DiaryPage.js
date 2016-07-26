@@ -26,6 +26,7 @@ export default class DiaryPage extends Component {
     this.state = ({
       commentsDateSource: ds,
       loading_comments: true,
+      comment_content: '',
     });
   }
 
@@ -39,6 +40,7 @@ export default class DiaryPage extends Component {
       var comments = await Api.getDiaryComments(this.props.diary.id);
     } catch(e) {
       console.warn(e);
+      //TODO:加载失败提供重新加载功能
     }
 
     if (comments) {
@@ -51,12 +53,15 @@ export default class DiaryPage extends Component {
     });
   }
 
-  _reply() {
-    console.warn('reply')
+  _addCommentPress() {
+    console.warn(this.state.comment_content)
+    this.addComment()
   }
 
-  _onRefresh() {
-    console.warn('_onRefresh')
+  async addComment() {
+    //TODO:提示正在回复
+    const r = await Api.addComment(this.props.diary.id, this.state.comment_content, 0)
+    //TODO:回复成功，显示回复
   }
 
   render() {
@@ -72,8 +77,10 @@ export default class DiaryPage extends Component {
           enableEmptySections={true}
         />
         <View style={{ height: 60, backgroundColor: "red", flexDirection: 'row'}}>
-          <TextInput style={{flex: 1}} />
-          <TPButton caption="回复" style={{ width: 60}} />
+          <TextInput style={{flex: 1}} 
+            value={this.state.comment_content}
+            onChangeText={(text) => this.setState({ comment_content: text })}/>
+          <TPButton caption="回复" style={{ width: 60}} onPress={this._addCommentPress.bind(this)}/>
         </View>
       </View>
     );
