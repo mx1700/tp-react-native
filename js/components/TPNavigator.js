@@ -39,6 +39,21 @@ export default class TPNavigator extends Component {
     BackAndroid.removeEventListener('hardwareBackPress', this.handleBackButton.bind(this));
   }
 
+  getChildContext() {
+    return {
+      addBackButtonListener: this.addBackButtonListener.bind(this),
+      removeBackButtonListener: this.removeBackButtonListener.bind(this),
+    };
+  }
+
+  addBackButtonListener(listener) {
+    this._handlers.push(listener);
+  }
+
+  removeBackButtonListener(listener) {
+    this._handlers = this._handlers.filter((handler) => handler !== listener);
+  }
+
   handleBackButton() {
     for (let i = this._handlers.length - 1; i >= 0; i--) {
       if (this._handlers[i]()) {
@@ -73,6 +88,11 @@ export default class TPNavigator extends Component {
   }
 
 }
+
+TPNavigator.childContextTypes = {
+  addBackButtonListener: React.PropTypes.func,
+  removeBackButtonListener: React.PropTypes.func,
+};
 
 var styles = StyleSheet.create({
   container: {

@@ -87,7 +87,7 @@ export default class DiaryPage extends Component {
   }
 
   renderTop() {
-    return (<Diary data={this.props.diary} />)
+    return (<Diary data={this.props.diary} navigator={this.props.navigator} />)
   }
 
   renderComment(comment) {

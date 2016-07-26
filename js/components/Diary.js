@@ -23,7 +23,10 @@ export default class Diary extends Component {
     const img = diary.photoUrl ?
       (
         //去除  navigator={this.props.navigator} 属性，可以禁止后退键，但是无法遮挡状态条
-        <Lightbox underlayColor="white" padding={5} style={{ width: 220, marginTop: 5, backgroundColor: "#f8f8f8", padding: 5 }}>
+        <Lightbox underlayColor="white" padding={5} 
+          navigator={this.props.navigator}
+          style={{ width: 220, marginTop: 5, backgroundColor: "#f8f8f8", padding: 5 }}
+          swipeToDismiss={false}>
           <Image style={styles.photo} 
             resizeMode="contain"
             source={{uri: diary.photoUrl}} />

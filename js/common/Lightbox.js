@@ -88,7 +88,7 @@ var Lightbox = React.createClass({
   open: function() {
     this._root.measure((ox, oy, width, height, px, py) => {
       this.props.onOpen();
-      console.warn(ox, oy, width, height, px, py)
+      //console.warn(ox, oy, width, height, px, py)
       this.setState({
         isOpen: (this.props.navigator ? true : false),
         isAnimating: true,

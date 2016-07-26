@@ -23,7 +23,7 @@ var {
 var WINDOW_HEIGHT = Dimensions.get('window').height;
 var WINDOW_WIDTH = Dimensions.get('window').width;
 var DRAG_DISMISS_THRESHOLD = 150;
-var STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -20 : 0);
+var STATUS_BAR_OFFSET = (Platform.OS === 'android' ? 0 : 0);
 
 var LightboxOverlay = React.createClass({
   propTypes: {
@@ -110,8 +110,11 @@ var LightboxOverlay = React.createClass({
     if(this.props.isOpen) {
       this.open();
     }
+    this.context.addBackButtonListener(this.close);
   },
-
+  componentWillUnmount: function() {
+    this.context.removeBackButtonListener(this.close);
+  },
   open: function() {
     StatusBar.setHidden(true, 'fade');
     this.state.pan.setValue(0);
@@ -144,6 +147,7 @@ var LightboxOverlay = React.createClass({
       });
       this.props.onClose();
     });
+    return true;
   },
 
   componentWillReceiveProps: function(props) {
@@ -264,5 +268,10 @@ var styles = StyleSheet.create({
     shadowOpacity: 0.8,
   },
 });
+
+LightboxOverlay.contextTypes = {
+  addBackButtonListener: React.PropTypes.func,
+  removeBackButtonListener: React.PropTypes.func,
+};
 
 module.exports = LightboxOverlay;

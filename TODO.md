@@ -8,3 +8,7 @@
  - 日记本页
  - 欢迎页
  - 设置页
+
+
+ react-native-blur
+ react-native-navbar
