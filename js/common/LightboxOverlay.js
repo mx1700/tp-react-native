@@ -18,6 +18,7 @@ var {
   Text,
   TouchableOpacity,
   View,
+  Easing, 
 } = require('react-native');
 
 var WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -138,9 +139,18 @@ var LightboxOverlay = React.createClass({
     this.setState({
       isAnimating: true,
     });
-    Animated.spring(
+    // Animated.spring(
+    //   this.state.openVal,
+    //   { toValue: 0, duration: 200, ...this.props.springConfig }
+    // ).start(() => {
+    //   this.setState({
+    //     isAnimating: false,
+    //   });
+    //   this.props.onClose();
+    // });
+    Animated.timing(
       this.state.openVal,
-      { toValue: 0, ...this.props.springConfig }
+      { toValue: 0, duration: 150, easing: Easing.linear, ...this.props.springConfig }
     ).start(() => {
       this.setState({
         isAnimating: false,
@@ -196,6 +206,7 @@ var LightboxOverlay = React.createClass({
       top:    openVal.interpolate({inputRange: [0, 1], outputRange: [origin.y + padding + STATUS_BAR_OFFSET, target.y + STATUS_BAR_OFFSET]}),
       width:  openVal.interpolate({inputRange: [0, 1], outputRange: [origin.width - padding*2, WINDOW_WIDTH]}),
       height: openVal.interpolate({inputRange: [0, 1], outputRange: [origin.height - padding*2, WINDOW_HEIGHT]}),
+      opacity: openVal.interpolate({inputRange: [0, 1], outputRange: [0, target.opacity]})
     }];
 
     var background = (<Animated.View style={[styles.background, { backgroundColor: backgroundColor }, lightboxOpacityStyle]}></Animated.View>);

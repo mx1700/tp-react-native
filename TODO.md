@@ -12,3 +12,63 @@
 
  react-native-blur
  react-native-navbar
+ https://github.com/oblador/react-native-vector-icons               图标
+ https://github.com/skellock/reactotron                             开发用监控控制台
+ https://github.com/leecade/react-native-swiper                     轮播
+ https://github.com/skv-headless/react-native-scrollable-tab-view   tab视图
+ https://github.com/lwansbrough/react-native-camera                 相机
+ https://github.com/gcanti/tcomb-form-native                        表单控件
+ https://github.com/react-native-community/react-native-navbar      ios nav bar
+ https://github.com/marcshilling/react-native-image-picker          图片选择，可选相机或相册
+ https://github.com/maxs15/react-native-modalbox                    模态框
+ https://github.com/ide/react-native-button                         按钮
+ https://github.com/nick/react-native-carousel                      轮转视图
+
+
+ https://github.com/react-native-community/react-native-tab-view    tab
+ https://github.com/APSL/react-native-keyboard-aware-scroll-view    键盘弹出视图自动滚动
+ https://github.com/jineshshah36/react-native-nav                   统一的导航条
+ https://github.com/Spikef/react-native-gesture-password            手势密码
+ https://github.com/niftylettuce/react-native-loading-spinner-overlay   loading 遮罩层
+ https://github.com/ArnaudRinquin/react-native-radio-buttons        radio-buttons
+ https://github.com/lwansbrough/react-native-progress-bar           进度条
+ https://github.com/kamilkp/react-native-file-transfer              文件上传
+ https://github.com/ivpusic/react-native-image-crop-picker          图片切割，做头像用
+ https://github.com/brentvatne/react-native-linear-gradient         过渡北京
+ https://github.com/fuyaode/react-native-app-intro                  启动介绍页面
+ https://github.com/jsdf/react-native-htmlview                      html view
+ https://github.com/ide/react-native-button                         button
+ https://github.com/mastermoo/react-native-action-button            底部圆形按钮，anrroid 设计风格
+ https://github.com/wix/react-native-controllers                    ios 导航
+ https://github.com/oblador/react-native-image-progress             图片加载进度条
+ https://github.com/Andr3wHur5t/react-native-keyboard-spacer        键盘弹出，视图移动
+ https://github.com/APSL/react-native-button                        彩色按钮
+ https://github.com/jemise111/react-native-swipe-list-view          list 左右滑动手势
+ https://github.com/madriska/react-native-quick-actions             ios touch id
+ https://github.com/stephy/CalendarPicker                           日历
+ https://github.com/taskrabbit/react-native-parsed-text             文本解析
+ https://github.com/deanmcpherson/react-native-sortable-listview    拖拽排序列表
+ https://github.com/larsvinter/react-native-awesome-button          带菊花的button
+ https://github.com/Dharmoslap/react-native-responsive-image        根据你设备宽高调整图片大小
+ https://github.com/jaysoo/react-native-menu                        android 式弹出菜单
+ https://github.com/nulrich/RCTAutoComplete                         自动完成
+ https://github.com/knowbody/react-native-platform-stylesheet       Seperated out the F8StyleSheet
+ https://github.com/ldn0x7dc/react-native-gallery                   图片、相册查看，可放大缩小图片
+ https://github.com/Anthonyzou/react-native-image-zoom              图片放大缩小
+ https://github.com/joshswan/react-native-autolink                  自动识别链接
+ https://github.com/DanielMSchmidt/react-native-dismiss-keyboard    关闭键盘
+ https://github.com/sconxu/react-native-checkbox                    checkbox
+ https://github.com/yonahforst/react-native-permissions
+ https://github.com/wix/react-native-keyboard-aware-scrollview
+ https://github.com/ldn0x7dc/react-native-transformable-image       图片预览
+ https://github.com/jeanpan/react-native-camera-roll-picker         照片选择
+ https://github.com/l-urence/react-native-autocomplete-input        自动完成
+ https://github.com/RealOrangeOne/react-native-busy-indicator       loading
+ https://github.com/react-component/input-number                    数字输入框
+ https://github.com/yzsolo/react-native-swipe-left                  列表左右滑动手势
+ https://github.com/yuanyuli/CenterContentView                      封面滚动效果
+ https://github.com/react-component/m-picker                        选择列表控件
+ https://github.com/jwohlfert23/react-native-tag-input              标签输入
+
+ https://github.com/kamilkp/react-native-file-transfer              文件上传 ios
+ https://github.com/g6ling/react-native-uploader                    android & ios

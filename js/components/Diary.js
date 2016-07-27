@@ -20,19 +20,11 @@ export default class Diary extends Component {
 
   render() {
     var diary = this.props.data;
-    const img = diary.photoUrl ?
-      (
-        //去除  navigator={this.props.navigator} 属性，可以禁止后退键，但是无法遮挡状态条
-        <Lightbox underlayColor="white" padding={5} 
-          navigator={this.props.navigator}
-          style={{ width: 220, marginTop: 5, backgroundColor: "#f8f8f8", padding: 5 }}
-          swipeToDismiss={false}>
-          <Image style={styles.photo} 
-            resizeMode="contain"
-            source={{uri: diary.photoUrl}} />
-        </Lightbox>
-      )
-      : null;
+    const photoView = this.randerPhoto()
+
+    if (!diary.user) {
+      return this.randerNoUser();
+    }
 
     return (
       <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
@@ -48,7 +40,7 @@ export default class Diary extends Component {
                 <Text style={{fontSize: 12}}>{moment(diary.created).format('H:m')}</Text>
               </View>
               <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{diary.content}</Text>
-              {img}
+              {photoView}
               <View>
                 <Text style={{fontSize: 12, marginTop: 10}}>{diary.comment_count} 回复</Text>
               </View>
@@ -58,6 +50,59 @@ export default class Diary extends Component {
         </View>
       </TouchableHighlight>
     );
+  }
+
+  randerNoUser() {
+    var diary = this.props.data;
+    const photoView = this.randerPhoto()
+    return (
+      <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
+        <View>
+          <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
+            <View style={{ flexDirection: "column", flex: 1 }}>
+              <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
+                <Text>《{diary.notebook_subject}》</Text>
+                <Text style={{fontSize: 12}}>{moment(diary.created).format('H:m')}</Text>
+              </View>
+              <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{diary.content}</Text>
+              {photoView}
+              <View>
+                <Text style={{fontSize: 12, marginTop: 10}}>{diary.comment_count} 回复</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{height: 1, backgroundColor: TPColors.spaceBackground}}></View>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
+  randerPhoto() {
+    var diary = this.props.data;
+    const img = diary.photoUrl ?
+      (
+        <Lightbox underlayColor="white" padding={5} 
+          navigator={this.props.navigator}
+          style={{ width: 220, marginTop: 5, backgroundColor: "#f8f8f8", padding: 5 }}
+          swipeToDismiss={false}
+          renderContent={this.randerPhotoZoom.bind(this)}>
+          <Image style={styles.photo} 
+            resizeMode="cover"
+            source={{uri: diary.photoUrl}} />
+        </Lightbox>
+      )
+      : null;
+
+      return img;
+  }
+
+  randerPhotoZoom() {
+    var diary = this.props.data;
+    return (
+      <Image style={styles.photo} 
+      resizeMode="contain"
+      source={{uri: diary.photoUrl}} />
+    )
   }
 }
 
