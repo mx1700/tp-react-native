@@ -11,9 +11,11 @@ import {
   TouchableHighlight,
   RefreshControl,
   ActivityIndicator,
+  InteractionManager,
 } from 'react-native';
 import * as Api from 'Api'
 import Diary from './Diary'
+import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
 import UserPage from './UserPage'
@@ -22,10 +24,6 @@ export default class DiaryList extends Component {
 
   constructor(props) {
     super(props);
-    /**
-     * props:
-     * getDiarirsPage(page)
-     */
 
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
@@ -35,12 +33,14 @@ export default class DiaryList extends Component {
       page_size: 20,
       more: false,
       loading_more: false,
-      refreshing: true,
+      refreshing: false,
     };
   }
 
-  componentDidMount(){
-    this._loadTodayDiaries(this.state.page);
+  componentWillMount(){
+    InteractionManager.runAfterInteractions(() => {
+      this._loadTodayDiaries(this.state.page);
+    });
   }
 
   async _loadTodayDiaries(page) {
@@ -51,7 +51,7 @@ export default class DiaryList extends Component {
       this.setState({ loading_more: true });
     }
     try {
-          console.log('_loadTodayDiaries', this.state)
+      console.log('_loadTodayDiaries', this.state)
       const page_size = this.state.page_size;
       var data = await this.props.getDiarirsPage(page, page_size);
     } catch(e) {
@@ -128,7 +128,8 @@ export default class DiaryList extends Component {
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)}/>
+            onRefresh={this._onRefresh.bind(this)} 
+            colors={[TPColors.light]} />
         }
         onEndReached={this._onEndReached.bind(this)}
         onEndReachedThreshold={200}
@@ -143,7 +144,7 @@ export default class DiaryList extends Component {
       return null;
     }
     var content = this.state.more ?
-                    (<ActivityIndicator animating={true} color="#39E" size="large" />) :
+                    (<ActivityIndicator animating={true} color={TPColors.inactive} size="large" />) :
                     (<Text>End</Text>);
 
     return (

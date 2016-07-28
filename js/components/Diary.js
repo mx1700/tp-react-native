@@ -12,8 +12,9 @@ import {
   ActivityIndicator
 } from 'react-native';
 import TPColors from 'TPColors'
-var Lightbox = require('Lightbox');
+import Icon from 'react-native-vector-icons/FontAwesome';
 
+var Lightbox = require('Lightbox');
 var moment = require('moment');
 
 export default class Diary extends Component {
@@ -22,56 +23,43 @@ export default class Diary extends Component {
     var diary = this.props.data;
     const photoView = this.randerPhoto()
 
-    if (!diary.user) {
-      return this.randerNoUser();
-    }
+    const icon = diary.user ? (
+        <TouchableHighlight style={styles.user_icon_box} onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
+          <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
+        </TouchableHighlight>
+      ) : null;
 
-    return (
-      <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
-        <View>
-          <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
-            <TouchableHighlight style={styles.user_icon_box} onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
-              <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
-            </TouchableHighlight>
-            <View style={{ flexDirection: "column", flex: 1 }}>
-              <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
-                <Text style={{ fontWeight: 'bold', color: '#333' }}>{diary.user.name}</Text>
-                <Text>《{diary.notebook_subject}》</Text>
-                <Text style={{fontSize: 12}}>{moment(diary.created).format('H:m')}</Text>
-              </View>
-              <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{diary.content}</Text>
-              {photoView}
-              <View>
-                <Text style={{fontSize: 12, marginTop: 10}}>{diary.comment_count} 回复</Text>
-              </View>
-            </View>
-          </View>
-          <View style={{height: 1, backgroundColor: TPColors.spaceBackground}}></View>
-        </View>
-      </TouchableHighlight>
+    const title = diary.user ? (
+      <View style={styles.title}>
+        <Text style={styles.title_name}>{diary.user.name}</Text>
+        <Text style={styles.title_text}>《{diary.notebook_subject}》</Text>
+        <Text style={styles.title_text}>{moment(diary.created).format('H:m')}</Text>
+      </View>
+    ) : (
+      <View style={styles.title}>
+        <Text style={styles.title_h}>《{diary.notebook_subject}》</Text>
+        <Text style={styles.title_text}>{moment(diary.created).format('H:m')}</Text>
+      </View>
     );
-  }
-
-  randerNoUser() {
-    var diary = this.props.data;
-    const photoView = this.randerPhoto()
+    
     return (
       <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
         <View>
-          <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
-            <View style={{ flexDirection: "column", flex: 1 }}>
-              <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
-                <Text>《{diary.notebook_subject}》</Text>
-                <Text style={{fontSize: 12}}>{moment(diary.created).format('H:m')}</Text>
-              </View>
-              <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{diary.content}</Text>
+          <View style={styles.box}>
+            {icon}
+            <View style={styles.body}>
+              {title}
+              <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>
               {photoView}
-              <View>
-                <Text style={{fontSize: 12, marginTop: 10}}>{diary.comment_count} 回复</Text>
+              <View style={{flexDirection: "row"}}>
+                <View style={styles.button}>
+                  <Icon name="comment" size={12} color="#999" style={styles.button_icon} />
+                  <Text style={{fontSize: 12}}>{diary.comment_count}</Text>
+                </View>
               </View>
             </View>
           </View>
-          <View style={{height: 1, backgroundColor: TPColors.spaceBackground}}></View>
+          <View style={styles.line}></View>
         </View>
       </TouchableHighlight>
     );
@@ -81,9 +69,9 @@ export default class Diary extends Component {
     var diary = this.props.data;
     const img = diary.photoUrl ?
       (
-        <Lightbox underlayColor="white" padding={5} 
+        <Lightbox underlayColor="white" padding={0} 
           navigator={this.props.navigator}
-          style={{ width: 220, marginTop: 5, backgroundColor: "#f8f8f8", padding: 5 }}
+          style={{ width: 220, marginTop: 5, marginBottom: 15, backgroundColor: "#f8f8f8", padding: 0 }}
           swipeToDismiss={false}
           renderContent={this.randerPhotoZoom.bind(this)}>
           <Image style={styles.photo} 
@@ -107,21 +95,73 @@ export default class Diary extends Component {
 }
 
 const styles = StyleSheet.create({
+  box: {
+    paddingVertical: 20, 
+    paddingHorizontal: 15, 
+    flexDirection: "row"
+  },
+  body: { 
+    flexDirection: "column", 
+    flex: 1 , 
+    paddingTop: 2
+  },
+  title: { 
+    flexDirection: "row", 
+    paddingBottom: 10, 
+    alignItems: "flex-end" 
+  },
+  title_name: {
+    fontWeight: 'bold', 
+    color: TPColors.contentText, 
+    fontSize: 12 
+  },
+  title_h: {
+    fontWeight: 'bold', 
+    color: TPColors.contentText, 
+    fontSize: 15 
+  },
+  title_text: {
+    fontSize: 12
+  },
   user_icon_box: {
     width: 32,
     height: 32,
     borderRadius: 18,
-    marginRight: 10,
+    marginRight: 12,
     backgroundColor : TPColors.spaceBackground,
-
   },
   user_icon: {
     width: 32,
     height: 32,
     borderRadius: 18,
   },
+  content: { 
+    flex: 1, 
+    lineHeight: 26, 
+    color: TPColors.contentText, 
+    fontSize: 15, 
+    marginBottom: 5 
+  },
   photo: {
     flex: 1,
     height: 160,
+  },
+  button: {
+    flex: 0, 
+    flexDirection: "row", 
+    marginTop: 5, 
+    borderWidth: StyleSheet.hairlineWidth, 
+    borderColor: TPColors.inactiveText, 
+    borderRadius: 3, 
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  button_icon: {
+    marginTop: 2, marginRight: 8
+  },
+  line: {
+    height: StyleSheet.hairlineWidth, 
+    backgroundColor: TPColors.line, 
+    marginHorizontal: 16
   }
 });

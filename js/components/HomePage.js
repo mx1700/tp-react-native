@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import * as Api from 'Api'
 import Diary from './Diary'
+import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
 import DiaryList from './DiaryList'
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
   },
   toolbarContainer: {
-    backgroundColor: '#39E',
+    backgroundColor: TPColors.light,
     paddingTop: STATUS_BAR_HEIGHT,
     elevation: 2,
     borderRightWidth: 1,

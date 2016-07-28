@@ -36,9 +36,17 @@ module.exports = {
   inactiveText: '#9B9B9B',
   darkText: '#032250',
   lightText: '#7F91A7',
+
+
   cellBorder: '#EEEEEE',
   darkBackground: '#183E63',
   colorForLocation,
   colorForTopic,
-  spaceBackground: 'rgba(211, 214, 219, 0.5)'
+
+  contentText: '#484848',
+  spaceBackground: 'rgba(211, 214, 219, 0.5)',
+  line: '#ddd',
+  light: '#455ede',
+  inactive: "#9B9B9B",
+  dark: '#2a36b1',
 };

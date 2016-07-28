@@ -20,18 +20,13 @@ import DiaryList from './DiaryList'
 
 export default class UserPage extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   _loadTodayDiaries(page, page_size) {
     return this.loadDiary(page, page_size);
   }
 
   async loadDiary(page, page_size) {
-    console.log(this.props)
     const data = await Api.getUserTodayDiaries(this.props.user.id, page, page_size);
-    console.log(data);
+    //console.log(data);
     return {
       diaries: data,
       page: 1,

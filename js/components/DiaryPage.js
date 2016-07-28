@@ -10,7 +10,8 @@ import {
   ListView,
   TouchableHighlight,RefreshControl,
   ActivityIndicator,
-  TextInput
+  TextInput,
+  InteractionManager,
 } from 'react-native';
 import * as Api from 'Api'
 import Diary from './Diary'
@@ -30,12 +31,11 @@ export default class DiaryPage extends Component {
     });
   }
 
-  componentDidMount(){
-    this._loadComments();
+  componentWillMount(){
+    InteractionManager.runAfterInteractions(() => this._loadComments());
   }
 
   async _loadComments() {
-    console.log(this.props.diary);
     try {
       var comments = await Api.getDiaryComments(this.props.diary.id);
     } catch(e) {
@@ -76,35 +76,41 @@ export default class DiaryPage extends Component {
           renderHeader={this.renderTop.bind(this)}
           enableEmptySections={true}
         />
-        <View style={{ height: 60, backgroundColor: "red", flexDirection: 'row'}}>
+        <View style={{ height: 60, backgroundColor: '#f5f5f5', flexDirection: 'row'}}>
           <TextInput style={{flex: 1}} 
             value={this.state.comment_content}
             onChangeText={(text) => this.setState({ comment_content: text })}/>
           <TPButton caption="回复" style={{ width: 60}} onPress={this._addCommentPress.bind(this)}/>
+          <View style={styles.sbox}></View>
         </View>
       </View>
     );
   }
 
   renderTop() {
-    return (<Diary data={this.props.diary} navigator={this.props.navigator} />)
+    return (
+      <View>
+        <Diary data={this.props.diary} navigator={this.props.navigator} />
+        <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5}}>共{this.props.diary.comment_count}条回复</Text>
+      </View>
+      )
   }
 
   renderComment(comment) {
     console.log(comment)
     return (
       <View>
-        <View style={{ paddingVertical: 12, paddingHorizontal: 18, flexDirection: "row" }}>
+        <View style={styles.box}>
           <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
-          <View style={{ flexDirection: "column", flex: 1 }}>
-            <View style={{ flexDirection: "row", paddingBottom: 5, alignItems: "flex-end" }}>
-              <Text style={{ fontWeight: 'bold', color: '#333', marginRight: 10}}>{comment.user.name}</Text>
-              <Text style={{fontSize: 12}}>{moment(comment.created).format('H:m')}</Text>
+          <View style={styles.body}>
+            <View style={styles.title}>
+              <Text style={styles.title_name}>{comment.user.name}</Text>
+              <Text style={styles.title_text}>{moment(comment.created).format('H:m')}</Text>
             </View>
-            <Text style={{ flex: 1, lineHeight: 20, color: '#333' }} numberOfLines={5}>{comment.content}</Text>
+            <Text style={styles.content} numberOfLines={5}>{comment.content}</Text>
           </View>
         </View>
-        <View style={{height: 1, backgroundColor: TPColors.spaceBackground, marginHorizontal: 20}}></View>
+        <View style={styles.line}></View>
       </View>
     );
   }
@@ -113,9 +119,10 @@ export default class DiaryPage extends Component {
       //TODO:如果评论数量为0，则不显示加载
       if (!this.state.loading_comments && this.props.diary.comment_count == 0) {
         return (
-          <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-            <Text>没有回复</Text>
-          </View>
+          // <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+          //   <Text>没有回复</Text>
+          // </View>
+          null
         );
       }
 
@@ -132,6 +139,11 @@ export default class DiaryPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  box: {
+    paddingVertical: 20, 
+    paddingHorizontal: 15, 
+    flexDirection: "row"
+  },
   user_icon: {
     width: 36,
     height: 36,
@@ -139,4 +151,54 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderColor : TPColors.spaceBackground,
   },
+  body: { 
+    flexDirection: "column", 
+    flex: 1 , 
+    paddingTop: 2
+  },
+  title: { 
+    flexDirection: "row", 
+    paddingBottom: 10, 
+    alignItems: "flex-end" 
+  },
+  title_name: {
+    fontWeight: 'bold', 
+    color: TPColors.contentText, 
+    fontSize: 12 
+  },
+  title_text: {
+    fontSize: 12
+  },
+  content: { 
+    flex: 1, 
+    lineHeight: 26, 
+    color: TPColors.contentText, 
+    fontSize: 15, 
+    marginBottom: 5 
+  },
+  line: {
+    height: StyleSheet.hairlineWidth, 
+    backgroundColor: TPColors.line, 
+    marginHorizontal: 16,
+    marginLeft:56,
+  },
+  sbox: {
+    margin:5,
+    height: 40,
+    width: 40,
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    borderColor: '#dadada',
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+        elevation: 7,
+    borderRightWidth: 1,
+    marginRight: -1,
+    borderRightColor: 'transparent',
+  }
 });
