@@ -46,7 +46,9 @@ module.exports = {
   contentText: '#484848',
   spaceBackground: 'rgba(211, 214, 219, 0.5)',
   line: '#ddd',
-  light: '#455ede',
-  inactive: "#9B9B9B",
+  //light: '#455ede',
+  light: '#2389de',
+  //inactive: "#9B9B9B",
+  inactive: "#aaa",
   dark: '#2a36b1',
 };

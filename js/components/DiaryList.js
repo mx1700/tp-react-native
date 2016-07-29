@@ -135,6 +135,7 @@ export default class DiaryList extends Component {
         onEndReachedThreshold={200}
         renderFooter={this.renderFooter.bind(this)}
         renderHeader={() => <View style={{height: 4}}></View>}
+        // onScroll={(event) => console.log(event.nativeEvent)}
       />
     );
   }

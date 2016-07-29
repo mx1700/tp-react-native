@@ -11,6 +11,8 @@ import {
   TouchableHighlight,RefreshControl,
   ActivityIndicator
 } from 'react-native';
+import TPTouchable from 'TPTouchable'
+import RadiusTouchable from 'RadiusTouchable'
 import TPColors from 'TPColors'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -24,9 +26,13 @@ export default class Diary extends Component {
     const photoView = this.randerPhoto()
 
     const icon = diary.user ? (
-        <TouchableHighlight style={styles.user_icon_box} onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
-          <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
-        </TouchableHighlight>
+        <View style={styles.user_icon_box}>
+          <RadiusTouchable onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
+            <View>
+              <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
+            </View>
+          </RadiusTouchable>
+        </View>
       ) : null;
 
     const title = diary.user ? (
@@ -41,9 +47,14 @@ export default class Diary extends Component {
         <Text style={styles.title_text}>{moment(diary.created).format('H:m')}</Text>
       </View>
     );
-    
-    return (
-      <TouchableHighlight onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
+
+    const comment = diary.comment_count > 0 && this.props.showComment ? 
+              (<View style={{flexDirection: "row", paddingTop: 5}}>
+                <Icon name="comment" size={12} color={TPColors.inactive} style={styles.button_icon} />
+                <Text style={{fontSize: 12}}>{diary.comment_count}</Text>
+              </View>) : null;
+
+    const view = (
         <View>
           <View style={styles.box}>
             {icon}
@@ -51,18 +62,23 @@ export default class Diary extends Component {
               {title}
               <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>
               {photoView}
-              <View style={{flexDirection: "row"}}>
-                <View style={styles.button}>
-                  <Icon name="comment" size={12} color="#999" style={styles.button_icon} />
-                  <Text style={{fontSize: 12}}>{diary.comment_count}</Text>
-                </View>
-              </View>
+              {comment}
             </View>
           </View>
           <View style={styles.line}></View>
         </View>
-      </TouchableHighlight>
     );
+    
+    if (this.props.onPress) {
+      return (
+        <TPTouchable onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
+          {view}
+        </TPTouchable>
+      );
+    } else {
+      return view;
+    }
+
   }
 
   randerPhoto() {
@@ -94,6 +110,13 @@ export default class Diary extends Component {
   }
 }
 
+Diary.propTypes = {
+  showComment: React.PropTypes.bool,
+}
+Diary.defaultProps = { 
+  showComment: true
+};
+
 const styles = StyleSheet.create({
   box: {
     paddingVertical: 20, 
@@ -107,7 +130,7 @@ const styles = StyleSheet.create({
   },
   title: { 
     flexDirection: "row", 
-    paddingBottom: 10, 
+    paddingBottom: 5, 
     alignItems: "flex-end" 
   },
   title_name: {
@@ -126,38 +149,28 @@ const styles = StyleSheet.create({
   user_icon_box: {
     width: 32,
     height: 32,
-    borderRadius: 18,
+    borderRadius: 16,
     marginRight: 12,
     backgroundColor : TPColors.spaceBackground,
   },
   user_icon: {
     width: 32,
     height: 32,
-    borderRadius: 18,
+    borderRadius: 16,
   },
   content: { 
     flex: 1, 
     lineHeight: 26, 
     color: TPColors.contentText, 
     fontSize: 15, 
-    marginBottom: 5 
+    textAlignVertical: 'center',
   },
   photo: {
     flex: 1,
     height: 160,
   },
-  button: {
-    flex: 0, 
-    flexDirection: "row", 
-    marginTop: 5, 
-    borderWidth: StyleSheet.hairlineWidth, 
-    borderColor: TPColors.inactiveText, 
-    borderRadius: 3, 
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-  },
   button_icon: {
-    marginTop: 2, marginRight: 8
+    marginTop: 2, marginRight: 8, marginLeft: 2
   },
   line: {
     height: StyleSheet.hairlineWidth, 

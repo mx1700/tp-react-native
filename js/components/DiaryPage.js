@@ -17,6 +17,7 @@ import * as Api from 'Api'
 import Diary from './Diary'
 import TPColors from 'TPColors'
 import TPButton from 'TPButton'
+import UserPage from './UserPage'
 var moment = require('moment');
 
 export default class DiaryPage extends Component {
@@ -64,6 +65,16 @@ export default class DiaryPage extends Component {
     //TODO:回复成功，显示回复
   }
 
+  _onIconPress(user) {
+    this.props.navigator.push({
+      name: 'UserPage',
+      component: UserPage,
+      params: {
+        user: user
+      }
+    })
+  }
+
   render() {
     //enableEmptySections 不加会报一个不理解的警告
     //TODO:评论功能未完成
@@ -76,12 +87,11 @@ export default class DiaryPage extends Component {
           renderHeader={this.renderTop.bind(this)}
           enableEmptySections={true}
         />
-        <View style={{ height: 60, backgroundColor: '#f5f5f5', flexDirection: 'row'}}>
+        <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', elevation: 3,}}>
           <TextInput style={{flex: 1}} 
             value={this.state.comment_content}
             onChangeText={(text) => this.setState({ comment_content: text })}/>
           <TPButton caption="回复" style={{ width: 60}} onPress={this._addCommentPress.bind(this)}/>
-          <View style={styles.sbox}></View>
         </View>
       </View>
     );
@@ -90,7 +100,7 @@ export default class DiaryPage extends Component {
   renderTop() {
     return (
       <View>
-        <Diary data={this.props.diary} navigator={this.props.navigator} />
+        <Diary data={this.props.diary} navigator={this.props.navigator} showComment={false} />
         <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5}}>共{this.props.diary.comment_count}条回复</Text>
       </View>
       )
@@ -101,7 +111,9 @@ export default class DiaryPage extends Component {
     return (
       <View>
         <View style={styles.box}>
-          <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
+          <TouchableHighlight style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
+            <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
+          </TouchableHighlight>
           <View style={styles.body}>
             <View style={styles.title}>
               <Text style={styles.title_name}>{comment.user.name}</Text>
@@ -118,12 +130,7 @@ export default class DiaryPage extends Component {
     renderFooter() {
       //TODO:如果评论数量为0，则不显示加载
       if (!this.state.loading_comments && this.props.diary.comment_count == 0) {
-        return (
-          // <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-          //   <Text>没有回复</Text>
-          // </View>
-          null
-        );
+        return null;
       }
 
       if (!this.state.loading_comments || this.props.diary.comment_count == 0) {
@@ -144,12 +151,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15, 
     flexDirection: "row"
   },
+  user_icon_box: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    marginRight: 12,
+    backgroundColor : TPColors.spaceBackground,
+  },
   user_icon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    marginRight: 10,
-    borderColor : TPColors.spaceBackground,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
   body: { 
     flexDirection: "column", 
@@ -159,12 +171,13 @@ const styles = StyleSheet.create({
   title: { 
     flexDirection: "row", 
     paddingBottom: 10, 
-    alignItems: "flex-end" 
+    alignItems: "flex-end",
   },
   title_name: {
     fontWeight: 'bold', 
     color: TPColors.contentText, 
-    fontSize: 12 
+    fontSize: 12,
+    marginRight: 5,
   },
   title_text: {
     fontSize: 12
@@ -182,23 +195,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginLeft:56,
   },
-  sbox: {
-    margin:5,
-    height: 40,
-    width: 40,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    borderColor: '#dadada',
-    shadowColor: "#000000",
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0
-    },
-        elevation: 7,
-    borderRightWidth: 1,
-    marginRight: -1,
-    borderRightColor: 'transparent',
-  }
 });

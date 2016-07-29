@@ -9,6 +9,8 @@
  - 欢迎页
  - 设置页
 
+F8Touchable
+类似豆瓣头部跟着滚动的效果不知道怎么实现
 
  react-native-blur
  react-native-navbar
@@ -72,3 +74,7 @@
 
  https://github.com/kamilkp/react-native-file-transfer              文件上传 ios
  https://github.com/g6ling/react-native-uploader                    android & ios
+
+
+ https://github.com/xxsnakerxx/react-native-ya-navigator
+ https://github.com/machadogj/react-native-carousel-control
