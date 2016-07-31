@@ -12,14 +12,15 @@ import HomePage from './HomePage'
 
 class DefaultPage extends Component {
   render() {
+    // <View style={{flex: 1}}>
+    //   // <StatusBar
+    //   //   translucent={true}
+    //   //   backgroundColor="rgba(0, 0, 0, 0.2)"
+    //   //   barStyle="light-content"/>
+    //   <HomePage navigator={this.props.navigator} />
+    // </View>
     return (
-      <View style={{flex: 1}}>
-        <StatusBar
-          translucent={true}
-          backgroundColor="rgba(0, 0, 0, 0.2)"
-          barStyle="light-content"/>
-        <HomePage navigator={this.props.navigator} />
-      </View>
+      <HomePage navigator={this.props.navigator} />
     )
   }
 }
@@ -78,7 +79,7 @@ export default class TPNavigator extends Component {
         style={styles.container}
         initialRoute={{ name: 'DefaultPage', component: DefaultPage }}
         configureScene={(route) => {
-          return Navigator.SceneConfigs.FloatFromBottomAndroid;
+          return SceneConfigs;
         }}
         renderScene={(route, navigator) => {
           let Component = route.component;
@@ -86,8 +87,11 @@ export default class TPNavigator extends Component {
         }} />
       )
   }
-
 }
+
+const SceneConfigs = Platform.OS === 'android'
+  ? Navigator.SceneConfigs.FloatFromBottomAndroid
+  : Navigator.SceneConfigs.PushFromRight;
 
 TPNavigator.childContextTypes = {
   addBackButtonListener: React.PropTypes.func,

@@ -1,5 +1,5 @@
 /**
- * @LabelButton TPTouchable
+ * @providesModule LabelButton
  */
 
 'use strict';
@@ -23,12 +23,12 @@ function Button(props) {
 
 const styles = StyleSheet.create({
   button: {
-    flex: 0, 
-    flexDirection: "row", 
-    marginTop: 5, 
-    borderWidth: StyleSheet.hairlineWidth, 
-    borderColor: TPColors.inactiveText, 
-    borderRadius: 3, 
+    flex: 0,
+    flexDirection: "row",
+    marginTop: 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: TPColors.inactiveText,
+    borderRadius: 3,
     paddingVertical: 4,
     paddingHorizontal: 12,
   },

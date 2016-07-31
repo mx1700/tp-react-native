@@ -11,13 +11,15 @@ import {
   TouchableHighlight,
   RefreshControl,
   ActivityIndicator,
+  TabBarIOS,
 } from 'react-native';
 import * as Api from 'Api'
-import Diary from './Diary'
 import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
-import LoginPage from './LoginPage'
 import DiaryList from './DiaryList'
+import NavigationBar from 'NavigationBar'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 export default class HomePage extends Component {
 
@@ -39,7 +41,8 @@ export default class HomePage extends Component {
     return {
       diaries: data.diaries,
       page: data.page,
-      more: data.diaries.length === page_size
+      //more: data.diaries.length === page_size
+      more: false
     }
   }
 
@@ -54,43 +57,36 @@ export default class HomePage extends Component {
   }
 
   render() {
+    const titleConfig = {
+      title: '胶囊日记',
+    };
+    //<NavigationBar title="胶囊日记" style={{backgroundColor: 'red'}} />
+    // <DiaryList
+    //   navigator={this.props.navigator}
+    //   getDiarirsPage={this._loadTodayDiaries.bind(this)}
+    //   onDiaryPress={this._toDiaryPage.bind(this)}/>
     return (
-      <View style={{flex: 1, backgroundColor: 'white'}}>
-        <View style={[styles.toolbarContainer, this.props.style]}>
-          <ToolbarAndroid
-            navIcon={require('./img/back_white.png')}
-            onActionSelected={this._onActionSelected}
-            onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
-            style={styles.toolbar}
-            title="首页"
-            titleColor="white">
-            <Text></Text>
-          </ToolbarAndroid>
-        </View>
-        <DiaryList 
-          navigator={this.props.navigator} 
-          getDiarirsPage={this._loadTodayDiaries.bind(this)} 
-          onDiaryPress={this._toDiaryPage.bind(this)}/>
-      </View>
+      <TabBarIOS
+        translucent={false}
+      >
+        <Icon.TabBarItemIOS
+          title="首页"
+          iconName="comments"
+          selected={true}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'blueTab',
+            });
+          }}>
+          <View style={{flex: 1, backgroundColor: 'white', marginBottom: 48}}>
+            <NavigationBar title="胶囊日记" style={{backgroundColor: 'red'}} />
+            <DiaryList
+              navigator={this.props.navigator}
+              getDiarirsPage={this._loadTodayDiaries.bind(this)}
+              onDiaryPress={this._toDiaryPage.bind(this)}/>
+          </View>
+        </Icon.TabBarItemIOS>
+      </TabBarIOS>
     );
   }
 }
-
-//var STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 20 : 25;
-//var HEADER_HEIGHT = Platform.OS === 'ios' ? 44 + STATUS_BAR_HEIGHT : 56 + STATUS_BAR_HEIGHT;
-var STATUS_BAR_HEIGHT = 20;
-var HEADER_HEIGHT = 56;
-
-const styles = StyleSheet.create({
-  toolbar: {
-    height: HEADER_HEIGHT,
-  },
-  toolbarContainer: {
-    backgroundColor: TPColors.light,
-    paddingTop: STATUS_BAR_HEIGHT,
-    elevation: 2,
-    borderRightWidth: 1,
-    marginRight: -1,
-    borderRightColor: 'transparent',
-  },
-});
