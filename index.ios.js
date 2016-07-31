@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  View, Image
 } from 'react-native';
 import TPNavigator from './js/components/TPNavigator'
 

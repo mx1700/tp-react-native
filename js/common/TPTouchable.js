@@ -23,7 +23,7 @@ function TPTouchableIOS(props) {
 
 function TPTouchableAndroid(props) {
   return (
-    <TouchableNativeFeedback 
+    <TouchableNativeFeedback
       {...props}
     />
   )

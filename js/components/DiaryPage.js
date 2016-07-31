@@ -88,7 +88,7 @@ export default class DiaryPage extends Component {
           enableEmptySections={true}
         />
         <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', elevation: 3,}}>
-          <TextInput style={{flex: 1}} 
+          <TextInput style={{flex: 1}}
             value={this.state.comment_content}
             onChangeText={(text) => this.setState({ comment_content: text })}/>
           <TPButton caption="回复" style={{ width: 60}} onPress={this._addCommentPress.bind(this)}/>
@@ -101,7 +101,7 @@ export default class DiaryPage extends Component {
     return (
       <View>
         <Diary data={this.props.diary} navigator={this.props.navigator} showComment={false} />
-        <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5}}>共{this.props.diary.comment_count}条回复</Text>
+        <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>共{this.props.diary.comment_count}条回复</Text>
       </View>
       )
   }
@@ -147,8 +147,8 @@ export default class DiaryPage extends Component {
 
 const styles = StyleSheet.create({
   box: {
-    paddingVertical: 20, 
-    paddingHorizontal: 15, 
+    paddingVertical: 20,
+    paddingHorizontal: 15,
     flexDirection: "row"
   },
   user_icon_box: {
@@ -163,35 +163,35 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
   },
-  body: { 
-    flexDirection: "column", 
-    flex: 1 , 
+  body: {
+    flexDirection: "column",
+    flex: 1 ,
     paddingTop: 2
   },
-  title: { 
-    flexDirection: "row", 
-    paddingBottom: 10, 
+  title: {
+    flexDirection: "row",
+    paddingBottom: 10,
     alignItems: "flex-end",
   },
   title_name: {
-    fontWeight: 'bold', 
-    color: TPColors.contentText, 
+    fontWeight: 'bold',
+    color: TPColors.contentText,
     fontSize: 12,
     marginRight: 5,
   },
   title_text: {
     fontSize: 12
   },
-  content: { 
-    flex: 1, 
-    lineHeight: 26, 
-    color: TPColors.contentText, 
-    fontSize: 15, 
-    marginBottom: 5 
+  content: {
+    flex: 1,
+    lineHeight: 26,
+    color: TPColors.contentText,
+    fontSize: 15,
+    marginBottom: 5
   },
   line: {
-    height: StyleSheet.hairlineWidth, 
-    backgroundColor: TPColors.line, 
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: TPColors.line,
     marginHorizontal: 16,
     marginLeft:56,
   },

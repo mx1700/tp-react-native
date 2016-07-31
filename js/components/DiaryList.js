@@ -119,16 +119,16 @@ export default class DiaryList extends Component {
     return (
       <ListView
         dataSource={this.state.diariesDateSource}
-        renderRow={(rowData) => 
-          <Diary data={rowData} 
-            onPress={this._onDiaryPress.bind(this)} 
+        renderRow={(rowData) =>
+          <Diary data={rowData}
+            onPress={this._onDiaryPress.bind(this)}
             onIconPress={this._onIconPress.bind(this)}
             navigator={this.props.navigator} />
         }
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)} 
+            onRefresh={this._onRefresh.bind(this)}
             colors={[TPColors.light]} />
         }
         onEndReached={this._onEndReached.bind(this)}
@@ -146,7 +146,7 @@ export default class DiaryList extends Component {
     }
     var content = this.state.more ?
                     (<ActivityIndicator animating={true} color={TPColors.inactive} size="large" />) :
-                    (<Text>End</Text>);
+                    (<Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>);
 
     return (
       <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>

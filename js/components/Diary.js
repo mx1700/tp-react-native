@@ -48,10 +48,10 @@ export default class Diary extends Component {
       </View>
     );
 
-    const comment = diary.comment_count > 0 && this.props.showComment ? 
+    const comment = diary.comment_count > 0 && this.props.showComment ?
               (<View style={{flexDirection: "row", paddingTop: 5}}>
-                <Icon name="comment" size={12} color={TPColors.inactive} style={styles.button_icon} />
-                <Text style={{fontSize: 12}}>{diary.comment_count}</Text>
+                <Icon name="comment" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
+                <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
               </View>) : null;
 
     const view = (
@@ -68,7 +68,7 @@ export default class Diary extends Component {
           <View style={styles.line}></View>
         </View>
     );
-    
+
     if (this.props.onPress) {
       return (
         <TPTouchable onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
@@ -85,12 +85,12 @@ export default class Diary extends Component {
     var diary = this.props.data;
     const img = diary.photoUrl ?
       (
-        <Lightbox underlayColor="white" padding={0} 
+        <Lightbox underlayColor="white" padding={0}
           navigator={this.props.navigator}
           style={{ width: 220, marginTop: 5, marginBottom: 15, backgroundColor: "#f8f8f8", padding: 0 }}
           swipeToDismiss={false}
           renderContent={this.randerPhotoZoom.bind(this)}>
-          <Image style={styles.photo} 
+          <Image style={styles.photo}
             resizeMode="cover"
             source={{uri: diary.photoUrl}} />
         </Lightbox>
@@ -103,7 +103,7 @@ export default class Diary extends Component {
   randerPhotoZoom() {
     var diary = this.props.data;
     return (
-      <Image style={styles.photo} 
+      <Image style={styles.photo}
       resizeMode="contain"
       source={{uri: diary.photoUrl}} />
     )
@@ -113,38 +113,39 @@ export default class Diary extends Component {
 Diary.propTypes = {
   showComment: React.PropTypes.bool,
 }
-Diary.defaultProps = { 
+Diary.defaultProps = {
   showComment: true
 };
 
 const styles = StyleSheet.create({
   box: {
-    paddingVertical: 20, 
-    paddingHorizontal: 15, 
+    paddingVertical: 20,
+    paddingHorizontal: 15,
     flexDirection: "row"
   },
-  body: { 
-    flexDirection: "column", 
-    flex: 1 , 
+  body: {
+    flexDirection: "column",
+    flex: 1 ,
     paddingTop: 2
   },
-  title: { 
-    flexDirection: "row", 
-    paddingBottom: 5, 
-    alignItems: "flex-end" 
+  title: {
+    flexDirection: "row",
+    paddingBottom: 5,
+    alignItems: "flex-end"
   },
   title_name: {
-    fontWeight: 'bold', 
-    color: TPColors.contentText, 
-    fontSize: 12 
+    fontWeight: 'bold',
+    color: TPColors.contentText,
+    fontSize: 12
   },
   title_h: {
-    fontWeight: 'bold', 
-    color: TPColors.contentText, 
-    fontSize: 15 
+    fontWeight: 'bold',
+    color: TPColors.contentText,
+    fontSize: 15
   },
   title_text: {
-    fontSize: 12
+    fontSize: 12,
+    color: TPColors.inactiveText,
   },
   user_icon_box: {
     width: 32,
@@ -158,12 +159,13 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
   },
-  content: { 
-    flex: 1, 
-    lineHeight: 26, 
-    color: TPColors.contentText, 
-    fontSize: 15, 
-    textAlignVertical: 'center',
+  content: {
+    flex: 1,
+    lineHeight: 26,
+    color: TPColors.contentText,
+    fontSize: 15,
+    textAlignVertical: 'bottom',
+    paddingBottom: 8,
   },
   photo: {
     flex: 1,
@@ -173,8 +175,8 @@ const styles = StyleSheet.create({
     marginTop: 2, marginRight: 8, marginLeft: 2
   },
   line: {
-    height: StyleSheet.hairlineWidth, 
-    backgroundColor: TPColors.line, 
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: TPColors.line,
     marginHorizontal: 16
   }
 });

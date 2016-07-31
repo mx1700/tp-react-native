@@ -32,6 +32,6 @@ function RadiusTouchableAndroid(props) {
 
 const TPTouchable = Platform.OS === 'android'
   ? RadiusTouchableAndroid
-  : TPTouchableIOS;
+  : RadiusTouchableIOS;
 
 module.exports = TPTouchable;
