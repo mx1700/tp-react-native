@@ -18,6 +18,8 @@ import Diary from './Diary'
 import TPColors from 'TPColors'
 import TPButton from 'TPButton'
 import UserPage from './UserPage'
+import NavigationBar from 'NavigationBar'
+
 var moment = require('moment');
 
 export default class DiaryPage extends Component {
@@ -80,6 +82,11 @@ export default class DiaryPage extends Component {
     //TODO:评论功能未完成
     return (
       <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
+        <NavigationBar
+          title="日记详情"
+          back="后退"
+          backPress={() => { this.props.navigator.pop() }}
+          />
         <ListView
           dataSource={this.state.commentsDateSource}
           renderRow={this.renderComment.bind(this)}

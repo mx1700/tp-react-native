@@ -17,6 +17,7 @@ import Diary from './Diary'
 import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
 import DiaryList from './DiaryList'
+import NavigationBar from 'NavigationBar'
 
 export default class UserPage extends Component {
 
@@ -25,7 +26,13 @@ export default class UserPage extends Component {
   }
 
   async loadDiary(page, page_size) {
-    const data = await Api.getUserTodayDiaries(this.props.user.id, page, page_size);
+    let user = null;
+    if (this.props.myself) {
+      user = await Api.getSelfInfoByStore();
+    } else {
+      user = this.props.user;
+    }
+    const data = await Api.getUserTodayDiaries(user.id, page, page_size);
     //console.log(data);
     return {
       diaries: data,
@@ -44,23 +51,25 @@ export default class UserPage extends Component {
     })
   }
 
+  _toWritePage() {
+    alert('write');
+  }
+
   render() {
+    const name = this.props.myself ? '我' : this.props.user.name
+    let navAttrs = this.props.myself
+      ? { rightButton: { title: "写日记", handler: this._toWritePage.bind(this) } }
+      : { leftButton: { title: "后退", handler: () => { this.props.navigator.pop() } } }
+
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
-        <View style={[styles.toolbarContainer, this.props.style]}>
-          <ToolbarAndroid
-            navIcon={require('./img/back_white.png')}
-            onActionSelected={this._onActionSelected}
-            onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
-            style={styles.toolbar}
-            title="首页"
-            titleColor="white">
-            <Text></Text>
-          </ToolbarAndroid>
-        </View>
-        <DiaryList 
-          navigator={this.props.navigator} 
-          getDiarirsPage={this._loadTodayDiaries.bind(this)} 
+      <NavigationBar
+        title={name + "的日记"}
+        {...navAttrs}
+        />
+        <DiaryList
+          navigator={this.props.navigator}
+          getDiarirsPage={this._loadTodayDiaries.bind(this)}
           onDiaryPress={this._toDiaryPage.bind(this)}/>
       </View>
     );
