@@ -129,7 +129,8 @@ export default class DiaryList extends Component {
           <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
-            colors={[TPColors.light]} />
+            colors={[TPColors.light]}
+            tintColor={TPColors.light} />
         }
         onEndReached={this._onEndReached.bind(this)}
         onEndReachedThreshold={200}
@@ -148,7 +149,7 @@ export default class DiaryList extends Component {
       return null;
     }
     var content = this.state.more ?
-                    (<ActivityIndicator animating={true} color={TPColors.inactive} size="large" />) :
+                    (<ActivityIndicator animating={true} color={TPColors.light} size="small" />) :
                     (<Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>);
 
     return (

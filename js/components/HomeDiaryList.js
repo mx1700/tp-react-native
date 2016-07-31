@@ -23,8 +23,7 @@ export default class HomeDiaryList extends Component {
     return {
       diaries: data.diaries,
       page: data.page,
-      //more: data.diaries.length === page_size   //TODO:调试用，暂时注释
-      more: false
+      more: data.diaries.length === page_size
     }
   }
 

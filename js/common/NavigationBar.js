@@ -47,7 +47,7 @@ function NavigationBarIOS(props) {
 
   return (
     <NavBar
-      style={{borderColor: '#aaa', borderBottomWidth: StyleSheet.hairlineWidth}}
+      style={{borderColor: '#bbb', borderBottomWidth: StyleSheet.hairlineWidth}}
       title={{title: props.title}}
       {...attr}
     />
