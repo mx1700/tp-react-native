@@ -32,7 +32,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="首页"
-          iconName="comments"
+          iconName="home"
+          iconSize={28}
           selected={this.state.selectedTab == 'home'}
           onPress={() => {
             this.setState({
@@ -44,7 +45,7 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="关注"
-          iconName="comments"
+          iconName="eye"
           selected={this.state.selectedTab == 'follow'}
           onPress={() => {
             this.setState({
@@ -56,7 +57,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="我的"
-          iconName="comments"
+          iconName="user"
+          iconSize={28}
           selected={this.state.selectedTab == 'my'}
           onPress={() => {
             this.setState({

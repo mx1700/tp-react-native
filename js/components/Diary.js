@@ -50,7 +50,7 @@ export default class Diary extends Component {
 
     const comment = diary.comment_count > 0 && this.props.showComment ?
               (<View style={{flexDirection: "row", paddingTop: 5}}>
-                <Icon name="comment" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
+                <Icon name="comment-o" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
                 <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
               </View>) : null;
 

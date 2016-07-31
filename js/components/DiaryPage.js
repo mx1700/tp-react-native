@@ -80,6 +80,7 @@ export default class DiaryPage extends Component {
   render() {
     //enableEmptySections 不加会报一个不理解的警告
     //TODO:评论功能未完成
+    //TODO:加载评论后更新评论数
     return (
       <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
         <NavigationBar
@@ -108,13 +109,14 @@ export default class DiaryPage extends Component {
     return (
       <View>
         <Diary data={this.props.diary} navigator={this.props.navigator} showComment={false} />
-        <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>共{this.props.diary.comment_count}条回复</Text>
+        <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
+        共 {this.props.diary.comment_count} 条回复
+        </Text>
       </View>
       )
   }
 
   renderComment(comment) {
-    console.log(comment)
     return (
       <View>
         <View style={styles.box}>
