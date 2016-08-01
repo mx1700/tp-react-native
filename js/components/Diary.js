@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
   ToolbarAndroid,
   Platform,
-  ListView,
-  TouchableHighlight,RefreshControl,
+  RefreshControl,
   ActivityIndicator
 } from 'react-native';
 import TPTouchable from 'TPTouchable'
@@ -23,7 +21,7 @@ export default class Diary extends Component {
 
   render() {
     var diary = this.props.data;
-    const photoView = this.randerPhoto()
+    const photoView = this.renderPhoto();
 
     const icon = diary.user ? (
         <View style={styles.user_icon_box}>
@@ -65,7 +63,7 @@ export default class Diary extends Component {
               {comment}
             </View>
           </View>
-          <View style={styles.line}></View>
+          <View style={styles.line} />
         </View>
     );
 
@@ -81,7 +79,7 @@ export default class Diary extends Component {
 
   }
 
-  randerPhoto() {
+  renderPhoto() {
     var diary = this.props.data;
     const img = diary.photoUrl ?
       (
@@ -89,7 +87,7 @@ export default class Diary extends Component {
           navigator={this.props.navigator}
           style={{ width: 220, marginTop: 5, marginBottom: 15, backgroundColor: "#f8f8f8", padding: 0 }}
           swipeToDismiss={false}
-          renderContent={this.randerPhotoZoom.bind(this)}>
+          renderContent={this.renderPhotoZoom.bind(this)}>
           <Image style={styles.photo}
             resizeMode="cover"
             source={{uri: diary.photoUrl}} />
@@ -100,7 +98,7 @@ export default class Diary extends Component {
       return img;
   }
 
-  randerPhotoZoom() {
+  renderPhotoZoom() {
     var diary = this.props.data;
     return (
       <Image style={styles.photo}
@@ -112,7 +110,9 @@ export default class Diary extends Component {
 
 Diary.propTypes = {
   showComment: React.PropTypes.bool,
-}
+  diary: React.PropTypes.object
+};
+
 Diary.defaultProps = {
   showComment: true
 };
@@ -136,43 +136,45 @@ const styles = StyleSheet.create({
   title_name: {
     fontWeight: 'bold',
     color: TPColors.contentText,
-    fontSize: 12
+    fontSize: 14
   },
   title_h: {
     fontWeight: 'bold',
     color: TPColors.contentText,
-    fontSize: 15
+    fontSize: 14
   },
   title_text: {
-    fontSize: 12,
-    color: TPColors.inactiveText,
+    fontSize: 14,
+    color: TPColors.inactiveText
   },
   user_icon_box: {
     width: 32,
     height: 32,
     borderRadius: 16,
     marginRight: 12,
-    backgroundColor : TPColors.spaceBackground,
+    backgroundColor : TPColors.spaceBackground
   },
   user_icon: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: 16
   },
   content: {
     flex: 1,
-    lineHeight: 26,
+    lineHeight: 24,
     color: TPColors.contentText,
     fontSize: 15,
     textAlignVertical: 'bottom',
-    paddingBottom: 8,
+    paddingBottom: 8
   },
   photo: {
     flex: 1,
-    height: 160,
+    height: 160
   },
   button_icon: {
-    marginTop: 2, marginRight: 8, marginLeft: 2
+    marginTop: 2, 
+    marginRight: 8, 
+    marginLeft: 2
   },
   line: {
     height: StyleSheet.hairlineWidth,

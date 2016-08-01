@@ -190,7 +190,7 @@ export default class DiaryPage extends Component {
             onSubmitEditing={this._addCommentPress.bind(this)}
             selectionColor={TPColors.light}
             enablesReturnKeyAutomatically={true}
-            returnKeyType="go"
+            returnKeyType="send"
             onChangeText={(text) => this._onCommentContentChange(text)}/>
           {comment_sending_box}
         </View>

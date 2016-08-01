@@ -89,7 +89,6 @@ export default class LoginPage extends Component {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({

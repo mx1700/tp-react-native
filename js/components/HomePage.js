@@ -22,10 +22,10 @@ export default class HomePage extends Component {
 
   render() {
     const titleConfig = {
-      title: '胶囊日记',
+      title: '胶囊日记'
     };
 
-    console.log(this.state)
+    console.log(this.state);
 
     return (
       <TabBarIOS translucent={false}>
@@ -37,7 +37,7 @@ export default class HomePage extends Component {
           selected={this.state.selectedTab == 'home'}
           onPress={() => {
             this.setState({
-              selectedTab: 'home',
+              selectedTab: 'home'
             });
           }}>
           <HomeDiaryList navigator={this.props.navigator} />
@@ -49,7 +49,7 @@ export default class HomePage extends Component {
           selected={this.state.selectedTab == 'follow'}
           onPress={() => {
             this.setState({
-              selectedTab: 'follow',
+              selectedTab: 'follow'
             });
           }}>
           <FollowDiaryList navigator={this.props.navigator} />
@@ -62,7 +62,7 @@ export default class HomePage extends Component {
           selected={this.state.selectedTab == 'my'}
           onPress={() => {
             this.setState({
-              selectedTab: 'my',
+              selectedTab: 'my'
             });
           }}>
           <UserPage navigator={this.props.navigator} myself={true} />

@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
-  Text,
   View,
-  Image,
   ToolbarAndroid,
   Platform,
-  ListView,
-  TouchableHighlight,
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
-import * as Api from 'Api'
-import Diary from './Diary'
+import * as Api from '../Api'
 import DiaryPage from './DiaryPage'
-import LoginPage from './LoginPage'
 import DiaryList from './DiaryList'
+import WritePage from './WritePage'
 import NavigationBar from 'NavigationBar'
 
 export default class UserPage extends Component {
@@ -52,14 +46,17 @@ export default class UserPage extends Component {
   }
 
   _toWritePage() {
-    alert('write');
+    this.props.navigator.push({
+      name: 'WritePage',
+      component: WritePage
+    })
   }
 
   render() {
-    const name = this.props.myself ? '我' : this.props.user.name
+    const name = this.props.myself ? '我' : this.props.user.name;
     let navAttrs = this.props.myself
       ? { rightButton: { title: "写日记", handler: this._toWritePage.bind(this) } }
-      : { leftButton: { title: "后退", handler: () => { this.props.navigator.pop() } } }
+      : { leftButton: { title: "后退", handler: () => { this.props.navigator.pop() } } };
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
