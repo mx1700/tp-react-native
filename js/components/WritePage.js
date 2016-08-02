@@ -23,6 +23,7 @@ import DiaryList from './DiaryList'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from 'NavigationBar'
 import LabelButton from '../common/LabelButton'
+import NotificationCenter from '../common/NotificationCenter'
 
 export default class WritePage extends Component {
 
@@ -31,7 +32,8 @@ export default class WritePage extends Component {
         this.state = {
             selectBookId: 0,
             modalVisible: false,
-            books: []
+            books: [],
+            content: ''
         }
     }
 
@@ -51,9 +53,36 @@ export default class WritePage extends Component {
     }
 
     _writePress() {
+        if (this.state.selectBookId == 0) {
+            alert('日记本列表加载失败');     //TODO:更换更友好的提示
+            return;
+        }
+
+        if (this.state.content.length == 0) {
+            alert('请填写日记内容');
+            return;
+        }
+
         // this.refs.contentInput.setNativeProps({'editable':false});
         // this.refs.contentInput.setNativeProps({'editable':true});
-        this.openModal();
+        //this.openModal();
+        this.write();
+    }
+
+    async write() {
+        let r = null;
+        try {
+            r = await Api.addDiary(this.state.selectBookId, this.state.content);
+            console.log('write:', r);
+        } catch (err) {
+            console.log(err);   //TODO:友好提示
+            return;
+        }
+
+        if (r) {
+            this.props.navigator.pop();
+            NotificationCenter.trigger('onWriteDiary')
+        }
     }
 
     _cancelPress() {
@@ -118,6 +147,7 @@ export default class WritePage extends Component {
                     maxLength={500}
                     multiline={true}
                     placeholder="记录点滴生活"
+                    onChangeText={(text) => this.setState({ content: text })}
                 />
                 <View style={styles.comment_box}>
                     {bookButton}

@@ -12,8 +12,37 @@ import DiaryPage from './DiaryPage'
 import DiaryList from './DiaryList'
 import WritePage from './WritePage'
 import NavigationBar from 'NavigationBar'
+import NotificationCenter from '../common/NotificationCenter'
 
 export default class UserPage extends Component {
+
+  constructor(props) {
+    super(props);
+    if (this.props.myself) {
+      this._onWriteDiary = this._onWriteDiary.bind(this);
+    }
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+    if (this.props.myself) {
+      NotificationCenter. addLister('onWriteDiary', this._onWriteDiary)
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+    if (this.props.myself) {
+      NotificationCenter.removeLister('onWriteDiary', this._onWriteDiary)
+    }
+  }
+
+  _onWriteDiary() {
+    console.log('_onWriteDiary!!!!!!!!!!');
+    this.refs.list.refresh();
+  }
+
+
 
   _loadTodayDiaries(page, page_size) {
     return this.loadDiary(page, page_size);
@@ -60,14 +89,14 @@ export default class UserPage extends Component {
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
-      <NavigationBar
-        title={name + "的日记"}
-        {...navAttrs}
-        />
-        <DiaryList
-          navigator={this.props.navigator}
-          getDiarirsPage={this._loadTodayDiaries.bind(this)}
-          onDiaryPress={this._toDiaryPage.bind(this)}/>
+        <NavigationBar
+          title={name + "的日记"}
+          {...navAttrs}
+          />
+          <DiaryList ref="list"
+            navigator={this.props.navigator}
+            getDiarirsPage={this._loadTodayDiaries.bind(this)}
+            onDiaryPress={this._toDiaryPage.bind(this)}/>
       </View>
     );
   }

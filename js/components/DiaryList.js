@@ -43,6 +43,10 @@ export default class DiaryList extends Component {
     });
   }
 
+  refresh() {
+    this._onRefresh()
+  }
+
   async _loadTodayDiaries(page) {
     if (page === 1 && this.state.refreshing === false) {
       this.setState({refreshing: true});
