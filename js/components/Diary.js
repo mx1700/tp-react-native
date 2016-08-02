@@ -7,7 +7,8 @@ import {
   ToolbarAndroid,
   Platform,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+    TouchableOpacity
 } from 'react-native';
 import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
@@ -18,6 +19,10 @@ var Lightbox = require('Lightbox');
 var moment = require('moment');
 
 export default class Diary extends Component {
+
+  _onActionPress() {
+    alert('action');
+  }
 
   render() {
     var diary = this.props.data;
@@ -46,12 +51,6 @@ export default class Diary extends Component {
       </View>
     );
 
-    const comment = diary.comment_count > 0 && this.props.showComment ?
-              (<View style={{flexDirection: "row", paddingTop: 5}}>
-                <Icon name="comment-o" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
-                <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
-              </View>) : null;
-
     const view = (
         <View>
           <View style={styles.box}>
@@ -60,7 +59,7 @@ export default class Diary extends Component {
               {title}
               <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>
               {photoView}
-              {comment}
+              {this.renderActionBar(diary)}
             </View>
           </View>
           <View style={styles.line} />
@@ -76,7 +75,33 @@ export default class Diary extends Component {
     } else {
       return view;
     }
+  }
 
+  renderActionBar(diary) {
+    const comment = diary.comment_count > 0 && this.props.showComment
+        ? (<View style={{flexDirection: "row", flex: 1}}>
+            <Icon name="comment-o" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
+            <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
+          </View>)
+        : <View style={{flexDirection: "row", flex: 1}} />;
+
+    const action = (this.props.editable || this.props.deletable)
+        ? (
+            <TouchableOpacity onPress={this._onActionPress.bind(this)}>
+              <Icon name="ellipsis-h"
+                    size={14}
+                    color={TPColors.inactiveText}
+                    style={{paddingVertical: 6, paddingHorizontal: 8}} />
+            </TouchableOpacity>
+          )
+        : null;
+
+    return (
+        <View style={{flexDirection: 'row', alignItems: "center", height: 20}}>
+          {comment}
+          {action}
+        </View>
+    );
   }
 
   renderPhoto() {
@@ -110,17 +135,22 @@ export default class Diary extends Component {
 
 Diary.propTypes = {
   showComment: React.PropTypes.bool,
-  diary: React.PropTypes.object
+  diary: React.PropTypes.object,
+  editable: React.PropTypes.bool,
+  deletable: React.PropTypes.bool,
 };
 
 Diary.defaultProps = {
-  showComment: true
+  showComment: true,
+  editable: false,
+  deletable: false,
 };
 
 const styles = StyleSheet.create({
   box: {
     paddingVertical: 20,
     paddingHorizontal: 15,
+    paddingBottom: 0,
     flexDirection: "row"
   },
   body: {
@@ -172,8 +202,7 @@ const styles = StyleSheet.create({
     height: 160
   },
   button_icon: {
-    marginTop: 2, 
-    marginRight: 8, 
+    marginRight: 8,
     marginLeft: 2
   },
   line: {
