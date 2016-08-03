@@ -18,63 +18,40 @@ import TPColors from 'TPColors'
 export default class TPButton extends Component {
   render() {
     const caption = this.props.caption.toUpperCase();
-    let icon;
-    if (this.props.icon) {
-      icon = <Image source={this.props.icon} style={styles.icon} />;
-    }
-    var border = this.props.type === 'bordered' && styles.border;
-
-    var content = (
-      <View style={[styles.button, border]}>
-        {icon}
-        <Text style={[styles.caption, styles.secondaryCaption]}>
-          {caption}
-        </Text>
-      </View>
-    );
+    let [bg, border, text] = this.getColor(this.props.type);
     return (
       <TouchableOpacity
         accessibilityTraits="button"
         onPress={this.props.onPress}
         activeOpacity={0.8}
-        style={[styles.container, this.props.style]}>
-        {content}
+        style={this.props.style}>
+        <View style={{
+          borderRadius: 25,
+          backgroundColor: bg,
+          height: 50,
+          alignItems:'center',
+          justifyContent:'center',
+          borderColor: border,
+          borderWidth: 1
+        }}>
+          <Text style={{color: text, fontSize: 18}}>{caption}</Text>
+        </View>
       </TouchableOpacity>
     );
   }
-}
 
-const HEIGHT = 50;
-
-var styles = StyleSheet.create({
-  container: {
-    height: HEIGHT,
-    // borderRadius: HEIGHT / 2,
-    // borderWidth: 1 / PixelRatio.get(),
-  },
-  button: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 40,
-  },
-  border: {
-    borderWidth: 1,
-    borderColor: TPColors.lightText,
-    borderRadius: HEIGHT / 2,
-  },
-  icon: {
-    marginRight: 12,
-  },
-  caption: {
-    letterSpacing: 1,
-    fontSize: 12,
-  },
-  primaryCaption: {
-    color: 'white',
-  },
-  secondaryCaption: {
-    color: TPColors.lightText,
+  getColor(type) {
+    switch (type) {
+      case 'success':
+        return ['#5cb85c', '#5cb85c', '#fff']
+      case 'warning':
+        return ['#f0ad4e', '#f0ad4e', '#fff']
+      case 'secondary':
+        return ['#fff', '#ccc', '#373a3c']
+      case 'danger':
+        return ['#d9534f', '#d9534f', '#fff']
+      default:
+        return [TPColors.light, TPColors.light, '#fff']
+    }
   }
-});
+}

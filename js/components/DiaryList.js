@@ -61,16 +61,11 @@ export default class DiaryList extends Component {
     } catch(e) {
       console.log(e)
       if(e.response.status == 401) {
-        //TODO:登录
-        this.props.navigator.push({
+        this.props.navigator.resetTo({
           name: 'LoginPage',
-          component: LoginPage,
-          params: {
-            onLogin: () => {
-              this._loadTodayDiaries(1);
-            }
-          }
+          component: LoginPage
         });
+        return;
       } else {
         console.log(e.response);
         //TODO:提示出错

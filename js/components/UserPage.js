@@ -10,7 +10,7 @@ import {
 import * as Api from '../Api'
 import DiaryPage from './DiaryPage'
 import DiaryList from './DiaryList'
-import WritePage from './WritePage'
+import SettingPage from './SettingPage'
 import NavigationBar from 'NavigationBar'
 import NotificationCenter from '../common/NotificationCenter'
 
@@ -74,17 +74,17 @@ export default class UserPage extends Component {
     })
   }
 
-  _toWritePage() {
+  _toSettingPage() {
     this.props.navigator.push({
-      name: 'WritePage',
-      component: WritePage
+      name: 'SettingPage',
+      component: SettingPage
     })
   }
 
   render() {
     const name = this.props.myself ? '我' : this.props.user.name;
     let navAttrs = this.props.myself
-      ? { rightButton: { title: "写日记", handler: this._toWritePage.bind(this) } }
+      ? { rightButton: { title: "设置", handler: this._toSettingPage.bind(this) } }
       : { leftButton: { title: "后退", handler: () => { this.props.navigator.pop() } } };
 
     return (

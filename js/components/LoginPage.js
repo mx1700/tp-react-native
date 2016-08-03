@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'
-import TPColor from '../common/TPColors'
+import TPColors from '../common/TPColors'
+import HomePage from './HomePage'
 
 export default class LoginPage extends Component {
 
@@ -20,17 +21,16 @@ export default class LoginPage extends Component {
     super();
     this.state = ({
       username: '',
-      passwrod: '',
+      password: '',
       loading: false,
     });
   }
 
   _usernameSubmit() {
-      //移到密码框
+      this.refs.inputPw.focus();
   }
 
   _passwordSubmit() {
-      //提交登陆请求
       this._login()
   }
 
@@ -41,12 +41,13 @@ export default class LoginPage extends Component {
   async _login() {
     //TODO:loading
     this.setState({ loading: true })
-    const result = await Api.login(this.state.username, this.state.passwrod)
+    const result = await Api.login(this.state.username, this.state.password)
     this.setState({ loading: false })
     if (result) {
-      console.warn('登陆成功')
-      this.props.onLogin();
-      this.props.navigator.pop();
+        this.props.navigator.resetTo({
+            name: 'HomePage',
+            component: HomePage
+        });
     } else {
       console.warn('登录失败'); //TODO:展示具体失败原因
     }
@@ -61,37 +62,54 @@ export default class LoginPage extends Component {
           transparent={true}
           onRequestClose={this._cancel.bind(this)}>
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-              <ActivityIndicator animating={true} color={TPColor.light} />
+              <ActivityIndicator animating={true} color={TPColors.light} />
           </View>
         </Modal>
          <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            style={styles.input1}
             onChangeText={(text) => this.setState({ username: text })}
             value={this.state.username}
             onSubmitEditing={this._usernameSubmit.bind(this)}
             keyboardType="email-address"
             autoCorrect={false}
             autoFocus={true}
+            returnKeyType="next"
             placeholder="邮箱"/>
          <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-            onChangeText={(text) => this.setState({ passwrod: text })}
-            value={this.state.passwrod}
+             ref="inputPw"
+             style={styles.input2}
+            onChangeText={(text) => this.setState({ password: text })}
+            value={this.state.password}
             onSubmitEditing={this._passwordSubmit.bind(this)}
             autoCorrect={false}
             placeholder="密码"
             secureTextEntry={true}
+             returnKeyType="done"
             selectTextOnFocus={true}/>
           <TPButton
               caption="登陆"
               onPress={this._login.bind(this)}
               type="bordered"
-              style={{}}/>
+              style={{ marginTop: 20}}/>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
+    input1: {
+        height: 40,
+        padding: 10,
+        borderColor: TPColors.inactive,
+        borderWidth: 1,
+        borderRadius: 5,
+    },
+    input2: {
+        height: 40,
+        padding: 10,
+        borderColor: TPColors.inactive,
+        borderWidth: 1,
+        borderRadius: 5,
+        marginTop: 10,
+    }
 });

@@ -145,6 +145,12 @@ export async function getDiaryComments(diaryId) {
   return call('GET', '/diaries/' + diaryId + '/comments')
 }
 
+
+
+export async function logout() {
+  TokenManager.setToken('');
+}
+
 //TODO: 关系，提醒
 
 //==========================================================================

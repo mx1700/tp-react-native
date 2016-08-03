@@ -11,6 +11,8 @@ import FollowDiaryList from './FollowDiaryList'
 import UserPage from './UserPage'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import WritePage from './WritePage'
+import TPColors from '../common/TPColors'
+import TPButton from '../common/TPButton';
 
 export default class HomePage extends Component {
 
