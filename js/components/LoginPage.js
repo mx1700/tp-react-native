@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'
+import TPColor from '../common/TPColors'
 
 export default class LoginPage extends Component {
 
@@ -60,7 +61,7 @@ export default class LoginPage extends Component {
           transparent={true}
           onRequestClose={this._cancel.bind(this)}>
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-              <ActivityIndicator animating={true} color="#39E" size="large" />
+              <ActivityIndicator animating={true} color={TPColor.light} />
           </View>
         </Modal>
          <TextInput

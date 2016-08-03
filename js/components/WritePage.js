@@ -28,6 +28,7 @@ import NavigationBar from 'NavigationBar'
 import LabelButton from '../common/LabelButton'
 import NotificationCenter from '../common/NotificationCenter'
 var ImagePicker = require('react-native-image-picker');
+import TPColor from '../common/TPColors'
 
 export default class WritePage extends Component {
 
@@ -182,7 +183,7 @@ export default class WritePage extends Component {
                     transparent={true}
                     onRequestClose={() => {}}>
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                        <ActivityIndicator animating={true} color="#39E" size="large" />
+                        <ActivityIndicator animating={true} color={TPColor.light} />
                     </View>
                 </Modal>
                 <Modal
