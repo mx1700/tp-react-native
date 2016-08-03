@@ -79,11 +79,11 @@ export default class Diary extends Component {
 
   renderActionBar(diary) {
     const comment = diary.comment_count > 0 && this.props.showComment
-        ? (<View style={{flexDirection: "row", flex: 1}}>
+        ? (<View style={{flexDirection: "row"}}>
             <Icon name="comment-o" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
             <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
           </View>)
-        : <View style={{flexDirection: "row", flex: 1}} />;
+        : null;
 
     const action = (this.props.editable || this.props.deletable)
         ? (
@@ -96,12 +96,17 @@ export default class Diary extends Component {
           )
         : null;
 
-    return (
-        <View style={{flexDirection: 'row', alignItems: "center", height: 20}}>
-          {comment}
-          {action}
-        </View>
-    );
+    return comment != null || action != null
+        ? (
+            <View style={{flexDirection: 'row', alignItems: "center", height: 45}}>
+              {comment}
+              <View style={{flex: 1}} />
+              {action}
+            </View>
+          )
+        : (
+            <View style={{height: 15}} />
+          );
   }
 
   renderPhoto() {
@@ -110,7 +115,7 @@ export default class Diary extends Component {
       (
         <Lightbox underlayColor="white" padding={0}
           navigator={this.props.navigator}
-          style={{ width: 220, marginTop: 5, marginBottom: 15, backgroundColor: "#f8f8f8", padding: 0 }}
+          style={{ width: 220, marginTop: 15, backgroundColor: "#f8f8f8", padding: 0 }}
           swipeToDismiss={false}
           renderContent={this.renderPhotoZoom.bind(this)}>
           <Image style={styles.photo}
@@ -142,8 +147,8 @@ Diary.propTypes = {
 
 Diary.defaultProps = {
   showComment: true,
-  editable: false,
-  deletable: false,
+  editable: true,
+  deletable: true,
 };
 
 const styles = StyleSheet.create({
@@ -195,7 +200,6 @@ const styles = StyleSheet.create({
     color: TPColors.contentText,
     fontSize: 15,
     textAlignVertical: 'bottom',
-    paddingBottom: 8
   },
   photo: {
     flex: 1,
