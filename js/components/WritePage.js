@@ -15,7 +15,10 @@ import {
     Dimensions,
     TouchableHighlight,
     Modal,
-    InteractionManager
+    InteractionManager,
+    TouchableOpacity,
+    Image,
+    CameraRoll,
 } from 'react-native';
 import * as Api from '../Api'
 import DiaryPage from './DiaryPage'
@@ -24,6 +27,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from 'NavigationBar'
 import LabelButton from '../common/LabelButton'
 import NotificationCenter from '../common/NotificationCenter'
+var ImagePicker = require('react-native-image-picker');
 
 export default class WritePage extends Component {
 
@@ -35,6 +39,8 @@ export default class WritePage extends Component {
             books: [],
             content: '',
             loading: false,
+            photoUri: null,
+            photoSource: null,
         }
     }
 
@@ -74,13 +80,15 @@ export default class WritePage extends Component {
         this.setState({loading: true});
         let r = null;
         try {
-            r = await Api.addDiary(this.state.selectBookId, this.state.content);
+            r = await Api.addDiary(this.state.selectBookId, this.state.content, this.state.photoUri);
             console.log('write:', r);
         } catch (err) {
             console.log(err);   //TODO:友好提示
             return;
+        } finally {
+            this.setState({loading: false});
         }
-        this.setState({loading: false});
+
 
         if (r) {
             this.props.navigator.pop();
@@ -99,6 +107,62 @@ export default class WritePage extends Component {
 
     closeModal() {
         this.setState({modalVisible: false});
+    }
+
+    _imagePress() {
+        //TODO:当选择照片后,再次点击,放大图片,里边有取消按钮
+        this.selectPhoto();
+    }
+
+    async selectPhoto() {
+        // const photoUri = CameraRoll.getPhotos({first: 1})
+        // console.log(photoUri);
+        const customButtons = this.state.photoUri !== null
+            ?{
+                '取消照片选择': 'delete',
+            }
+            : null;
+        var options = {
+            title: '添加照片',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照',
+            chooseFromLibraryButtonTitle: '从相册选择',
+            customButtons: customButtons,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                this.setState({
+                    photoSource: null,
+                    photoUri: null,
+                });
+            }
+            else {
+                // You can display the image using either data...
+                //const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+                // or a reference to the platform specific asset location
+                const source = Platform.OS === 'ios'
+                    ? {uri: response.uri.replace('file://', ''), isStatic: true}
+                    : {uri: response.uri, isStatic: true};
+
+                this.setState({
+                    photoSource: source,
+                    photoUri: response.uri,
+                });
+            }
+        });
     }
 
     render() {
@@ -162,6 +226,10 @@ export default class WritePage extends Component {
                 />
                 <View style={styles.comment_box}>
                     {bookButton}
+                    <View style={{flex: 1}} />
+                    <TouchableOpacity onPress={this._imagePress.bind(this)}>
+                        <Image source={this.state.photoSource} style={{width: 30, height: 30, backgroundColor: '#eee'}} />
+                    </TouchableOpacity>
                 </View>
                 <KeyboardSpacer />
             </View>
