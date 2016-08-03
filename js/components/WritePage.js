@@ -33,7 +33,8 @@ export default class WritePage extends Component {
             selectBookId: 0,
             modalVisible: false,
             books: [],
-            content: ''
+            content: '',
+            loading: false,
         }
     }
 
@@ -70,6 +71,7 @@ export default class WritePage extends Component {
     }
 
     async write() {
+        this.setState({loading: true});
         let r = null;
         try {
             r = await Api.addDiary(this.state.selectBookId, this.state.content);
@@ -78,6 +80,7 @@ export default class WritePage extends Component {
             console.log(err);   //TODO:友好提示
             return;
         }
+        this.setState({loading: false});
 
         if (r) {
             this.props.navigator.pop();
@@ -110,6 +113,14 @@ export default class WritePage extends Component {
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
+                <Modal
+                    visible={this.state.loading}
+                    transparent={true}
+                    onRequestClose={() => {}}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                        <ActivityIndicator animating={true} color="#39E" size="large" />
+                    </View>
+                </Modal>
                 <Modal
                     animationType="slide"
                     transparent={true}
