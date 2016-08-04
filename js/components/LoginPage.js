@@ -56,7 +56,9 @@ export default class LoginPage extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, paddingTop: 120, paddingHorizontal: 20, backgroundColor: 'white'}}>
+        <Image source={require('./img/login_bg.jpg')} resizeMode='cover'
+        style={{flex: 1, width: undefined, height: undefined}}>
+      <View style={{flex: 1, paddingTop: 120, paddingHorizontal: 20}}>
         <Modal
           visible={this.state.loading}
           transparent={true}
@@ -65,6 +67,7 @@ export default class LoginPage extends Component {
               <ActivityIndicator animating={true} color={TPColors.light} />
           </View>
         </Modal>
+
          <TextInput
             style={styles.input1}
             onChangeText={(text) => this.setState({ username: text })}
@@ -92,7 +95,9 @@ export default class LoginPage extends Component {
               onPress={this._login.bind(this)}
               type="bordered"
               style={{ marginTop: 20}}/>
+
       </View>
+        </Image>
     );
   }
 }
