@@ -83,6 +83,9 @@ export default class TPNavigator extends Component {
           if (route.name == 'WritePage' || route.name == 'LoginPage') {  //写日记页面从底部弹出
             return BottomSceneConfigs;
           }
+          if (route.name == 'PhotoPage') {
+            return Navigator.SceneConfigs.FadeAndroid;
+          }
           console.log(route);
           return SceneConfigs;
         }}

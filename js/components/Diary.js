@@ -14,6 +14,7 @@ import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
 import TPColors from 'TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
+import PhotoPage from './PhotoPage'
 
 var Lightbox = require('Lightbox');
 var moment = require('moment');
@@ -100,37 +101,33 @@ export default class Diary extends Component {
               {action}
             </View>
           )
-        : (
-            <View style={{height: 24}} />
-          );
+        : (<View style={{height: 24}} />);
   }
 
   renderPhoto() {
     var diary = this.props.data;
     const img = diary.photoUrl ?
       (
-        <Lightbox underlayColor="white" padding={0}
-          navigator={this.props.navigator}
+        <TouchableOpacity
+            onPress={() => {
+              this.props.navigator.push({
+                name: 'PhotoPage',
+                component: PhotoPage,
+                params: {
+                  source: {uri: diary.photoUrl}
+                }
+              });
+            }}
           style={{ width: 220, marginTop: 15, backgroundColor: "#f8f8f8", padding: 0 }}
-          swipeToDismiss={false}
-          renderContent={this.renderPhotoZoom.bind(this)}>
+          >
           <Image style={styles.photo}
             resizeMode="cover"
             source={{uri: diary.photoUrl}} />
-        </Lightbox>
+        </TouchableOpacity>
       )
       : null;
 
       return img;
-  }
-
-  renderPhotoZoom() {
-    var diary = this.props.data;
-    return (
-      <Image style={styles.photo}
-      resizeMode="contain"
-      source={{uri: diary.photoUrl}} />
-    )
   }
 }
 
