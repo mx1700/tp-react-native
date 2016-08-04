@@ -40,6 +40,7 @@ export default class DiaryPage extends Component {
       comment_sending: false,
       reply_user_id: 0,
       reply_user_name: '',
+      comment_count: this.props.diary.comment_count
     });
   }
 
@@ -63,6 +64,7 @@ export default class DiaryPage extends Component {
       commentsDateSource: this.state.commentsDateSource.cloneWithRows(comments),
       comments: comments,
       loading_comments: false,
+        comment_count: comments.length
     });
   }
 
@@ -93,6 +95,7 @@ export default class DiaryPage extends Component {
       comment_content: '',
       reply_user_id: 0,
       reply_user_name: '',
+        comment_count: this.state.comment_count + 1
     });
 
     //TODO:回复成功，显示回复
@@ -219,7 +222,7 @@ export default class DiaryPage extends Component {
             onIconPress={this._onDiaryIconPress.bind(this)}
             showComment={false} />
         <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
-        共 {this.props.diary.comment_count} 条回复
+        共 {this.state.comment_count} 条回复
         </Text>
       </View>
       )
