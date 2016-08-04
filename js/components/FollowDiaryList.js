@@ -44,7 +44,7 @@ export default class FollowDiaryList extends Component {
         <DiaryList
         style={{}}
           navigator={this.props.navigator}
-          getDiarirsPage={this._loadTodayDiaries.bind(this)}
+          getDiariesPage={this._loadTodayDiaries.bind(this)}
           onDiaryPress={this._toDiaryPage.bind(this)}/>
       </View>
     )

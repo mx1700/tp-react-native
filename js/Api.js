@@ -213,6 +213,11 @@ async function checkStatus(response) {
 }
 
 function parseJSON(response) {
-  const r = response.json()
-  return r;
+  if (response.headers.get('content-type') == 'application/json') {
+    const r = response.json();
+    return r;
+  } else {
+    return response.text();
+  }
+
 }

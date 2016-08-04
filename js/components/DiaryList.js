@@ -12,8 +12,10 @@ import {
   RefreshControl,
   ActivityIndicator,
   InteractionManager,
+    ActionSheetIOS,
+    Alert,
 } from 'react-native';
-import * as Api from 'Api'
+import * as Api from '../Api'
 import Diary from './Diary'
 import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
@@ -57,7 +59,7 @@ export default class DiaryList extends Component {
     try {
       console.log('_loadTodayDiaries', this.state)
       const page_size = this.state.page_size;
-      var data = await this.props.getDiarirsPage(page, page_size);
+      var data = await this.props.getDiariesPage(page, page_size);
     } catch(e) {
       console.log(e)
       if(e.response.status == 401) {
@@ -114,6 +116,33 @@ export default class DiaryList extends Component {
     this._loadTodayDiaries(this.state.page + 1);
   }
 
+  _onActionPress(diary) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options:['修改','删除', '取消'],
+      //title: '日记',
+      cancelButtonIndex:2,
+      destructiveButtonIndex: 1,
+    }, (index) => {
+      if(index == 0) {
+        alert('edit')
+      } else if (index == 1) {
+        Alert.alert('确认删除日记?', '',[
+          {text: '取消', onPress: () => console.log('OK Pressed!')},
+          {text: '删除', onPress: () => this.deleteDiary(diary)}
+        ]);
+      }
+    });
+  }
+
+  async deleteDiary(diary) {
+    try {
+      await Api.deleteDiary(diary.id);
+      this.refresh()
+    } catch (err) {
+      console.log(err);  //TODO:友好提示
+    }
+  }
+
   render() {
     return (
       <ListView
@@ -122,6 +151,9 @@ export default class DiaryList extends Component {
           <Diary data={rowData}
             onPress={this._onDiaryPress.bind(this)}
             onIconPress={this._onIconPress.bind(this)}
+                 editable={this.props.editable}
+                 deletable={this.props.deletable}
+                 onActionPress={this._onActionPress.bind(this)}
             navigator={this.props.navigator} />
         }
         refreshControl={
@@ -158,3 +190,14 @@ export default class DiaryList extends Component {
     );
   }
 }
+
+DiaryList.propTypes = {
+  editable: React.PropTypes.bool,
+  deletable: React.PropTypes.bool,
+  getDiariesPage: React.PropTypes.func,
+};
+
+DiaryList.defaultProps = {
+  editable: false,
+  deletable: false,
+};

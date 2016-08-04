@@ -8,7 +8,7 @@ import {
   Platform,
   RefreshControl,
   ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
@@ -19,10 +19,6 @@ var Lightbox = require('Lightbox');
 var moment = require('moment');
 
 export default class Diary extends Component {
-
-  _onActionPress() {
-    alert('action');
-  }
 
   render() {
     var diary = this.props.data;
@@ -87,7 +83,7 @@ export default class Diary extends Component {
 
     const action = (this.props.editable || this.props.deletable)
         ? (
-            <TouchableOpacity onPress={this._onActionPress.bind(this)}>
+            <TouchableOpacity onPress={() => this.props.onActionPress(diary)}>
               <Icon name="ellipsis-h"
                     size={14}
                     color={TPColors.inactiveText}
@@ -105,7 +101,7 @@ export default class Diary extends Component {
             </View>
           )
         : (
-            <View style={{height: 15}} />
+            <View style={{height: 24}} />
           );
   }
 
@@ -143,12 +139,13 @@ Diary.propTypes = {
   diary: React.PropTypes.object,
   editable: React.PropTypes.bool,
   deletable: React.PropTypes.bool,
+  onActionPress: React.PropTypes.func,
 };
 
 Diary.defaultProps = {
   showComment: true,
-  editable: true,
-  deletable: true,
+  editable: false,
+  deletable: false,
 };
 
 const styles = StyleSheet.create({

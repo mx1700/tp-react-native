@@ -95,7 +95,9 @@ export default class UserPage extends Component {
           />
           <DiaryList ref="list"
             navigator={this.props.navigator}
-            getDiarirsPage={this._loadTodayDiaries.bind(this)}
+                     deletable={this.props.myself}
+                     editable={this.props.myself}
+            getDiariesPage={this._loadTodayDiaries.bind(this)}
             onDiaryPress={this._toDiaryPage.bind(this)}/>
       </View>
     );
