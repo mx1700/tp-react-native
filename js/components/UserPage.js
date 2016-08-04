@@ -88,7 +88,7 @@ export default class UserPage extends Component {
       : { leftButton: { title: "后退", handler: () => { this.props.navigator.pop() } } };
 
     return (
-      <View style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={{flex: 1, backgroundColor: 'white', marginBottom: 48}}>
         <NavigationBar
           title={name + "的日记"}
           {...navAttrs}

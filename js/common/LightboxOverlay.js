@@ -225,11 +225,13 @@ var LightboxOverlay = React.createClass({
     );
     if(this.props.navigator) {
       return (
-        <View>
+        <TouchableOpacity onPress={this.close}>
           {background}
           {content}
-          {header}
-        </View>
+          {
+            //header
+          }
+        </TouchableOpacity>
       );
     }
     return (
