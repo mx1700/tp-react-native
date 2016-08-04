@@ -183,7 +183,10 @@ export default class DiaryPage extends Component {
         <NavigationBar
           title="日记详情"
           back="后退"
-          backPress={() => { this.props.navigator.pop() }}
+          backPress={() => {
+            this.refs.commentInput.setNativeProps({'editable':false});
+            this.props.navigator.pop()
+          }}
           />
         <ListView
           ref="list"
@@ -197,6 +200,7 @@ export default class DiaryPage extends Component {
         />
         <View style={styles.comment_box}>
           <TextInput style={styles.comment_input}
+                     ref="commentInput"
             value={this.state.comment_content}
             placeholder="回复日记"
             autoCorrect={false}
