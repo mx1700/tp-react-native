@@ -193,7 +193,7 @@ export default class WritePage extends Component {
                     visible={this.state.loading}
                     transparent={true}
                     onRequestClose={() => {}}>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
                         <ActivityIndicator animating={true} color={TPColor.light} />
                     </View>
                 </Modal>
@@ -232,7 +232,7 @@ export default class WritePage extends Component {
                 visible={this.state.modalVisible}
                 onRequestClose={() => { }}>
                 <View style={{ flex: 1}}>
-                    <View style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.7)" }} />
+                    <View style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.8)" }} />
                     <View style={{height: 250, backgroundColor: '#fff'}}>
                         <View style={styles.closeButtonContainer}>
                             <TouchableHighlight onPress={ this.closeModal.bind(this) } underlayColor="transparent" style={styles.closeButton}>

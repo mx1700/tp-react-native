@@ -319,8 +319,8 @@ const styles = StyleSheet.create({
   },
   comment_sending: {
     height: 50,
-    opacity: 0.4,
-    backgroundColor: "#555",
+    opacity: 0.8,
+    backgroundColor: "#fff",
     top: -50,
     alignItems: 'center',
     justifyContent: 'center',
