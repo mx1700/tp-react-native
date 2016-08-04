@@ -87,8 +87,13 @@ export default class UserPage extends Component {
       ? { rightButton: { title: "设置", handler: this._toSettingPage.bind(this) } }
       : { leftButton: { title: "后退", handler: () => { this.props.navigator.pop() } } };
 
+      //我的页面在 tab 上,需要空出 tab 的高度
+      const style = this.props.myself
+          ? {flex: 1, backgroundColor: 'white', marginBottom: 48}
+          : {flex: 1, backgroundColor: 'white'};
     return (
-      <View style={{flex: 1, backgroundColor: 'white', marginBottom: 48}}>
+
+      <View style={style}>
         <NavigationBar
           title={name + "的日记"}
           {...navAttrs}

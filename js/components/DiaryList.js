@@ -96,6 +96,7 @@ export default class DiaryList extends Component {
   _onDiaryPress(diary) {
     this.props.onDiaryPress && this.props.onDiaryPress(diary)
   }
+
   _onIconPress(diary) {
     this.props.navigator.push({
       name: 'UserPage',

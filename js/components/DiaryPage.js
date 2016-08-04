@@ -21,6 +21,7 @@ import UserPage from './UserPage'
 import NavigationBar from 'NavigationBar'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import TPTouchable from 'TPTouchable'
+import RadiusTouchable from 'RadiusTouchable'
 
 var moment = require('moment');
 
@@ -154,6 +155,16 @@ export default class DiaryPage extends Component {
     })
   }
 
+  _onDiaryIconPress(diary) {
+    this.props.navigator.push({
+      name: 'UserPage',
+      component: UserPage,
+      params: {
+        user: diary.user
+      }
+    })
+  }
+
   render() {
     //enableEmptySections 不加会报一个不理解的警告
     //TODO:评论功能未完成
@@ -202,7 +213,11 @@ export default class DiaryPage extends Component {
   renderTop() {
     return (
       <View>
-        <Diary data={this.props.diary} navigator={this.props.navigator} showComment={false} />
+        <Diary
+            data={this.props.diary}
+            navigator={this.props.navigator}
+            onIconPress={this._onDiaryIconPress.bind(this)}
+            showComment={false} />
         <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
         共 {this.props.diary.comment_count} 条回复
         </Text>
@@ -215,9 +230,9 @@ export default class DiaryPage extends Component {
       <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
         <View>
           <View style={styles.box}>
-            <TouchableHighlight style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
+            <RadiusTouchable style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
               <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
-            </TouchableHighlight>
+            </RadiusTouchable>
             <View style={styles.body}>
               <View style={styles.title}>
                 <Text style={styles.title_name}>{comment.user.name}</Text>

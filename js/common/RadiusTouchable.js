@@ -9,13 +9,13 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
   Platform,
+    TouchableOpacity
 } from 'react-native';
 
 function RadiusTouchableIOS(props) {
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       accessibilityTraits="button"
-      underlayColor="#3C5EAE"
       {...props}
     />
   );
