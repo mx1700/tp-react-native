@@ -28,6 +28,7 @@ import NotificationCenter from '../common/NotificationCenter'
 var ImagePicker = require('react-native-image-picker');
 import TPColor from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
+import ImageResizer from 'react-native-image-resizer';
 
 export default class WritePage extends Component {
 
@@ -43,6 +44,7 @@ export default class WritePage extends Component {
             loading: false,
             photoUri: null,
             photoSource: null,
+            photoInfo: null,
         };
         console.log(diary, this.state);
     }
@@ -83,13 +85,19 @@ export default class WritePage extends Component {
     }
 
     async write() {
+        let photoUri = this.state.photoUri;
+        console.log(photoUri);
+        if (this.state.photoInfo.fileSize > 1024 * 1024) {
+            photoUri = await this.resizePhoto(photoUri);
+        }
+        console.log(photoUri);
         this.setState({loading: true});
         let r = null;
         try {
             r = this.props.diary == null
                 ? await Api.addDiary(this.state.selectBookId,
                                     this.state.content,
-                                    this.state.photoUri)
+                                    photoUri)
                 : await Api.updateDiary(this.props.diary.id,
                                     this.state.selectBookId,
                                     this.state.content);
@@ -106,6 +114,26 @@ export default class WritePage extends Component {
             this.props.navigator.pop();
             NotificationCenter.trigger('onWriteDiary')
         }
+    }
+
+    async resizePhoto(uri) {
+        //图片最大 1440 * 900 像素
+        let width = 0;
+        let height = 0;
+        let oWidth = this.state.photoInfo.width;
+        let oHeight = this.state.photoInfo.height;
+        let maxPixel = 1440 * 900;
+        let oPixel = oWidth * oHeight;
+        if (oPixel > maxPixel) {
+            width = Math.sqrt(oWidth * maxPixel / oHeight);
+            height = Math.sqrt(oHeight * maxPixel / oWidth);
+        } else {
+            width = this.state.photoInfo.width;
+            height = this.state.photoInfo.height;
+        }
+        console.log('resize to :', width, height);
+        const newUri = await ImageResizer.createResizedImage(uri, width, height, 'JPEG', 75)
+        return 'file://' + newUri;
     }
 
     _cancelPress() {
@@ -172,6 +200,12 @@ export default class WritePage extends Component {
                 this.setState({
                     photoSource: source,
                     photoUri: response.uri,
+                    photoInfo: {
+                        fileSize: response.fileSize,
+                        width: response.width,
+                        height: response.height,
+                        isVertical: response.isVertical
+                    }
                 });
             }
         });

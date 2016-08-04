@@ -12,6 +12,8 @@
     - 选择图片图标   1
     - 1图片压缩
     - 2点击图片关闭
+ - 1 关注在用户也右上角
+ - 1删除评论功能
  - 1提醒页
  - 1启动屏
  - 1图标
@@ -34,7 +36,6 @@ F8Touchable
 
  react-native-blur
  react-native-navbar
- https://github.com/oblador/react-native-vector-icons               图标
  https://github.com/skellock/reactotron                             开发用监控控制台
  https://github.com/leecade/react-native-swiper                     轮播
  https://github.com/skv-headless/react-native-scrollable-tab-view   tab视图
