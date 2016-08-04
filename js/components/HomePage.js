@@ -9,7 +9,7 @@ import {
 import HomeDiaryList from './HomeDiaryList'
 import FollowDiaryList from './FollowDiaryList'
 import UserPage from './UserPage'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import WritePage from './WritePage'
 import TPColors from '../common/TPColors'
 import TPButton from '../common/TPButton';
@@ -35,8 +35,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="首页"
-          iconName="home"
-          iconSize={26}
+          iconName="ios-home-outline"
+          selectedIconName="ios-home"
           selected={this.state.selectedTab == 'home'}
           onPress={() => {
             this.setState({
@@ -48,8 +48,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="关注"
-          iconName="eye"
-          iconSize={28}
+          iconName="ios-heart-outline"
+          selectedIconName="ios-heart"
           selected={this.state.selectedTab == 'follow'}
           onPress={() => {
             this.setState({
@@ -61,8 +61,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="写日记"
-          iconName="pencil-square"
-          iconSize={33}
+          iconName="ios-create-outline"
+          selectedIconName="ios-create"
           selected={false}
           onPress={() => {
               this.props.navigator.push({
@@ -75,8 +75,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="提醒"
-          iconName="bell-o"
-          iconSize={24}
+          iconName="ios-notifications-outline"
+          selectedIconName="ios-notifications"
           selected={this.state.selectedTab == 'tips'}
           onPress={() => {
               this.setState({
@@ -90,8 +90,8 @@ export default class HomePage extends Component {
 
         <Icon.TabBarItemIOS
           title="我的"
-          iconName="user"
-          iconSize={25}
+          iconName="ios-contact-outline"
+          selectedIconName="ios-contact"
           selected={this.state.selectedTab == 'my'}
           onPress={() => {
             this.setState({

@@ -21,14 +21,13 @@ import {
     CameraRoll,
 } from 'react-native';
 import * as Api from '../Api'
-import DiaryPage from './DiaryPage'
-import DiaryList from './DiaryList'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from 'NavigationBar'
 import LabelButton from '../common/LabelButton'
 import NotificationCenter from '../common/NotificationCenter'
 var ImagePicker = require('react-native-image-picker');
 import TPColor from '../common/TPColors'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class WritePage extends Component {
 
@@ -184,14 +183,8 @@ export default class WritePage extends Component {
             : null;
 
         const bookButton = selectedBook
-            ? (<LabelButton text={selectedBook.subject} icon="bookmark"
+            ? (<LabelButton text={selectedBook.subject} icon="ios-book"
                 onPress={this.openModal.bind(this)} />)
-            : null;
-
-        const photo = this.props.diary == null
-            ? (<TouchableOpacity onPress={this._imagePress.bind(this)}>
-                    <Image source={this.state.photoSource} style={{width: 30, height: 30, backgroundColor: '#eee'}} />
-                </TouchableOpacity>)
             : null;
 
         return (
@@ -204,30 +197,7 @@ export default class WritePage extends Component {
                         <ActivityIndicator animating={true} color={TPColor.light} />
                     </View>
                 </Modal>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => { }}>
-                    <View style={{ flex: 1}}>
-                        <View style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.7)" }} />
-                        <View style={{height: 250, backgroundColor: '#fff'}}>
-                            <View style={styles.closeButtonContainer}>
-                                <TouchableHighlight onPress={ this.closeModal.bind(this) } underlayColor="transparent" style={styles.closeButton}>
-                                    <Text style={styles.closeButtonText}>确定</Text>
-                                </TouchableHighlight>
-                            </View>
-                            <Picker
-                                style={{ flex: 1}}
-                                selectedValue={this.state.selectBookId}
-                                onValueChange={(id) => this.setState({selectBookId: id})}>
-                                {this.state.books.map((book) => (
-                                    <Picker.Item key={book.id} label={book.subject} value={book.id} />
-                                ))}
-                            </Picker>
-                        </View>
-                    </View>
-                </Modal>
+                {this.renderSelectBook()}
                 <NavigationBar
                     title={this.props.diary == null ? '写日记' : '修改日记'}
                     rightButton={{ title: "保存", handler: this._writePress.bind(this) }}
@@ -247,10 +217,56 @@ export default class WritePage extends Component {
                 <View style={styles.comment_box}>
                     {bookButton}
                     <View style={{flex: 1}} />
-                    {photo}
+                    {this.renderPhotoButton()}
                 </View>
                 <KeyboardSpacer />
             </View>
+        );
+    }
+
+    renderSelectBook() {
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose={() => { }}>
+                <View style={{ flex: 1}}>
+                    <View style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.7)" }} />
+                    <View style={{height: 250, backgroundColor: '#fff'}}>
+                        <View style={styles.closeButtonContainer}>
+                            <TouchableHighlight onPress={ this.closeModal.bind(this) } underlayColor="transparent" style={styles.closeButton}>
+                                <Text style={styles.closeButtonText}>确定</Text>
+                            </TouchableHighlight>
+                        </View>
+                        <Picker
+                            style={{ flex: 1}}
+                            selectedValue={this.state.selectBookId}
+                            onValueChange={(id) => this.setState({selectBookId: id})}>
+                            {this.state.books.map((book) => (
+                                <Picker.Item key={book.id} label={book.subject} value={book.id} />
+                            ))}
+                        </Picker>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+
+    renderPhotoButton() {
+        if (this.props.diary != null) {
+            return null;
+        }
+        const content = this.state.photoSource != null
+            ? (<Image source={this.state.photoSource}
+                      style={{width: 30, height: 30}} />)
+            : (<Icon name="ios-image" size={30} style={{paddingTop: 5}} color="#444" />);
+        return (
+            <TouchableOpacity
+                style={{width: 30, height: 30, alignItems: "center", justifyContent: 'center'}}
+                onPress={this._imagePress.bind(this)}>
+                {content}
+            </TouchableOpacity>
         );
     }
 }

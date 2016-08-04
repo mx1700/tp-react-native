@@ -13,7 +13,7 @@ import {
 import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
 import TPColors from 'TPColors'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var Lightbox = require('Lightbox');
 var moment = require('moment');
@@ -76,7 +76,7 @@ export default class Diary extends Component {
   renderActionBar(diary) {
     const comment = diary.comment_count > 0 && this.props.showComment
         ? (<View style={{flexDirection: "row"}}>
-            <Icon name="comment-o" size={12} color={TPColors.inactiveText} style={styles.button_icon} />
+            <Icon name="ios-text-outline" size={14} color={TPColors.inactiveText} style={styles.button_icon} />
             <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
           </View>)
         : null;
@@ -84,8 +84,8 @@ export default class Diary extends Component {
     const action = (this.props.editable || this.props.deletable)
         ? (
             <TouchableOpacity onPress={() => this.props.onActionPress(diary)}>
-              <Icon name="ellipsis-h"
-                    size={14}
+              <Icon name="ios-more"
+                    size={18}
                     color={TPColors.inactiveText}
                     style={{paddingVertical: 6, paddingHorizontal: 8}} />
             </TouchableOpacity>

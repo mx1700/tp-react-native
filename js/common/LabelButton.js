@@ -11,14 +11,14 @@ import {
   View,
     TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from 'TPColors'
 
 function Button(props) {
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={styles.button}>
-                <Icon name={props.icon} size={12} color="#999" style={styles.button_icon} />
+                <Icon name={props.icon} size={13} color="#444" style={styles.button_icon} />
                 <Text style={{fontSize: 12}}>{props.text}</Text>
             </View>
         </TouchableOpacity>
