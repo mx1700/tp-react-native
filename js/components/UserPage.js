@@ -150,7 +150,7 @@ export default class UserPage extends Component {
           if (this.state.followed !== null) {
               const icon = this.state.followed
                   ? <Icon name="ios-heart" size={24} color='#d9534f' />
-                  : <Icon name="ios-heart-outline" size={24} color={TPColors.light} />;
+                  : <Icon name="ios-heart-outline" size={24} color='#0076FF' />;
 
               navAttrs.rightButton = (
                   <TouchableOpacity

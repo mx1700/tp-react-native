@@ -47,7 +47,7 @@ module.exports = {
   spaceBackground: 'rgba(211, 214, 219, 0.5)',
   line: '#ddd',
   //light: '#455ede',
-  light: '#0076FF',
+  light: '#2389de',
   //inactive: "#9B9B9B",
   inactive: "#aaa",
   dark: '#2a36b1',
