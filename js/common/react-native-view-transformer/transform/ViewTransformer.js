@@ -217,7 +217,7 @@ export default class ViewTransformer extends React.Component {
     }
 
     if (!gestureState.doubleTapUp && gestureState.singleTapUp) {
-      this.singleTimer = setTimeout(() => this.props.onPress && this.props.onPress(), 250);
+      this.singleTimer = setTimeout(() => this.props.onPress && this.props.onPress(), 320);
     }
 
     if (gestureState.doubleTapUp && this.singleTimer) {

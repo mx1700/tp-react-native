@@ -13,7 +13,7 @@ import ZoomImage from '../common/react-native-transformable-image/TransformableI
 export default class PhotoPage extends Component {
     render() {
         return (
-            <TouchableOpacity style={{flex: 1, backgroundColor: '#000'}} onPress={() => this.props.navigator.pop()}>
+            <TouchableOpacity activeOpacity={1} style={{flex: 1, backgroundColor: '#000'}} onPress={() => this.props.navigator.pop()}>
                 <ZoomImage style={{flex: 1}} onPress={() => this.props.navigator.pop()}
                     source={this.props.source}/>
                 </TouchableOpacity>
