@@ -79,6 +79,10 @@ export default class TPNavigator extends Component {
         style={styles.container}
         initialRoute={{ name: 'DefaultPage', component: DefaultPage }}
         configureScene={(route) => {
+          console.log(route);
+          if (route.name == 'WritePage') {  //写日记页面从底部弹出
+            return BottomSceneConfigs;
+          }
           return SceneConfigs;
         }}
         renderScene={(route, navigator) => {
@@ -92,6 +96,10 @@ export default class TPNavigator extends Component {
 const SceneConfigs = Platform.OS === 'android'
   ? Navigator.SceneConfigs.FloatFromBottomAndroid
   : Navigator.SceneConfigs.PushFromRight;
+
+const BottomSceneConfigs = Platform.OS === 'android'
+    ? Navigator.SceneConfigs.FloatFromBottomAndroid
+    : Navigator.SceneConfigs.FloatFromBottom;
 
 TPNavigator.childContextTypes = {
   addBackButtonListener: React.PropTypes.func,

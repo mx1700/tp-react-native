@@ -138,6 +138,9 @@ export default class WritePage extends Component {
 
     _cancelPress() {
         //TODO:增加取消确认
+
+        //关闭键盘
+        this.refs.contentInput.setNativeProps({'editable':false});
         this.props.navigator.pop();
     }
 
