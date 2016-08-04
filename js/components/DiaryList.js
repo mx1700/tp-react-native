@@ -63,7 +63,7 @@ export default class DiaryList extends Component {
       var data = await this.props.getDiariesPage(page, page_size);
     } catch(e) {
       console.log(e)
-      if(e.response.status == 401) {
+      if(e.response && e.response.status == 401) {
         this.props.navigator.resetTo({
           name: 'LoginPage',
           component: LoginPage

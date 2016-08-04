@@ -176,7 +176,7 @@ async function call(method, api, body) {
   //
   //   }
   // }
-  return fetch(baseUrl + api, {
+  return timeout(fetch(baseUrl + api, {
     method: method,
     headers: {
         'Authorization': token,
@@ -186,7 +186,8 @@ async function call(method, api, body) {
     body: JSON.stringify(body)
   })
   .then(checkStatus)
-  .then(parseJSON)
+  .then(parseJSON),
+      10000);
 }
 
 async function upload(method, api, body) {
@@ -197,7 +198,7 @@ async function upload(method, api, body) {
     formData.append(prop, body[prop]);
   }
   console.log(formData);
-  return fetch(baseUrl + api, {
+  return timeout(fetch(baseUrl + api, {
     method: method,
     headers: {
       'Authorization': token,
@@ -207,7 +208,8 @@ async function upload(method, api, body) {
     body: formData
   })
       .then(checkStatus)
-      .then(parseJSON)
+      .then(parseJSON),
+      30000)
 }
 
 
@@ -230,5 +232,13 @@ function parseJSON(response) {
   } else {
     return response.text();
   }
+}
 
+function timeout(promise, time) {
+  return Promise.race([
+    promise,
+    new Promise(function (resolve, reject) {
+      setTimeout(() => reject(new Error('request timeout')), time)
+    })
+  ]);
 }

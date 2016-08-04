@@ -85,13 +85,14 @@ export default class WritePage extends Component {
     }
 
     async write() {
-        let photoUri = this.state.photoUri;
-        console.log(photoUri);
-        if (this.state.photoInfo.fileSize > 1024 * 1024) {
-            photoUri = await this.resizePhoto(photoUri);
-        }
-        console.log(photoUri);
         this.setState({loading: true});
+
+        let photoUri = this.state.photoUri;
+        if(photoUri) {
+            if (this.state.photoInfo.fileSize > 1024 * 1024) {
+                photoUri = await this.resizePhoto(photoUri);
+            }
+        }
         let r = null;
         try {
             r = this.props.diary == null
@@ -138,7 +139,6 @@ export default class WritePage extends Component {
 
     _cancelPress() {
         //TODO:增加取消确认
-
         //关闭键盘
         this.refs.contentInput.setNativeProps({'editable':false});
         this.props.navigator.pop();
