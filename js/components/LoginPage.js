@@ -73,6 +73,7 @@ export default class LoginPage extends Component {
             keyboardType="email-address"
             autoCorrect={false}
             autoFocus={true}
+            autoCapitalize="none"
             returnKeyType="next"
             placeholder="邮箱"/>
          <TextInput
