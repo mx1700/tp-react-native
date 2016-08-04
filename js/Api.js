@@ -27,6 +27,10 @@ export async function login(username, password) {
   }
 }
 
+export async function logout() {
+  TokenManager.setToken('');
+}
+
 export async function getSelfInfoByStore() {
   let user = await TokenManager.getUser();
   if (!user) {
@@ -146,10 +150,16 @@ export async function getDiaryComments(diaryId) {
   return call('GET', '/diaries/' + diaryId + '/comments')
 }
 
+export async function getRelation(user_id) {
+  return call('GET', '/relation/' + user_id);
+}
 
+export async function addFollow(user_id) {
+  return call('POST', '/relation/' + user_id);
+}
 
-export async function logout() {
-  TokenManager.setToken('');
+export async function deleteFollow(user_id) {
+  return call('DELETE', '/relation/' + user_id);
 }
 
 //TODO: 关系，提醒
