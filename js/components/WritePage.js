@@ -260,7 +260,7 @@ export default class WritePage extends Component {
         const content = this.state.photoSource != null
             ? (<Image source={this.state.photoSource}
                       style={{width: 30, height: 30}} />)
-            : (<Icon name="ios-image" size={30} style={{paddingTop: 5}} color="#444" />);
+            : (<Icon name="ios-image" size={30} style={{paddingTop: 5}} color="#555" />);
         return (
             <TouchableOpacity
                 style={{width: 30, height: 30, alignItems: "center", justifyContent: 'center'}}
