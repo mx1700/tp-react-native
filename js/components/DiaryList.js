@@ -21,6 +21,7 @@ import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
 import LoginPage from './LoginPage'
 import UserPage from './UserPage'
+import WritePage from './WritePage'
 
 export default class DiaryList extends Component {
 
@@ -124,7 +125,13 @@ export default class DiaryList extends Component {
       destructiveButtonIndex: 1,
     }, (index) => {
       if(index == 0) {
-        alert('edit')
+        this.props.navigator.push({
+          name: 'WritePage',
+          component: WritePage,
+          params: {
+            diary: diary
+          }
+        })
       } else if (index == 1) {
         Alert.alert('确认删除日记?', '',[
           {text: '取消', onPress: () => console.log('OK Pressed!')},

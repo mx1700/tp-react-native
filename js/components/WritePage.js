@@ -34,15 +34,18 @@ export default class WritePage extends Component {
 
     constructor(props) {
         super(props);
+        console.log(props);
+        const diary = props.diary;
         this.state = {
-            selectBookId: 0,
+            selectBookId: diary == null ? 0 : diary.notebook_id,
             modalVisible: false,
             books: [],
-            content: '',
+            content: diary == null ? '' : diary.content,
             loading: false,
             photoUri: null,
             photoSource: null,
-        }
+        };
+        console.log(diary, this.state);
     }
 
     componentWillMount(){
@@ -54,10 +57,16 @@ export default class WritePage extends Component {
     async _loadBooks() {
         const books = await Api.getSelfNotebooks();
         const abooks = books.filter(it => !it.isExpired);
-        this.setState({
-            books: abooks,
-            selectBookId: abooks.length > 0 ? abooks[0].id : 0
-        })
+        if (this.props.diary == null) {
+            this.setState({
+                books: abooks,
+                selectBookId: abooks.length > 0 ? abooks[0].id : 0
+            })
+        } else {
+            this.setState({
+                books: abooks,
+            })
+        }
     }
 
     _writePress() {
@@ -71,9 +80,6 @@ export default class WritePage extends Component {
             return;
         }
 
-        // this.refs.contentInput.setNativeProps({'editable':false});
-        // this.refs.contentInput.setNativeProps({'editable':true});
-        //this.openModal();
         this.write();
     }
 
@@ -81,7 +87,13 @@ export default class WritePage extends Component {
         this.setState({loading: true});
         let r = null;
         try {
-            r = await Api.addDiary(this.state.selectBookId, this.state.content, this.state.photoUri);
+            r = this.props.diary == null
+                ? await Api.addDiary(this.state.selectBookId,
+                                    this.state.content,
+                                    this.state.photoUri)
+                : await Api.updateDiary(this.props.diary.id,
+                                    this.state.selectBookId,
+                                    this.state.content);
             console.log('write:', r);
         } catch (err) {
             console.log(err);   //TODO:友好提示
@@ -176,6 +188,12 @@ export default class WritePage extends Component {
                 onPress={this.openModal.bind(this)} />)
             : null;
 
+        const photo = this.props.diary == null
+            ? (<TouchableOpacity onPress={this._imagePress.bind(this)}>
+                    <Image source={this.state.photoSource} style={{width: 30, height: 30, backgroundColor: '#eee'}} />
+                </TouchableOpacity>)
+            : null;
+
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
                 <Modal
@@ -211,8 +229,8 @@ export default class WritePage extends Component {
                     </View>
                 </Modal>
                 <NavigationBar
-                    title="写日记"
-                    rightButton={{ title: "发布", handler: this._writePress.bind(this) }}
+                    title={this.props.diary == null ? '写日记' : '修改日记'}
+                    rightButton={{ title: "保存", handler: this._writePress.bind(this) }}
                     leftButton={{ title: "取消", handler: this._cancelPress.bind(this) }}
                 />
                 <TextInput
@@ -223,20 +241,28 @@ export default class WritePage extends Component {
                     maxLength={500}
                     multiline={true}
                     placeholder="记录点滴生活"
+                    value={this.state.content}
                     onChangeText={(text) => this.setState({ content: text })}
                 />
                 <View style={styles.comment_box}>
                     {bookButton}
                     <View style={{flex: 1}} />
-                    <TouchableOpacity onPress={this._imagePress.bind(this)}>
-                        <Image source={this.state.photoSource} style={{width: 30, height: 30, backgroundColor: '#eee'}} />
-                    </TouchableOpacity>
+                    {photo}
                 </View>
                 <KeyboardSpacer />
             </View>
         );
     }
 }
+
+WritePage.propTypes = {
+    diary: React.PropTypes.object,
+};
+
+WritePage.defaultProps = {
+    diary: null,
+};
+
 
 const styles = StyleSheet.create({
     comment_box: {

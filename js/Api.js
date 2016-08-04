@@ -112,9 +112,10 @@ export async function deleteDiary(id) {
   return call('DELETE', '/diaries/' + id)
 }
 
-export async function updateDiary(content, photo) {
-  return call('PUT', '/notebooks/' + id + '/diaries', {
+export async function updateDiary(id, bookId, content) {
+  return call('PUT', '/diaries/' + id, {
     content: content,
+    notebook_id: bookId,
   })
 }
 
