@@ -14,6 +14,7 @@ import * as Api from '../Api'
 import TPButton from 'TPButton'
 import TPColors from '../common/TPColors'
 import HomePage from './HomePage'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class LoginPage extends Component {
 
@@ -67,34 +68,44 @@ export default class LoginPage extends Component {
               <ActivityIndicator animating={true} color={TPColors.light} />
           </View>
         </Modal>
-        <Text style={{fontSize: 28, paddingBottom: 20, color: '#333'}}>欢迎使用胶囊日记</Text>
-         <TextInput
-            style={styles.input1}
-            onChangeText={(text) => this.setState({ username: text })}
-            value={this.state.username}
-            onSubmitEditing={this._usernameSubmit.bind(this)}
-            keyboardType="email-address"
-            autoCorrect={false}
-            autoFocus={true}
-            autoCapitalize="none"
-            returnKeyType="next"
-            placeholder="邮箱"/>
-         <TextInput
-             ref="inputPw"
-             style={styles.input2}
-            onChangeText={(text) => this.setState({ password: text })}
-            value={this.state.password}
-            onSubmitEditing={this._passwordSubmit.bind(this)}
-            autoCorrect={false}
-            placeholder="密码"
-            secureTextEntry={true}
-             returnKeyType="done"
-            selectTextOnFocus={true}/>
+        <Text style={{fontSize: 28, paddingBottom: 25, color: '#333', textAlign:'center'}}>欢迎来到胶囊日记</Text>
+         <View style={{flexDirection: 'row'}}>
+             <View style={styles.icon_box}>
+                 <Icon name="ios-mail-outline" size={30} color={TPColors.inactiveText} style={{paddingTop:2}} />
+             </View>
+              <TextInput
+                style={styles.input1}
+                onChangeText={(text) => this.setState({ username: text })}
+                value={this.state.username}
+                onSubmitEditing={this._usernameSubmit.bind(this)}
+                keyboardType="email-address"
+                autoCorrect={false}
+                autoFocus={false}
+                autoCapitalize="none"
+                returnKeyType="next"
+                placeholder="邮箱"/>
+         </View>
+          <View style={{flexDirection: 'row', marginTop: 10,}}>
+              <View style={styles.icon_box}>
+                  <Icon name="ios-medical-outline" size={25} color={TPColors.inactiveText} style={{paddingTop:1}}/>
+              </View>
+             <TextInput
+                 ref="inputPw"
+                 style={styles.input2}
+                onChangeText={(text) => this.setState({ password: text })}
+                value={this.state.password}
+                onSubmitEditing={this._passwordSubmit.bind(this)}
+                autoCorrect={false}
+                placeholder="密码"
+                secureTextEntry={true}
+                 returnKeyType="done"
+                selectTextOnFocus={true}/>
+          </View>
           <TPButton
               caption="登陆"
               onPress={this._login.bind(this)}
               type="bordered"
-              style={{ marginTop: 20}}/>
+              style={{ marginTop: 25, marginHorizontal: 20}}/>
 
       </View>
         </Image>
@@ -104,18 +115,31 @@ export default class LoginPage extends Component {
 
 const styles = StyleSheet.create({
     input1: {
+        flex: 1,
         height: 40,
         padding: 10,
-        borderColor: TPColors.inactive,
+        paddingLeft: 48,
+        marginLeft: -40,
+        borderColor: TPColors.inactiveText,
         borderWidth: 1,
         borderRadius: 5,
     },
     input2: {
+        flex: 1,
         height: 40,
         padding: 10,
-        borderColor: TPColors.inactive,
+        paddingLeft: 48,
+        marginLeft: -40,
+        borderColor: TPColors.inactiveText,
         borderWidth: 1,
         borderRadius: 5,
-        marginTop: 10,
+    },
+    icon_box: {
+        width: 40,
+        backgroundColor: '#efefef',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.7,
     }
 });

@@ -80,9 +80,10 @@ export default class TPNavigator extends Component {
         initialRoute={{ name: 'DefaultPage', component: DefaultPage }}
         configureScene={(route) => {
           console.log(route);
-          if (route.name == 'WritePage') {  //写日记页面从底部弹出
+          if (route.name == 'WritePage' || route.name == 'LoginPage') {  //写日记页面从底部弹出
             return BottomSceneConfigs;
           }
+          console.log(route);
           return SceneConfigs;
         }}
         renderScene={(route, navigator) => {
