@@ -55,6 +55,10 @@ export default class WritePage extends Component {
         });
     }
 
+    componentDidMount() {
+        this.refs.contentInput.focus();
+    }
+
     async _loadBooks() {
         const books = await Api.getSelfNotebooks();
         const abooks = books.filter(it => !it.isExpired);
@@ -244,7 +248,7 @@ export default class WritePage extends Component {
                     ref="contentInput"
                     style={{flex: 1, padding: 15, fontSize: 14}}
                     autoCorrect={false}
-                    autoFocus={true}
+                    autoFocus={false}
                     maxLength={500}
                     multiline={true}
                     placeholder="记录点滴生活"
@@ -297,7 +301,7 @@ export default class WritePage extends Component {
         const content = this.state.photoSource != null
             ? (<Image source={this.state.photoSource}
                       style={{width: 30, height: 30}} />)
-            : (<Icon name="ios-image" size={30} style={{paddingTop: 5}} color="#555" />);
+            : (<Icon name="ios-image-outline" size={30} style={{paddingTop: 5}} color="#555" />);
         return (
             <TouchableOpacity
                 style={{width: 30, height: 30, alignItems: "center", justifyContent: 'center'}}
