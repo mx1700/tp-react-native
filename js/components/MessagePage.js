@@ -52,7 +52,7 @@ export default class LoginPage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 20000)
+        }, 30000)
     }
 
     componentWillUnmount() {
