@@ -28,7 +28,7 @@ export default class LoginPage extends Component {
     constructor() {
         super();
         const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1.id !== r2.id
+            rowHasChanged: (r1, r2) => r1.link_id !== r2.link_id
         });
         this.state = ({
             messages: [],
@@ -199,9 +199,9 @@ export default class LoginPage extends Component {
         const body = `${users} 回复了你`;
         return (
             <TPTouchable onPress={() => this._onCommentPress(msg)}>
-                <View style={styles.message}>
+                <View key={msg.link_id} style={styles.message}>
                     <Icon name="ios-text" size={16} style={styles.icon} color={TPColors.light} />
-                    <Text key={msg.link_id} style={{flex: 1, lineHeight: 20}}>{body}</Text>
+                    <Text style={{flex: 1, lineHeight: 20}}>{body}</Text>
                 </View>
             </TPTouchable>
         )

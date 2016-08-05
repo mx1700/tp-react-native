@@ -113,6 +113,6 @@ TPNavigator.childContextTypes = {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#f5f5f5',
   },
 });
