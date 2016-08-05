@@ -13,15 +13,34 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import WritePage from './WritePage'
 import TPColors from '../common/TPColors'
 import TPButton from '../common/TPButton';
+import MessagePage from './MessagePage'
+import NotificationCenter from '../common/NotificationCenter'
 
 export default class HomePage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'home'
-    }
+      selectedTab: 'home',
+        tipCount: null,
+    };
+
+    this.updateTipCount = this.updateTipCount.bind(this);
   }
+
+    componentDidMount() {
+        NotificationCenter. addLister('tipCount', this.updateTipCount)
+    }
+
+    componentWillUnmount() {
+        NotificationCenter.removeLister('tipCount', this.updateTipCount)
+    }
+
+    updateTipCount(count) {
+        this.setState({
+            tipCount: count > 0 ? count : null
+        });
+    }
 
   render() {
     const titleConfig = {
@@ -78,14 +97,13 @@ export default class HomePage extends Component {
           iconName="ios-notifications-outline"
           selectedIconName="ios-notifications"
           selected={this.state.selectedTab == 'tips'}
+          badge={this.state.tipCount}
           onPress={() => {
               this.setState({
                   selectedTab: 'tips'
               });
           }}>
-          <View style={{backgroundColor: 'white', flex: 1}}>
-              <Text>未完成</Text>
-          </View>
+          <MessagePage navigator={this.props.navigator} />
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS

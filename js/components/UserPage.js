@@ -32,7 +32,6 @@ export default class UserPage extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
     if (this.props.myself) {
       NotificationCenter. addLister('onWriteDiary', this._onWriteDiary)
     }
@@ -40,14 +39,12 @@ export default class UserPage extends Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
     if (this.props.myself) {
       NotificationCenter.removeLister('onWriteDiary', this._onWriteDiary)
     }
   }
 
   _onWriteDiary() {
-    console.log('_onWriteDiary!!!!!!!!!!');
     this.refs.list.refresh();
   }
 

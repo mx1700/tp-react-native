@@ -10,12 +10,13 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+import TPColors from './TPColors'
 
 function TPTouchableIOS(props) {
   return (
     <TouchableHighlight
       accessibilityTraits="button"
-      underlayColor="#3C5EAE"
+      underlayColor='#f3f3f3'
       {...props}
     />
   );

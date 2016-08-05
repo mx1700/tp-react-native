@@ -162,7 +162,14 @@ export async function deleteFollow(user_id) {
   return call('DELETE', '/relation/' + user_id);
 }
 
-//TODO: 关系，提醒
+export async function getMessages(last_id = 0) {
+  return call('GET', '/tip')
+}
+
+export async function deleteMessage(ids) {
+  return call('POST', '/tip/read/' + ids.join(','))
+}
+//TODO: 提醒
 
 //==========================================================================
 

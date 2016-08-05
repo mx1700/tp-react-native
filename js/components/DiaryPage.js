@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
-  ToolbarAndroid,
   Platform,
   ListView,
-  TouchableHighlight,RefreshControl,
+  RefreshControl,
   ActivityIndicator,
   TextInput,
   InteractionManager,
 } from 'react-native';
-import * as Api from 'Api'
+import * as Api from '../Api'
 import Diary from './Diary'
 import TPColors from 'TPColors'
-import TPButton from 'TPButton'
 import UserPage from './UserPage'
 import NavigationBar from 'NavigationBar'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
@@ -32,7 +29,7 @@ export default class DiaryPage extends Component {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1.id !== r2.id
     });
-    this.state = ({
+    this.state = {
       commentsDateSource: ds,
       comments: [],
       loading_comments: true,
@@ -40,17 +37,43 @@ export default class DiaryPage extends Component {
       comment_sending: false,
       reply_user_id: 0,
       reply_user_name: '',
-      comment_count: this.props.diary.comment_count
-    });
+      comment_count: this.props.diary ? this.props.diary.comment_count : 0,
+      diary: this.props.diary
+    }
   }
 
   componentWillMount(){
-    InteractionManager.runAfterInteractions(() => this._loadComments());
+    InteractionManager.runAfterInteractions(() => {
+      if (!this.props.diary) {
+        this._loadDiary(this.props.diary_id);
+      }
+      this._loadComments();
+    });
+  }
+
+  getDiaryId() {
+    return this.props.diary ? this.props.diary.id : this.props.diary_id;
+  }
+
+  async _loadDiary(id) {
+    let diary = null;
+    try {
+       diary = await Api.getDiary(id);
+      console.log(diary);
+    } catch (err) {
+      console.log(err); //TODO:友好提示
+    }
+
+    if (diary) {
+      this.setState({
+        diary: diary
+      })
+    }
   }
 
   async _loadComments() {
     try {
-      var comments = await Api.getDiaryComments(this.props.diary.id);
+      var comments = await Api.getDiaryComments(this.getDiaryId());
     } catch(e) {
       console.warn(e);
       //TODO:加载失败提供重新加载功能
@@ -77,11 +100,11 @@ export default class DiaryPage extends Component {
     try {
       content = this.state.reply_user_name
         ? this.state.comment_content.substr(this.state.reply_user_name.length + 2)
-        : this.state.comment_content
+        : this.state.comment_content;
 
-      const r = await Api.addComment(this.props.diary.id, content, this.state.reply_user_id)
+      const r = await Api.addComment(this.state.diary.id, content, this.state.reply_user_id)
       console.log(r);
-      this.state.comments.push(r)
+      this.state.comments.push(r);
       this.setState({
         commentsDateSource: this.state.commentsDateSource.cloneWithRows(this.state.comments),
       }, () => {
@@ -169,9 +192,27 @@ export default class DiaryPage extends Component {
   }
 
   render() {
+    const nav = (
+        <NavigationBar
+            title="日记详情"
+            back="后退"
+            backPress={() => {
+              this.refs.commentInput.setNativeProps({'editable':false});
+              this.props.navigator.pop()
+            }}
+        />
+    );
+    if (!this.state.diary) {
+      return (
+          <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
+            {nav}
+            <View style={{flex: 1, alignItems: 'center', paddingTop: 30}}>
+              <ActivityIndicator animating={true} color={TPColors.light} size="small" />
+            </View>
+          </View>
+      )
+    }
     //enableEmptySections 不加会报一个不理解的警告
-    //TODO:评论功能未完成
-    //TODO:加载评论后更新评论数
     const comment_sending_box = this.state.comment_sending
       ? (<View style={styles.comment_sending}>
         <ActivityIndicator animating={true} color={TPColors.inactive} size="small" />
@@ -180,14 +221,7 @@ export default class DiaryPage extends Component {
 
     return (
       <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
-        <NavigationBar
-          title="日记详情"
-          back="后退"
-          backPress={() => {
-            this.refs.commentInput.setNativeProps({'editable':false});
-            this.props.navigator.pop()
-          }}
-          />
+        {nav}
         <ListView
           ref="list"
           dataSource={this.state.commentsDateSource}
@@ -221,7 +255,7 @@ export default class DiaryPage extends Component {
     return (
       <View>
         <Diary
-            data={this.props.diary}
+            data={this.state.diary}
             navigator={this.props.navigator}
             onIconPress={this._onDiaryIconPress.bind(this)}
             showComment={false} />
@@ -233,9 +267,12 @@ export default class DiaryPage extends Component {
   }
 
   renderComment(comment) {
+    const new_comment = this.props.new_comments != null
+                        && this.props.new_comments.some(it => it == comment.id);
+    const style = new_comment ? { backgroundColor: '#eef5ff' } : null;
     return (
       <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
-        <View>
+        <View style={style}>
           <View style={styles.box}>
             <RadiusTouchable style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
               <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
@@ -256,11 +293,11 @@ export default class DiaryPage extends Component {
 
   renderFooter() {
     //TODO:如果评论数量为0，则不显示加载
-    if (!this.state.loading_comments && this.props.diary.comment_count == 0) {
+    if (!this.state.loading_comments && this.state.diary.comment_count == 0) {
       return null;
     }
 
-    if (!this.state.loading_comments || this.props.diary.comment_count == 0) {
+    if (!this.state.loading_comments || this.state.diary.comment_count == 0) {
       return null;
     }
 
