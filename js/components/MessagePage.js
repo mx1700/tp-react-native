@@ -46,10 +46,13 @@ export default class LoginPage extends Component {
     }
 
     _startTipTimer() {
+        if (this.tipTimer) {
+            clearTimeout(this.tipTimer);
+        }
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 10000)
+        }, 20000)
     }
 
     componentWillUnmount() {
@@ -59,6 +62,7 @@ export default class LoginPage extends Component {
     }
 
     _onRefresh() {
+        this._startTipTimer();
         this._loadMessages();
     }
 
@@ -150,6 +154,9 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        /* removeClippedSubviews 属性的意义
+         * 如果没有这个属性,页面在非当前视图更新时,list将变成空的,必须触摸一下才会展示
+         */
         return (
             <View style={{flex: 1, backgroundColor: 'white', marginBottom: 48}}>
                 <NavigationBar
@@ -168,6 +175,7 @@ export default class LoginPage extends Component {
                     renderFooter={this.renderFooter.bind(this)}
                     enableEmptySections={true}
                     automaticallyAdjustContentInsets={false}
+                    removeClippedSubviews={false}
                 />
             </View>
         )
@@ -193,7 +201,7 @@ export default class LoginPage extends Component {
             <TPTouchable onPress={() => this._onCommentPress(msg)}>
                 <View style={styles.message}>
                     <Icon name="ios-text" size={16} style={styles.icon} color={TPColors.light} />
-                    <Text style={{flex: 1, lineHeight: 20}}>{body}</Text>
+                    <Text key={msg.link_id} style={{flex: 1, lineHeight: 20}}>{body}</Text>
                 </View>
             </TPTouchable>
         )
@@ -205,7 +213,7 @@ export default class LoginPage extends Component {
             <TPTouchable onPress={() => this._onFollowPress(msg)}>
                 <View style={styles.message}>
                     <Icon name="ios-heart" size={16} style={styles.icon} color='#d9534f' />
-                    <Text style={{flex: 1, lineHeight: 20}}>{body}</Text>
+                    <Text key={msg.link_id} style={{flex: 1, lineHeight: 20}}>{body}</Text>
                 </View>
             </TPTouchable>
         )
