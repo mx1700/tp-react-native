@@ -23,13 +23,13 @@ export default class Diary extends Component {
 
   render() {
     var diary = this.props.data;
-    const photoView = this.renderPhoto();
+    const photoView = this.renderPhoto(diary);
 
     const icon = diary.user ? (
         <View style={styles.user_icon_box}>
           <RadiusTouchable onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
             <View>
-              <Image style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
+              <Image key={diary.id} style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
             </View>
           </RadiusTouchable>
         </View>
@@ -104,8 +104,7 @@ export default class Diary extends Component {
         : (<View style={{height: 24}} />);
   }
 
-  renderPhoto() {
-    var diary = this.props.data;
+  renderPhoto(diary) {
     const img = diary.photoUrl ?
       (
         <TouchableOpacity
@@ -121,6 +120,7 @@ export default class Diary extends Component {
           style={{ width: 220, marginTop: 15, backgroundColor: "#f8f8f8", padding: 0 }}
           >
           <Image style={styles.photo}
+                 key={diary.id}
             resizeMode="cover"
             source={{uri: diary.photoUrl}} />
         </TouchableOpacity>
