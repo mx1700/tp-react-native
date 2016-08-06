@@ -18,8 +18,8 @@ function Button(props) {
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={styles.button}>
-                <Icon name={props.icon} size={13} color="#555" style={styles.button_icon} />
-                <Text style={{fontSize: 12}}>{props.text}</Text>
+                <Icon name={props.icon} size={14} color={TPColors.light} style={styles.button_icon} />
+                <Text style={{fontSize: 13, color: TPColors.light }}>{props.text}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: TPColors.inactiveText,
+    borderColor: TPColors.light,
     borderRadius: 3,
-    paddingVertical: 7,
-    paddingHorizontal: 15,
-      height: 28,
+    paddingHorizontal: 12,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   button_icon: {
-    marginTop: 0, marginRight: 8
+    marginTop: 2, marginRight: 6
   }
 });

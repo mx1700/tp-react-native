@@ -29,7 +29,7 @@ export default class LoginPage extends Component {
         this.state = ({
             messages: [],
             messagesDataSource: ds,
-            refreshing: false,
+            refreshing: true,
         });
     }
 
@@ -48,7 +48,7 @@ export default class LoginPage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 30000)
+        }, 60 * 1000)
     }
 
     componentWillUnmount() {
@@ -58,6 +58,9 @@ export default class LoginPage extends Component {
     }
 
     _onRefresh() {
+        this.setState({
+            refreshing: true,
+        });
         this._startTipTimer();
         this._loadMessages();
     }
@@ -101,10 +104,6 @@ export default class LoginPage extends Component {
     }
 
     async _loadMessages() {
-        this.setState({
-            refreshing: true,
-        });
-
         let list = null;
         try {
             list = await Api.getMessages(0);

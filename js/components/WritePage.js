@@ -224,7 +224,7 @@ export default class WritePage extends Component {
             : null;
 
         const bookButton = selectedBook
-            ? (<LabelButton text={selectedBook.subject} icon="ios-book"
+            ? (<LabelButton text={selectedBook.subject} icon="ios-book-outline"
                 onPress={this.openModal.bind(this)} />)
             : null;
 
@@ -301,7 +301,7 @@ export default class WritePage extends Component {
         const content = this.state.photoSource != null
             ? (<Image source={this.state.photoSource}
                       style={{width: 30, height: 30}} />)
-            : (<Icon name="ios-image-outline" size={30} style={{paddingTop: 5}} color="#555" />);
+            : (<Icon name="ios-image-outline" size={30} style={{paddingTop: 4}} color={TPColor.light} />);
         return (
             <TouchableOpacity
                 style={{width: 30, height: 30, alignItems: "center", justifyContent: 'center'}}
@@ -335,12 +335,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         borderTopColor: '#e2e2e2',
-        borderTopWidth: 1,
+        borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#e2e2e2',
-        borderBottomWidth:1
+        borderBottomWidth: StyleSheet.hairlineWidth
     },
     closeButton: {
         paddingHorizontal: 15,
         paddingVertical: 10
+    },
+    closeButtonText: {
+        color: TPColor.light,
     }
 });
