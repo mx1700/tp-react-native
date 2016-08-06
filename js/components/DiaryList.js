@@ -58,7 +58,7 @@ export default class DiaryList extends Component {
       this.setState({ loading_more: true });
     }
     try {
-      console.log('_loadTodayDiaries', this.state)
+      //console.log('_loadTodayDiaries', this.state)
       const page_size = this.state.page_size;
       var data = await this.props.getDiariesPage(page, page_size);
     } catch(e) {

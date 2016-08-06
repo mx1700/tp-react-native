@@ -3,20 +3,16 @@ import {
     StyleSheet,
     Text,
     View,
-    Image,
     ToolbarAndroid,
     Platform,
     ActivityIndicator,
-    TextInput,
     Modal,
     InteractionManager,
 ListView,
     RefreshControl,
 } from 'react-native';
 import * as Api from '../Api'
-import TPButton from 'TPButton'
 import TPColors from '../common/TPColors'
-import HomePage from './HomePage'
 import Icon from 'react-native-vector-icons/Ionicons';
 import NavigationBar from 'NavigationBar'
 import TPTouchable from '../common/TPTouchable'
@@ -25,8 +21,8 @@ import DiaryPage from './DiaryPage'
 import NotificationCenter from '../common/NotificationCenter'
 
 export default class LoginPage extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1.link_id !== r2.link_id
         });

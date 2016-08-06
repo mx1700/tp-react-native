@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Image,
   Platform,
   Navigator,
   BackAndroid,
@@ -79,14 +77,12 @@ export default class TPNavigator extends Component {
         style={styles.container}
         initialRoute={{ name: 'DefaultPage', component: DefaultPage }}
         configureScene={(route) => {
-          console.log(route);
           if (route.name == 'WritePage' || route.name == 'LoginPage') {  //写日记页面从底部弹出
             return BottomSceneConfigs;
           }
           if (route.name == 'PhotoPage') {
             return Navigator.SceneConfigs.FadeAndroid;
           }
-          console.log(route);
           return SceneConfigs;
         }}
         renderScene={(route, navigator) => {

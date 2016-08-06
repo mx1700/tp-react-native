@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
   View,
   TabBarIOS,
-  Text,
 } from 'react-native';
 import HomeDiaryList from './HomeDiaryList'
 import FollowDiaryList from './FollowDiaryList'
 import UserPage from './UserPage'
 import Icon from 'react-native-vector-icons/Ionicons';
 import WritePage from './WritePage'
-import TPColors from '../common/TPColors'
-import TPButton from '../common/TPButton';
 import MessagePage from './MessagePage'
 import NotificationCenter from '../common/NotificationCenter'
 
@@ -21,7 +16,7 @@ export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'home',
+      selectedTab: 'tips',  //提前让提醒页面初始化
         tipCount: null,
     };
 
@@ -30,6 +25,9 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         NotificationCenter. addLister('tipCount', this.updateTipCount)
+        this.setState({
+            selectedTab: 'home'
+        })
     }
 
     componentWillUnmount() {
@@ -47,7 +45,7 @@ export default class HomePage extends Component {
       title: '胶囊日记'
     };
 
-    console.log(this.state);
+    //console.log(this.state);
 
     return (
       <TabBarIOS translucent={false}>

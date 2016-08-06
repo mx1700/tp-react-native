@@ -6,7 +6,6 @@ import {
   Platform,
 } from 'react-native';
 import * as Api from 'Api'
-import TPColors from 'TPColors'
 import DiaryList from './DiaryList'
 import NavigationBar from 'NavigationBar'
 import DiaryPage from './DiaryPage'
@@ -19,7 +18,6 @@ export default class FollowDiaryList extends Component {
 
   async loadDiary(page, page_size) {
     const data = await Api.getFollowDiaries(page, page_size);
-    console.log(data);
     return {
       diaries: data.diaries,
       page: data.page,
