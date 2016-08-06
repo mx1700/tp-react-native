@@ -19,7 +19,6 @@ export default class HomeDiaryList extends Component {
 
   async loadDiary(page, page_size) {
     const data = await Api.getTodayDiaries(page, page_size);
-    console.log(data);
     return {
       diaries: data.diaries,
       page: data.page,
