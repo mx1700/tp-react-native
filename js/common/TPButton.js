@@ -27,14 +27,13 @@ export default class TPButton extends Component {
         style={this.props.style}>
         <View style={{
           borderRadius: 25,
-          backgroundColor: bg,
-          height: 50,
+          height: 40,
           alignItems:'center',
           justifyContent:'center',
           borderColor: border,
           borderWidth: 1
         }}>
-          <Text style={{color: text, fontSize: 18}}>{caption}</Text>
+          <Text style={{color: bg, fontSize: 14}}>{caption}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -51,7 +50,7 @@ export default class TPButton extends Component {
       case 'danger':
         return ['#d9534f', '#d9534f', '#fff']
       default:
-        return [TPColors.light, TPColors.light, '#fff']
+        return ['#0076FF', '#0076FF', '#fff']
     }
   }
 }
