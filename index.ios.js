@@ -7,11 +7,16 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  View, Image
 } from 'react-native';
 import TPNavigator from './js/components/TPNavigator'
+import CodePush from "react-native-code-push";
 
 class tp_react_native extends Component {
+
+  componentDidMount() {
+    CodePush.sync();
+  }
+
   render() {
     return <TPNavigator />;
   }
