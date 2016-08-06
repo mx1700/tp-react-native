@@ -103,7 +103,6 @@ export default class DiaryPage extends Component {
         : this.state.comment_content;
 
       const r = await Api.addComment(this.state.diary.id, content, this.state.reply_user_id)
-      console.log(r);
       this.state.comments.push(r);
       this.setState({
         commentsDateSource: this.state.commentsDateSource.cloneWithRows(this.state.comments),
@@ -270,6 +269,10 @@ export default class DiaryPage extends Component {
     const new_comment = this.props.new_comments != null
                         && this.props.new_comments.some(it => it == comment.id);
     const style = new_comment ? { backgroundColor: '#eef5ff' } : null;
+    const content = comment.recipient == null
+        ? comment.content
+        : `@${comment.recipient.name} ${comment.content}`;
+
     return (
       <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
         <View style={style}>
@@ -282,10 +285,10 @@ export default class DiaryPage extends Component {
                 <Text style={styles.title_name}>{comment.user.name}</Text>
                 <Text style={styles.title_text}>{moment(comment.created).format('H:m')}</Text>
               </View>
-              <Text style={styles.content} numberOfLines={5}>{comment.content}</Text>
+              <Text style={styles.content}>{content}</Text>
             </View>
           </View>
-          <View style={styles.line}></View>
+          <View style={styles.line} />
         </View>
       </TPTouchable>
     );
@@ -340,11 +343,12 @@ const styles = StyleSheet.create({
   title_name: {
     fontWeight: 'bold',
     color: TPColors.contentText,
-    fontSize: 12,
+    fontSize: 14,
     marginRight: 5,
   },
   title_text: {
-    fontSize: 12
+    fontSize: 14,
+    color: TPColors.inactiveText
   },
   content: {
     flex: 1,

@@ -86,9 +86,9 @@ export default class Diary extends Component {
         ? (
             <TouchableOpacity onPress={() => this.props.onActionPress(diary)}>
               <Icon name="ios-more"
-                    size={18}
+                    size={22}
                     color={TPColors.inactiveText}
-                    style={{paddingVertical: 6, paddingHorizontal: 8}} />
+                    style={{paddingVertical: 4, paddingHorizontal: 8}} />
             </TouchableOpacity>
           )
         : null;
