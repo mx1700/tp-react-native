@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
     TextInput,
     Modal,
+    Alert,
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'
@@ -40,17 +41,24 @@ export default class LoginPage extends Component {
     }
 
     async _login() {
-        //TODO:loading
-        this.setState({loading: true})
-        const result = await Api.login(this.state.username, this.state.password)
-        this.setState({loading: false})
+        if (this.state.username.length == '') {
+            Alert.alert('请输入登录邮箱');
+            return;
+        }
+        if (this.state.password.length == '') {
+            Alert.alert('请输入密码');
+            return;
+        }
+        this.setState({loading: true});
+        const result = await Api.login(this.state.username, this.state.password);
+        this.setState({loading: false});
         if (result) {
             this.props.navigator.resetTo({
                 name: 'HomePage',
                 component: HomePage
             });
         } else {
-            console.warn('登录失败'); //TODO:展示具体失败原因
+            Alert.alert('用户名或密码不正确');
         }
     }
 
@@ -91,7 +99,7 @@ export default class LoginPage extends Component {
                                 autoCapitalize="none"
                                 returnKeyType="next"
                                 placeholderTextColor={TPColors.inactiveText}
-                                placeholder="邮箱"/>
+                                placeholder="登录邮箱"/>
                         </View>
                         <View style={styles.line} />
                         <View style={{flexDirection: 'row'}}>
