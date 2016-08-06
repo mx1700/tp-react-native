@@ -20,6 +20,7 @@ import {
     Image,
     CameraRoll,
 } from 'react-native';
+import Page from './Page'
 import * as Api from '../Api'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from 'NavigationBar'
@@ -30,7 +31,7 @@ import TPColor from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImageResizer from 'react-native-image-resizer';
 
-export default class WritePage extends Component {
+export default class WritePage extends Page {
 
     constructor(props) {
         super(props);

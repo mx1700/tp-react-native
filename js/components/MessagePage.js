@@ -11,6 +11,7 @@ import {
 ListView,
     RefreshControl,
 } from 'react-native';
+import Page from './Page'
 import * as Api from '../Api'
 import TPColors from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,7 +21,7 @@ import UserPage from './UserPage'
 import DiaryPage from './DiaryPage'
 import NotificationCenter from '../common/NotificationCenter'
 
-export default class LoginPage extends Component {
+export default class LoginPage extends Page {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({

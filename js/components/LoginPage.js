@@ -11,13 +11,14 @@ import {
     Modal,
     Alert,
 } from 'react-native';
+import Page from './Page'
 import * as Api from '../Api'
 import TPButton from 'TPButton'
 import TPColors from '../common/TPColors'
 import HomePage from './HomePage'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default class LoginPage extends Component {
+export default class LoginPage extends Page {
 
     constructor() {
         super();

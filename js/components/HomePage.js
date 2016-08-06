@@ -3,6 +3,7 @@ import {
   View,
   TabBarIOS,
 } from 'react-native';
+import Page from './Page'
 import HomeDiaryList from './HomeDiaryList'
 import FollowDiaryList from './FollowDiaryList'
 import UserPage from './UserPage'
@@ -11,7 +12,7 @@ import WritePage from './WritePage'
 import MessagePage from './MessagePage'
 import NotificationCenter from '../common/NotificationCenter'
 
-export default class HomePage extends Component {
+export default class HomePage extends Page {
 
   constructor(props) {
     super(props);

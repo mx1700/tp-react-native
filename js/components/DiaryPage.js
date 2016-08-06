@@ -11,6 +11,7 @@ import {
   TextInput,
   InteractionManager,
 } from 'react-native';
+import Page from './Page'
 import * as Api from '../Api'
 import Diary from './Diary'
 import TPColors from 'TPColors'
@@ -22,7 +23,7 @@ import RadiusTouchable from 'RadiusTouchable'
 
 var moment = require('moment');
 
-export default class DiaryPage extends Component {
+export default class DiaryPage extends Page {
 
   constructor(props) {
     super(props);

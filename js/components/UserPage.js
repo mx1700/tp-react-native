@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
 Text,
 } from 'react-native';
+import Page from './Page'
 import * as Api from '../Api'
 import DiaryPage from './DiaryPage'
 import DiaryList from './DiaryList'
@@ -18,7 +19,7 @@ import NotificationCenter from '../common/NotificationCenter'
 import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from '../common/TPColors'
 
-export default class UserPage extends Component {
+export default class UserPage extends Page {
 
   constructor(props) {
     super(props);
