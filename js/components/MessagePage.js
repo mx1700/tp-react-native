@@ -112,11 +112,7 @@ export default class MessagePage extends Page {
             //console.log(list);
             NotificationCenter.trigger('tipCount', list.length);
         } catch (err) {
-            console.log(err); //TODO:友好提示
-            this.setState({
-                refreshing: false,
-            });
-            return;
+            console.log(err);
         }
 
         const rowData = list
@@ -141,11 +137,10 @@ export default class MessagePage extends Page {
                 return ret;
 
             }, []);
-        //console.log((rowData));
 
         this.setState({
             messagesDataSource: this.state.messagesDataSource.cloneWithRows(rowData),
-            comments: list,
+            messages: list,
             refreshing: false,
         });
     }

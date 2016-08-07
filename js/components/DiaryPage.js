@@ -91,10 +91,11 @@ export default class DiaryPage extends Page {
       loading_comments: true,
       commentsLoadingError: false,
     });
+      let comments = null;
     try {
-      var comments = await Api.getDiaryComments(this.getDiaryId());
+      comments = await Api.getDiaryComments(this.getDiaryId());
     } catch(e) {
-      console.warn(e);
+      console.log(e);
     }
 
     if (comments) {
