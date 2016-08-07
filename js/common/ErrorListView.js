@@ -11,15 +11,20 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from './TPColors'
 import TPButton from './TPButton';
 
-function emptyView(props) {
+function errorView(props) {
+    const button = props.button
+        ? (
+        <TouchableOpacity style={{marginTop: 15}} onPress={props.onButtonPress}>
+            <Text style={{color: TPColors.light}}>{props.button}</Text>
+        </TouchableOpacity>
+        )
+        : null;
     return (
-        <View style={{flex: 1, paddingTop: 180, alignItems:'center'}}>
+        <View style={[{flex: 1, paddingTop: 180, alignItems:'center'}, props.style]}>
             <Text style={{color: TPColors.inactive}}>{props.text}</Text>
-            <TouchableOpacity style={{marginTop: 15}} onPress={props.onButtonPress}>
-                <Text style={{color: TPColors.light}}>重试一下</Text>
-            </TouchableOpacity>
+            {button}
         </View>
     )
 }
 
-module.exports = emptyView;
+module.exports = errorView;

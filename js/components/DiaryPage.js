@@ -244,6 +244,7 @@ export default class DiaryPage extends Page {
             {nav}
             <ErrorView
                 text="日记加载失败了 :("
+                button="重写一下"
                 onButtonPress={() => {
                   this._loadDiary();
                   if (this.state.commentsLoadingError) {

@@ -22,7 +22,6 @@ import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
 import UserPage from './UserPage'
 import WritePage from './WritePage'
-import EmptyView from '../common/EmptyListView'
 import ErrorView from '../common/ErrorListView'
 
 export default class DiaryList extends Component {
@@ -205,11 +204,23 @@ export default class DiaryList extends Component {
 
   renderFooter() {
       if (this.state.errorPage) {
-          return <ErrorView text="日记加载失败了 :(" onButtonPress={this.refresh.bind(this)} />
+          return <ErrorView text="日记加载失败了 :(" button="重试一下" onButtonPress={this.refresh.bind(this)} />
       }
 
       if (this.state.emptyList) {
-          return <EmptyView text="今天还没有写日记" />
+          return this.props.myself
+              ? (
+                  <ErrorView
+                      text="今天还没有写日记"
+                      button="马上写一篇"
+                      onButtonPress={() => {
+                          this.props.navigator.push({
+                              name: 'WritePage',
+                              component: WritePage,
+                          })
+                      }} />
+                )
+              : (<ErrorView text="今天没有日记" />)
       }
 
       if(!this.state.loading_more && this.state.loadMoreError) {
