@@ -18,7 +18,7 @@ import {
     InteractionManager,
     TouchableOpacity,
     Image,
-    CameraRoll,
+    Alert,
 } from 'react-native';
 import Page from './Page'
 import * as Api from '../Api'
@@ -61,7 +61,13 @@ export default class WritePage extends Page {
     }
 
     async _loadBooks() {
-        const books = await Api.getSelfNotebooks();
+        //TODO:判断是否有可用日记本,没有引导添加日记本
+        let books = [];
+        try {
+            books = await Api.getSelfNotebooks();
+        } catch(err) {
+            console.log(err);
+        }
         const abooks = books.filter(it => !it.isExpired);
         if (this.props.diary == null) {
             this.setState({
@@ -77,12 +83,12 @@ export default class WritePage extends Page {
 
     _writePress() {
         if (this.state.selectBookId == 0) {
-            alert('日记本列表加载失败');     //TODO:更换更友好的提示
+            Alert.alert('提示','日记本列表加载失败');
             return;
         }
 
         if (this.state.content.length == 0) {
-            alert('请填写日记内容');
+            Alert.alert('提示','请填写日记内容');
             return;
         }
 
@@ -109,7 +115,8 @@ export default class WritePage extends Page {
                                     this.state.content);
             console.log('write:', r);
         } catch (err) {
-            console.log(err);   //TODO:友好提示
+            console.log(err);
+            Alert.alert('日记保存失败');
             return;
         } finally {
             this.setState({loading: false});

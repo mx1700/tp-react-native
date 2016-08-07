@@ -22,23 +22,32 @@ export default class HomePage extends Page {
     };
 
     this.updateTipCount = this.updateTipCount.bind(this);
+      this._onWriteDiary = this._onWriteDiary.bind(this);
   }
 
     componentDidMount() {
-        NotificationCenter. addLister('tipCount', this.updateTipCount)
+        NotificationCenter. addLister('tipCount', this.updateTipCount);
+        NotificationCenter. addLister('onWriteDiary', this._onWriteDiary);
         this.setState({
             selectedTab: 'home'
         })
     }
 
     componentWillUnmount() {
-        NotificationCenter.removeLister('tipCount', this.updateTipCount)
+        NotificationCenter.removeLister('tipCount', this.updateTipCount);
+        NotificationCenter.removeLister('onWriteDiary', this._onWriteDiary);
     }
 
     updateTipCount(count) {
         this.setState({
             tipCount: count > 0 ? count : null
         });
+    }
+
+    _onWriteDiary() {
+        this.setState({
+            selectedTab: 'my'
+        })
     }
 
   render() {
