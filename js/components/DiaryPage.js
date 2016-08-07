@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   TextInput,
   InteractionManager,
+    TouchableOpacity,
 } from 'react-native';
 import Page from './Page'
 import * as Api from '../Api'
@@ -20,6 +21,7 @@ import NavigationBar from 'NavigationBar'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
+import ErrorView from '../common/ErrorListView'
 
 var moment = require('moment');
 
@@ -39,14 +41,16 @@ export default class DiaryPage extends Page {
       reply_user_id: 0,
       reply_user_name: '',
       comment_count: this.props.diary ? this.props.diary.comment_count : 0,
-      diary: this.props.diary
+      diary: this.props.diary,
+      commentsLoadingError: false,
+      diaryLoadingError: false,
     }
   }
 
   componentWillMount(){
     InteractionManager.runAfterInteractions(() => {
       if (!this.props.diary) {
-        this._loadDiary(this.props.diary_id);
+        this._loadDiary();
       }
       this._loadComments();
     });
@@ -56,40 +60,63 @@ export default class DiaryPage extends Page {
     return this.props.diary ? this.props.diary.id : this.props.diary_id;
   }
 
-  async _loadDiary(id) {
+  async _loadDiary() {
+    this.setState({
+      diaryLoadingError: false,
+    });
+
     let diary = null;
     try {
-       diary = await Api.getDiary(id);
-      console.log(diary);
+       diary = await Api.getDiary(this.getDiaryId());
     } catch (err) {
-      console.log(err); //TODO:友好提示
+      console.log(err);
     }
 
     if (diary) {
       this.setState({
-        diary: diary
+        diary: diary,
+        comment_count: diary.comment_count,
+        diaryLoadingError: false,
+      })
+    } else {
+      this.setState({
+        diary: null,
+        diaryLoadingError: true,
       })
     }
   }
 
   async _loadComments() {
+    this.setState({
+      loading_comments: true,
+      commentsLoadingError: false,
+    });
     try {
       var comments = await Api.getDiaryComments(this.getDiaryId());
     } catch(e) {
       console.warn(e);
-      //TODO:加载失败提供重新加载功能
     }
 
     if (comments) {
       comments = comments.reverse();
+      this.setState({
+        commentsDateSource: this.state.commentsDateSource.cloneWithRows(comments),
+        comments: comments,
+        loading_comments: false,
+        comment_count: comments.length,
+        commentsLoadingError: false,
+      });
+    } else {
+      comments = [];
+      this.setState({
+        commentsDateSource: this.state.commentsDateSource.cloneWithRows(comments),
+        comments: comments,
+        loading_comments: false,
+        commentsLoadingError: true,
+      });
     }
 
-    this.setState({
-      commentsDateSource: this.state.commentsDateSource.cloneWithRows(comments),
-      comments: comments,
-      loading_comments: false,
-        comment_count: comments.length
-    });
+
   }
 
   _addCommentPress() {
@@ -202,6 +229,21 @@ export default class DiaryPage extends Page {
             }}
         />
     );
+    if (this.state.diaryLoadingError) {
+      return (
+          <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
+            {nav}
+            <ErrorView
+                text="日记加载失败了 :("
+                onButtonPress={() => {
+                  this._loadDiary();
+                  if (this.state.commentsLoadingError) {
+                    this._loadComments();
+                  }
+                }} />
+          </View>
+      )
+    }
     if (!this.state.diary) {
       return (
           <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
@@ -299,7 +341,15 @@ export default class DiaryPage extends Page {
   }
 
   renderFooter() {
-    //TODO:如果评论数量为0，则不显示加载
+    if (!this.state.loading_comments && this.state.commentsLoadingError && this.state.diary.comment_count > 0) {
+      return (
+          <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+            <TouchableOpacity style={{marginTop: 15}} onPress={this._loadComments.bind(this)}>
+              <Text style={{color: TPColors.light}}>回复加载失败,请重试</Text>
+            </TouchableOpacity>
+          </View>
+      );
+    }
     if (!this.state.loading_comments && this.state.diary.comment_count == 0) {
       return null;
     }
