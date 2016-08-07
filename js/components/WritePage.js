@@ -13,7 +13,6 @@ import {
     Picker,
     Animated,
     Dimensions,
-    TouchableHighlight,
     Modal,
     InteractionManager,
     TouchableOpacity,
@@ -26,10 +25,11 @@ import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from 'NavigationBar'
 import LabelButton from '../common/LabelButton'
 import NotificationCenter from '../common/NotificationCenter'
-var ImagePicker = require('react-native-image-picker');
+import ImagePicker from 'react-native-image-picker'
 import TPColor from '../common/TPColors'
-import Icon from 'react-native-vector-icons/Ionicons';
-import ImageResizer from 'react-native-image-resizer';
+import Icon from 'react-native-vector-icons/Ionicons'
+import ImageResizer from 'react-native-image-resizer'
+import NotebookAddPage from './NotebookAddPage'
 
 export default class WritePage extends Page {
 
@@ -47,7 +47,6 @@ export default class WritePage extends Page {
             photoSource: null,
             photoInfo: null,
         };
-        console.log(diary, this.state);
     }
 
     componentWillMount(){
@@ -61,14 +60,23 @@ export default class WritePage extends Page {
     }
 
     async _loadBooks() {
-        //TODO:判断是否有可用日记本,没有引导添加日记本
         let books = [];
         try {
             books = await Api.getSelfNotebooks();
         } catch(err) {
             console.log(err);
+            Alert.alert('错误', '日记本加载失败');
+            return;
         }
-        const abooks = books.filter(it => !it.isExpired);
+        //const abooks = books.filter(it => !it.isExpired);
+        const abooks = [];
+        if (abooks.length == 0) {
+            Alert.alert('提示','没有可用日记本,无法写日记',[
+                {text: '取消', onPress: () =>  this.props.navigator.pop()},
+                {text: '创建一个', onPress: () => this._createBook()}
+            ]);
+            return;
+        }
         if (this.props.diary == null) {
             this.setState({
                 books: abooks,
@@ -169,6 +177,25 @@ export default class WritePage extends Page {
         this.selectPhoto();
     }
 
+    _createBook() {
+        this.setState({modalVisible: false});
+        this.props.navigator.push({
+            name: 'NotebookAddPage',
+            component: NotebookAddPage,
+            params: {
+                onCreated: this._setCreatedBook.bind(this)
+            }
+        })
+    }
+
+    _setCreatedBook(book) {
+        const books = [book].concat(this.state.books);
+        this.setState({
+            selectBookId: book.id,
+            books: books,
+        });
+    }
+
     async selectPhoto() {
         // const photoUri = CameraRoll.getPhotos({first: 1})
         // console.log(photoUri);
@@ -227,6 +254,7 @@ export default class WritePage extends Page {
     }
 
     render() {
+        //console.log(this.state);
         const selectedBook = this.state.books.length > 0
             ? this.state.books.filter(it => it.id == this.state.selectBookId).pop()
             : null;
@@ -281,12 +309,15 @@ export default class WritePage extends Page {
                 visible={this.state.modalVisible}
                 onRequestClose={() => { }}>
                 <View style={{ flex: 1}}>
-                    <View style={{ flex: 1, backgroundColor: "rgba(255, 255, 255, 0.8)" }} />
+                    <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.3)" }} />
                     <View style={{height: 250, backgroundColor: '#fff'}}>
                         <View style={styles.closeButtonContainer}>
-                            <TouchableHighlight onPress={ this.closeModal.bind(this) } underlayColor="transparent" style={styles.closeButton}>
+                            <TouchableOpacity onPress={ this._createBook.bind(this) } style={styles.closeButton}>
+                                <Text style={styles.closeButtonText}>新添日记本</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={ this.closeModal.bind(this) } style={styles.closeButton}>
                                 <Text style={styles.closeButtonText}>确定</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                         <Picker
                             style={{ flex: 1}}
@@ -341,7 +372,7 @@ const styles = StyleSheet.create({
     },
     closeButtonContainer: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         borderTopColor: '#e2e2e2',
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#e2e2e2',

@@ -75,8 +75,8 @@ export default class NotebookAddPage extends Page {
 
         if (book) {
             this.props.navigator.pop();
-            if (this.props.onCreate) {
-                this.props.onCreate(book);
+            if (this.props.onCreated) {
+                this.props.onCreated(book);
             }
         }
     }
