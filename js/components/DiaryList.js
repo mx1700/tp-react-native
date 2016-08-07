@@ -22,6 +22,7 @@ import DiaryPage from './DiaryPage'
 import UserPage from './UserPage'
 import WritePage from './WritePage'
 import EmptyView from '../common/EmptyListView'
+import ErrorView from '../common/ErrorListView'
 
 export default class DiaryList extends Component {
 
@@ -38,6 +39,7 @@ export default class DiaryList extends Component {
       loading_more: false,
       refreshing: false,
       emptyList: false,
+        errorPage: false,
     };
   }
 
@@ -58,22 +60,22 @@ export default class DiaryList extends Component {
     if (page > 1) {
       this.setState({ loading_more: true });
     }
+    let data = null;
     try {
       //console.log('_loadTodayDiaries', this.state)
       const page_size = this.state.page_size;
-      var data = await this.props.getDiariesPage(page, page_size);
+      data = await this.props.getDiariesPage(page, page_size);
     } catch(e) {
-      console.log(e)
       if(e.response && e.response.status == 401) {
         this.props.navigator.toLogin();
         return;
       } else {
         console.log(e.response);
-        //TODO:提示出错
       }
     }
+    console.log(data, page);
     if (data) {
-      var diaries = page === 1 ? data.diaries : this.state.diaries.concat(data.diaries);
+      var diaries = page == 1 ? data.diaries : this.state.diaries.concat(data.diaries);
       this.setState({
         diaries: diaries,
         diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
@@ -82,13 +84,27 @@ export default class DiaryList extends Component {
         refreshing: false,
         loading_more: false,
           emptyList: diaries.length == 0,
+          errorPage: false,
       });
     } else {
-      this.setState({
-          refreshing: false,
-          loading_more: false,
-      });
-      //TODO:提示加载失败，如果列表没内容，显示出错页面，有刷新按钮
+        if (page == 1) {
+            diaries = [];
+            this.setState({
+                diaries: diaries,
+                diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
+                page: 1,
+                more: false,
+                refreshing: false,
+                loading_more: false,
+                emptyList: false,
+                errorPage: true,
+            });
+        } else {
+            this.setState({
+                refreshing: false,
+                loading_more: false,
+            });
+        }
     }
   }
 
@@ -183,8 +199,11 @@ export default class DiaryList extends Component {
   }
 
   renderFooter() {
-      if (this.state.emptyList)
-      {
+      if (this.state.errorPage) {
+          return <ErrorView text="日记加载失败了 :(" onButtonPress={this.refresh.bind(this)} />
+      }
+
+      if (this.state.emptyList) {
           return <EmptyView text="今天还没有写日记" />
       }
 

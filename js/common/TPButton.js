@@ -18,22 +18,24 @@ import TPColors from 'TPColors'
 export default class TPButton extends Component {
   render() {
     const caption = this.props.caption.toUpperCase();
-    let [bg, border, text] = this.getColor(this.props.type);
+    const [bg, border, text] = this.getColor(this.props.type);
+
+    const bStyle = this.props.size == 'small'
+        ? [styles.button, {borderColor: border,}, styles.small]
+        : [styles.button, {borderColor: border,}];
+
+    const tStyle = this.props.size == 'small'
+        ? {color: border, fontSize: 12}
+        : {color: border, fontSize: 14};
+
     return (
       <TouchableOpacity
         accessibilityTraits="button"
         onPress={this.props.onPress}
         activeOpacity={0.8}
         style={this.props.style}>
-        <View style={{
-          borderRadius: 25,
-          height: 40,
-          alignItems:'center',
-          justifyContent:'center',
-          borderColor: border,
-          borderWidth: 1
-        }}>
-          <Text style={{color: bg, fontSize: 14}}>{caption}</Text>
+        <View style={bStyle}>
+          <Text style={tStyle}>{caption}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -54,3 +56,22 @@ export default class TPButton extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 20,
+    height: 40,
+    alignItems:'center',
+    justifyContent:'center',
+    borderWidth: 1,
+    paddingHorizontal: 25
+  },
+  small: {
+    borderRadius: 12,
+    height: 24,
+    paddingHorizontal: 15,
+  },
+  smallText: {
+    fontSize: 12,
+  }
+})
