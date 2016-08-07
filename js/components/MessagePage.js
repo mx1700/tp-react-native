@@ -106,7 +106,7 @@ export default class MessagePage extends Page {
     }
 
     async _loadMessages() {
-        let list = null;
+        let list = [];
         try {
             list = await Api.getMessages(0);
             //console.log(list);

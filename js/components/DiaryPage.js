@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Platform,
-  ListView,
-  RefreshControl,
-  ActivityIndicator,
-  TextInput,
-  InteractionManager,
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    Platform,
+    ListView,
+    RefreshControl,
+    ActivityIndicator,
+    TextInput,
+    InteractionManager,
     TouchableOpacity,
+    Alert
 } from 'react-native';
 import Page from './Page'
 import * as Api from '../Api'
@@ -47,7 +48,7 @@ export default class DiaryPage extends Page {
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     InteractionManager.runAfterInteractions(() => {
       if (!this.props.diary) {
         this._loadDiary();
@@ -67,7 +68,7 @@ export default class DiaryPage extends Page {
 
     let diary = null;
     try {
-       diary = await Api.getDiary(this.getDiaryId());
+      diary = await Api.getDiary(this.getDiaryId());
     } catch (err) {
       console.log(err);
     }
@@ -91,10 +92,10 @@ export default class DiaryPage extends Page {
       loading_comments: true,
       commentsLoadingError: false,
     });
-      let comments = null;
+    let comments = null;
     try {
       comments = await Api.getDiaryComments(this.getDiaryId());
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
 
@@ -125,44 +126,51 @@ export default class DiaryPage extends Page {
   }
 
   async addComment() {
-    this.setState({ comment_sending: true });
+    this.setState({comment_sending: true});
+    let ret = null;
     try {
       content = this.state.reply_user_name
-        ? this.state.comment_content.substr(this.state.reply_user_name.length + 2)
-        : this.state.comment_content;
+          ? this.state.comment_content.substr(this.state.reply_user_name.length + 2)
+          : this.state.comment_content;
 
-      const r = await Api.addComment(this.state.diary.id, content, this.state.reply_user_id)
-      this.state.comments.push(r);
-      this.setState({
-        commentsDateSource: this.state.commentsDateSource.cloneWithRows(this.state.comments),
-      }, () => {
-        this._scrollToBottom();
-      });
+      ret = await Api.addComment(this.state.diary.id, content, this.state.reply_user_id)
     } catch (err) {
       console.log(err);
     }
-    this.setState({
-      comment_sending: false,
-      comment_content: '',
-      reply_user_id: 0,
-      reply_user_name: '',
-        comment_count: this.state.comment_count + 1
-    });
 
-    //TODO:回复成功，显示回复
+    if (ret) {
+      this.state.comments.push(ret);
+      this.setState({
+        commentsDateSource: this.state.commentsDateSource.cloneWithRows(this.state.comments),
+        comment_sending: false,
+        comment_content: '',
+        reply_user_id: 0,
+        reply_user_name: '',
+        comment_count: this.state.comment_count + 1
+      }, () => {
+        this._scrollToBottom();
+      });
+    } else {
+      Alert.alert('回复失败 -_-!');
+      this.setState({
+        comment_sending: false,
+      });
+    }
+
+
   }
 
   _scrollToBottom() {
     /**
-    只有指定 initialListSize 足够大时，获取子内容高度才是准确的，不指定时，获取不准确
-    */
+     只有指定 initialListSize 足够大时，获取子内容高度才是准确的，不指定时，获取不准确
+     */
     setTimeout(() => {
       const listProps = this.refs.list.scrollProperties;
       if (listProps.contentLength < listProps.visibleLength) {
         return;
       }
       const y = listProps.contentLength - listProps.visibleLength;
-      this.refs.list.scrollTo({ x: 0, y: y, animated: true})
+      this.refs.list.scrollTo({x: 0, y: y, animated: true})
       //console.log(this.refs.list, listProps)
     }, 500)
   }
@@ -184,11 +192,11 @@ export default class DiaryPage extends Page {
   _onCommentContentChange(text) {
     //console.log(text);
     if (this.state.reply_user_name == '') {
-      this.setState({ comment_content: text})
+      this.setState({comment_content: text})
       return
     }
     if (text.startsWith('@' + this.state.reply_user_name + ' ')) {
-      this.setState({ comment_content: text})
+      this.setState({comment_content: text})
       return
     }
     text = text.substr(this.state.reply_user_name.length + 1)
@@ -225,7 +233,7 @@ export default class DiaryPage extends Page {
             title="日记详情"
             back="后退"
             backPress={() => {
-              this.refs.commentInput.setNativeProps({'editable':false});
+              this.refs.commentInput.setNativeProps({'editable': false});
               this.props.navigator.pop()
             }}
         />
@@ -241,7 +249,7 @@ export default class DiaryPage extends Page {
                   if (this.state.commentsLoadingError) {
                     this._loadComments();
                   }
-                }} />
+                }}/>
           </View>
       )
     }
@@ -250,101 +258,101 @@ export default class DiaryPage extends Page {
           <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
             {nav}
             <View style={{flex: 1, alignItems: 'center', paddingTop: 30}}>
-              <ActivityIndicator animating={true} color={TPColors.light} size="small" />
+              <ActivityIndicator animating={true} color={TPColors.light} size="small"/>
             </View>
           </View>
       )
     }
     //enableEmptySections 不加会报一个不理解的警告
     const comment_sending_box = this.state.comment_sending
-      ? (<View style={styles.comment_sending}>
-        <ActivityIndicator animating={true} color={TPColors.inactive} size="small" />
-      </View>)
-      : null;
+        ? (<View style={styles.comment_sending}>
+      <ActivityIndicator animating={true} color={TPColors.light} size="small"/>
+    </View>)
+        : null;
 
     return (
-      <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
-        {nav}
-        <ListView
-          ref="list"
-          dataSource={this.state.commentsDateSource}
-          renderRow={this.renderComment.bind(this)}
-          renderFooter={this.renderFooter.bind(this)}
-          renderHeader={this.renderTop.bind(this)}
-          enableEmptySections={true}
-          keyboardDismissMode="on-drag"
-          initialListSize={99}
-        />
-        <View style={styles.comment_box}>
-          <TextInput style={styles.comment_input}
-                     ref="commentInput"
-            value={this.state.comment_content}
-            placeholder="回复日记"
-            autoCorrect={false}
-            maxLength={100}
-            onSubmitEditing={this._addCommentPress.bind(this)}
-            selectionColor={TPColors.light}
-            enablesReturnKeyAutomatically={true}
-            returnKeyType="send"
-            onChangeText={(text) => this._onCommentContentChange(text)}/>
-          {comment_sending_box}
+        <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
+          {nav}
+          <ListView
+              ref="list"
+              dataSource={this.state.commentsDateSource}
+              renderRow={this.renderComment.bind(this)}
+              renderFooter={this.renderFooter.bind(this)}
+              renderHeader={this.renderTop.bind(this)}
+              enableEmptySections={true}
+              keyboardDismissMode="on-drag"
+              initialListSize={99}
+          />
+          <View style={styles.comment_box}>
+            <TextInput style={styles.comment_input}
+                       ref="commentInput"
+                       value={this.state.comment_content}
+                       placeholder="回复日记"
+                       autoCorrect={false}
+                       maxLength={100}
+                       onSubmitEditing={this._addCommentPress.bind(this)}
+                       selectionColor={TPColors.light}
+                       enablesReturnKeyAutomatically={true}
+                       returnKeyType="send"
+                       onChangeText={(text) => this._onCommentContentChange(text)}/>
+            {comment_sending_box}
+          </View>
+          <KeyboardSpacer />
         </View>
-        <KeyboardSpacer />
-      </View>
     );
   }
 
   renderTop() {
     const content = this.state.comment_count > 0
-                  ? `共 ${this.state.comment_count} 条回复`
-                  : '还没有人回复';
+        ? `共 ${this.state.comment_count} 条回复`
+        : '还没有人回复';
     return (
-      <View>
-        <Diary
-            data={this.state.diary}
-            navigator={this.props.navigator}
-            onIconPress={this._onDiaryIconPress.bind(this)}
-            showComment={false} />
-        <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
-          {content}
-        </Text>
-      </View>
-      )
+        <View>
+          <Diary
+              data={this.state.diary}
+              navigator={this.props.navigator}
+              onIconPress={this._onDiaryIconPress.bind(this)}
+              showComment={false}/>
+          <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
+            {content}
+          </Text>
+        </View>
+    )
   }
 
   renderComment(comment) {
     const new_comment = this.props.new_comments != null
-                        && this.props.new_comments.some(it => it == comment.id);
-    const style = new_comment ? { backgroundColor: '#eef5ff' } : null;
+        && this.props.new_comments.some(it => it == comment.id);
+    const style = new_comment ? {backgroundColor: '#eef5ff'} : null;
     const content = comment.recipient == null
         ? comment.content
         : `@${comment.recipient.name} ${comment.content}`;
 
     return (
-      <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
-        <View style={style}>
-          <View style={styles.box}>
-            <RadiusTouchable style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
-              <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}} />
-            </RadiusTouchable>
-            <View style={styles.body}>
-              <View style={styles.title}>
-                <Text style={styles.title_name}>{comment.user.name}</Text>
-                <Text style={styles.title_text}>{moment(comment.created).format('H:m')}</Text>
+        <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
+          <View style={style}>
+            <View style={styles.box}>
+              <RadiusTouchable style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
+                <Image style={styles.user_icon} source={{uri: comment.user.iconUrl}}/>
+              </RadiusTouchable>
+              <View style={styles.body}>
+                <View style={styles.title}>
+                  <Text style={styles.title_name}>{comment.user.name}</Text>
+                  <Text style={styles.title_text}>{moment(comment.created).format('H:m')}</Text>
+                </View>
+                <Text style={styles.content}>{content}</Text>
               </View>
-              <Text style={styles.content}>{content}</Text>
             </View>
+            <View style={styles.line}/>
           </View>
-          <View style={styles.line} />
-        </View>
-      </TPTouchable>
+        </TPTouchable>
     );
   }
 
   renderFooter() {
     if (!this.state.loading_comments && this.state.commentsLoadingError && this.state.diary.comment_count > 0) {
       return (
-          <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+          <View style={{height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
             <TouchableOpacity style={{marginTop: 15}} onPress={this._loadComments.bind(this)}>
               <Text style={{color: TPColors.light}}>回复加载失败,请重试</Text>
             </TouchableOpacity>
@@ -360,9 +368,9 @@ export default class DiaryPage extends Page {
     }
 
     return (
-      <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-        <ActivityIndicator animating={true} color={TPColors.light} size="small" />
-      </View>
+        <View style={{height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+          <ActivityIndicator animating={true} color={TPColors.light} size="small"/>
+        </View>
     );
   }
 }
@@ -378,7 +386,7 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     marginRight: 12,
-    backgroundColor : TPColors.spaceBackground,
+    backgroundColor: TPColors.spaceBackground,
   },
   user_icon: {
     width: 32,
@@ -387,7 +395,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flexDirection: "column",
-    flex: 1 ,
+    flex: 1,
     paddingTop: 2
   },
   title: {
@@ -416,7 +424,7 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: TPColors.line,
     marginHorizontal: 16,
-    marginLeft:56,
+    marginLeft: 56,
   },
   comment_box: {
     height: 50,
