@@ -28,6 +28,7 @@
  - 2不允许关注自己
  - 不允许回复自己
  - 消息接口会超限
+ - 禁止横屏
 
 
  - 首页           1
@@ -41,6 +42,13 @@
 
 F8Touchable
 类似豆瓣头部跟着滚动的效果不知道怎么实现
+
+nav 左右边距为 8
+View padding 15
+Tab bar 高度 49
+table 小图标 宽度 29
+圆角按钮 4
+弹出框圆角 6
 
  react-native-blur
  react-native-navbar
@@ -123,4 +131,8 @@ F8Touchable
  https://github.com/alinz/react-native-tabbar
  https://github.com/niftylettuce/react-native-loading-spinner-overlay
  https://github.com/devBrian/react-native-dropdownalert     错误提示
+
+ 测试分发
+ http://www.jianshu.com/p/27545c2d4d8b
+ http://www.cocoachina.com/ios/20141022/10009.html
 

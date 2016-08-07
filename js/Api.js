@@ -29,6 +29,7 @@ export async function login(username, password) {
 
 export async function logout() {
   TokenManager.setToken('');
+  TokenManager.setUser(false);
 }
 
 export async function getSelfInfoByStore() {

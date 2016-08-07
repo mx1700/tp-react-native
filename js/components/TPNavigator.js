@@ -7,6 +7,7 @@ import {
   StatusBar,
 } from 'react-native';
 import HomePage from './HomePage'
+import LoginPage from './LoginPage'
 
 class DefaultPage extends Component {
   render() {
@@ -69,19 +70,26 @@ export default class TPNavigator extends Component {
     return false;
   }
 
+  toLogin() {
+    alert(1);
+  }
+
   render() {
     //TODO:根据平台更换动画效果，ios 使用 PushFromRight ， android 用 FloatFromBottomAndroid
     return (
-      <Navigator
+      <MyNavigator
         ref="navigator"
         style={styles.container}
         initialRoute={{ name: 'DefaultPage', component: DefaultPage }}
         configureScene={(route) => {
-          if (route.name == 'WritePage' || route.name == 'LoginPage') {  //写日记页面从底部弹出
+          if (route.name == 'WritePage') {  //写日记页面从底部弹出
             return BottomSceneConfigs;
           }
           if (route.name == 'PhotoPage') {
             return Navigator.SceneConfigs.FadeAndroid;
+          }
+          if (route.name == 'LoginPage') {
+            return {...BottomSceneConfigs, gestures: false}
           }
           return SceneConfigs;
         }}
@@ -90,6 +98,15 @@ export default class TPNavigator extends Component {
           return <Component {...route.params} navigator={navigator} />
         }} />
       )
+  }
+}
+
+class MyNavigator extends Navigator {
+  toLogin() {
+    this.push({
+      name: 'LoginPage',
+      component: LoginPage
+    });
   }
 }
 
@@ -109,6 +126,6 @@ TPNavigator.childContextTypes = {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'black',
   },
 });

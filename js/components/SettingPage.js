@@ -11,16 +11,12 @@ import Page from './Page'
 import NavigationBar from 'NavigationBar'
 import TPButton from '../common/TPButton';
 import * as Api from '../Api'
-import LoginPage from './LoginPage'
+
 
 export default class SettingPage extends Page {
     logout() {
         Api.logout();
-        const nav = this.props.navigator;
-        nav.resetTo({
-            name: 'LoginPage',
-            component: LoginPage
-        });
+        this.props.navigator.toLogin();
     }
     render() {
         return (

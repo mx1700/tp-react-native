@@ -21,7 +21,7 @@ import UserPage from './UserPage'
 import DiaryPage from './DiaryPage'
 import NotificationCenter from '../common/NotificationCenter'
 
-export default class LoginPage extends Page {
+export default class MessagePage extends Page {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({

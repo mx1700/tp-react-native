@@ -19,7 +19,6 @@ import * as Api from '../Api'
 import Diary from './Diary'
 import TPColors from 'TPColors'
 import DiaryPage from './DiaryPage'
-import LoginPage from './LoginPage'
 import UserPage from './UserPage'
 import WritePage from './WritePage'
 
@@ -64,10 +63,7 @@ export default class DiaryList extends Component {
     } catch(e) {
       console.log(e)
       if(e.response && e.response.status == 401) {
-        this.props.navigator.resetTo({
-          name: 'LoginPage',
-          component: LoginPage
-        });
+        this.props.navigator.toLogin();
         return;
       } else {
         console.log(e.response);

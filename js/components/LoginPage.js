@@ -67,7 +67,7 @@ export default class LoginPage extends Page {
     render() {
         return (
             <Image resizeMode='cover'
-                   style={{flex: 1, width: undefined, height: undefined}}>
+                   style={{flex: 1, width: undefined, height: undefined, backgroundColor: "white"}}>
                 <View style={{flex: 1, paddingTop: 100, paddingHorizontal: 20}}>
                     <Modal
                         visible={this.state.loading}
