@@ -14,6 +14,7 @@ import {
   InteractionManager,
     ActionSheetIOS,
     Alert,
+    TouchableOpacity,
 } from 'react-native';
 import * as Api from '../Api'
 import Diary from './Diary'
@@ -40,6 +41,7 @@ export default class DiaryList extends Component {
       refreshing: false,
       emptyList: false,
         errorPage: false,
+        loadMoreError: false,
     };
   }
 
@@ -85,6 +87,7 @@ export default class DiaryList extends Component {
         loading_more: false,
           emptyList: diaries.length == 0,
           errorPage: false,
+          loadMoreError: false,
       });
     } else {
         if (page == 1) {
@@ -98,11 +101,13 @@ export default class DiaryList extends Component {
                 loading_more: false,
                 emptyList: false,
                 errorPage: true,
+                loadMoreError: false,
             });
         } else {
             this.setState({
                 refreshing: false,
                 loading_more: false,
+                loadMoreError: true,
             });
         }
     }
@@ -205,6 +210,16 @@ export default class DiaryList extends Component {
 
       if (this.state.emptyList) {
           return <EmptyView text="今天还没有写日记" />
+      }
+
+      if(!this.state.loading_more && this.state.loadMoreError) {
+          return (
+              <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+                  <TouchableOpacity style={{marginTop: 15}} onPress={this._onEndReached.bind(this)}>
+                      <Text style={{color: TPColors.light}}>加载失败,请重试</Text>
+                  </TouchableOpacity>
+              </View>
+          );
       }
 
     if (this.state.refreshing || this.state.diaries.length == 0) {
