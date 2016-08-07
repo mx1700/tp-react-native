@@ -38,7 +38,7 @@ export default class Diary extends Component {
     const title = diary.user ? (
       <View style={styles.title}>
         <Text style={styles.title_name}>{diary.user.name}</Text>
-        <Text style={styles.title_text}>《{diary.notebook_subject}》</Text>
+        <Text style={[styles.title_text, {flex: 1}]} numberOfLines={1}>《{diary.notebook_subject}》</Text>
         <Text style={styles.title_text}>{moment(diary.created).format('H:m')}</Text>
       </View>
     ) : (
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   title_text: {
-    fontSize: 14,
+    fontSize: 12,
     color: TPColors.inactiveText
   },
   user_icon_box: {
