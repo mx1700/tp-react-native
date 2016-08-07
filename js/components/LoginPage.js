@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
         height: 45,
         padding: 10,
         paddingLeft: 0,
+        fontSize: 13,
     },
     icon_box: {
         width: 42,
