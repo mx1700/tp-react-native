@@ -252,6 +252,9 @@ export default class DiaryPage extends Page {
   }
 
   renderTop() {
+    const content = !this.state.comment_count
+                  ? `共 ${this.state.comment_count} 条回复`
+                  : '还没有人回复';
     return (
       <View>
         <Diary
@@ -260,7 +263,7 @@ export default class DiaryPage extends Page {
             onIconPress={this._onDiaryIconPress.bind(this)}
             showComment={false} />
         <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
-        共 {this.state.comment_count} 条回复
+          {content}
         </Text>
       </View>
       )

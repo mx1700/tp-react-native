@@ -163,7 +163,7 @@ export default class UserPage extends Page {
 
       //我的页面在 tab 上,需要空出 tab 的高度
       const style = this.props.myself
-          ? {flex: 1, backgroundColor: 'white', marginBottom: 48}
+          ? {flex: 1, backgroundColor: 'white', marginBottom: 49}
           : {flex: 1, backgroundColor: 'white'};
     return (
 

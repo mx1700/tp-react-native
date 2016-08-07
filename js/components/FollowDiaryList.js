@@ -37,7 +37,7 @@ export default class FollowDiaryList extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: 'white', marginBottom: 48}}>
+      <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
         <NavigationBar title="关注日记" />
         <DiaryList
         style={{}}

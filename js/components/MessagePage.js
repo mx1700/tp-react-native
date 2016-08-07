@@ -154,7 +154,7 @@ export default class MessagePage extends Page {
          * 如果没有这个属性,页面在非当前视图更新时,list将变成空的,必须触摸一下才会展示
          */
         return (
-            <View style={{flex: 1, backgroundColor: 'white', marginBottom: 48}}>
+            <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
                 <NavigationBar
                     title="提醒"
                 />
