@@ -252,7 +252,7 @@ export default class DiaryPage extends Page {
   }
 
   renderTop() {
-    const content = !this.state.comment_count
+    const content = this.state.comment_count > 0
                   ? `共 ${this.state.comment_count} 条回复`
                   : '还没有人回复';
     return (

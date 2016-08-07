@@ -49,7 +49,7 @@ export default class Diary extends Component {
     );
 
     const view = (
-        <View>
+        <View style={{backgroundColor: 'white'}}>
           <View style={styles.box}>
             {icon}
             <View style={styles.body}>

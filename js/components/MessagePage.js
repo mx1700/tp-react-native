@@ -20,6 +20,7 @@ import TPTouchable from '../common/TPTouchable'
 import UserPage from './UserPage'
 import DiaryPage from './DiaryPage'
 import NotificationCenter from '../common/NotificationCenter'
+import EmptyView from '../common/EmptyListView'
 
 export default class MessagePage extends Page {
     constructor(props) {
@@ -216,6 +217,11 @@ export default class MessagePage extends Page {
     }
 
     renderFooter() {
+        if(this.state.refreshing) return null;
+
+        if (this.state.messages.length == 0) {
+            return <EmptyView text="没有提醒 :)" />
+        }
         return (
             <View />
         )
