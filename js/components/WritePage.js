@@ -116,7 +116,7 @@ export default class WritePage extends Page {
             console.log('write:', r);
         } catch (err) {
             console.log(err);
-            Alert.alert('日记保存失败');
+            Alert.alert('错误', '日记保存失败');
             return;
         } finally {
             this.setState({loading: false});

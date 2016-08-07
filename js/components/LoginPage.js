@@ -43,11 +43,11 @@ export default class LoginPage extends Page {
 
     async _login() {
         if (this.state.username.length == '') {
-            Alert.alert('请输入登录邮箱');
+            Alert.alert('提示','请输入登录邮箱');
             return;
         }
         if (this.state.password.length == '') {
-            Alert.alert('请输入密码');
+            Alert.alert('提示','请输入密码');
             return;
         }
         this.setState({loading: true});
@@ -59,7 +59,7 @@ export default class LoginPage extends Page {
                 component: HomePage
             });
         } else {
-            Alert.alert('用户名或密码不正确');
+            Alert.alert('提示','用户名或密码不正确');
         }
     }
 

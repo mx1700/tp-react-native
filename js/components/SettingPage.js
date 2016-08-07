@@ -16,7 +16,7 @@ import * as Api from '../Api'
 
 export default class SettingPage extends Page {
     logout() {
-        Alert.alert('确认退出登录?', '',[
+        Alert.alert('提示','确认退出登录?',[
             {text: '取消', onPress: () => console.log('OK Pressed!')},
             {text: '确认退出', onPress: () => {
                 Api.logout();
