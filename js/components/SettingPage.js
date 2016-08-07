@@ -6,6 +6,7 @@ import {
     Platform,
     RefreshControl,
     ActivityIndicator,
+    Alert
 } from 'react-native';
 import Page from './Page'
 import NavigationBar from 'NavigationBar'
@@ -15,8 +16,14 @@ import * as Api from '../Api'
 
 export default class SettingPage extends Page {
     logout() {
-        Api.logout();
-        this.props.navigator.toLogin();
+        Alert.alert('确认退出登录?', '',[
+            {text: '取消', onPress: () => console.log('OK Pressed!')},
+            {text: '确认退出', onPress: () => {
+                Api.logout();
+                this.props.navigator.toLogin();
+            }}
+        ]);
+
     }
     render() {
         return (
