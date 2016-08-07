@@ -15,17 +15,18 @@
  - 关注在用户也右上角    1
  - 提醒页              1
  - 回复的 @ 没有展示出来
- - 1启动屏
- - 1图标
+ - 启动屏              1
+ - 图标               1
  - 启动自动加载提醒     1
- - 处理错误信息
+ - 接口设置超时       1
+ - 1优化空白页
+ - 1处理错误信息
+ - 2增加头像点击区域
  - 2删除评论功能
  - 2写日记页面新增日记本
  - 2日记加载重复的问题
- - 接口设置超时       1
  - 2不允许关注自己
- - 优化空白页
- - 增加头像点击区域
+ - 不允许回复自己
  - 消息接口会超限
 
 
@@ -33,15 +34,10 @@
  - 用户页         0.5
     - 用户信息
     - 日记本入口
-    - 关注操作
-
+    - 关注操作      1
  - 日记本页
- - 欢迎页
  - 设置页
-
  - 查看过期日记本
-
- - 不允许回复自己
 
 F8Touchable
 类似豆瓣头部跟着滚动的效果不知道怎么实现
@@ -123,4 +119,8 @@ F8Touchable
 
  https://github.com/exponentjs/react-native-tab-navigator
  https://github.com/rebeccahughes/react-native-device-info
+ https://github.com/madriska/react-native-quick-actions
+ https://github.com/alinz/react-native-tabbar
+ https://github.com/niftylettuce/react-native-loading-spinner-overlay
+ https://github.com/devBrian/react-native-dropdownalert     错误提示
 
