@@ -30,6 +30,8 @@ import TPColor from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons'
 import ImageResizer from 'react-native-image-resizer'
 import NotebookAddPage from './NotebookAddPage'
+var Fabric = require('react-native-fabric');
+var { Answers } = Fabric;
 
 export default class WritePage extends Page {
 
@@ -131,7 +133,9 @@ export default class WritePage extends Page {
 
         if (r) {
             this.props.navigator.pop();
-            NotificationCenter.trigger('onWriteDiary')
+            NotificationCenter.trigger('onWriteDiary');
+            const type = photoUri == null ? 'text' : 'photo';
+            Answers.logCustom('WriteDiary', { type: type })
         }
     }
 

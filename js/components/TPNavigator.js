@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import HomePage from './HomePage'
 import LoginPage from './LoginPage'
+var Fabric = require('react-native-fabric');
+var { Answers } = Fabric;
 
 class DefaultPage extends Component {
   render() {
@@ -91,6 +93,7 @@ export default class TPNavigator extends Component {
           if (route.name == 'LoginPage') {
             return {...BottomSceneConfigs, gestures: false}
           }
+          Answers.logContentView('Route:' + route.name, 'Route', route.name);
           return SceneConfigs;
         }}
         renderScene={(route, navigator) => {

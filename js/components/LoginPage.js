@@ -17,6 +17,9 @@ import TPButton from 'TPButton'
 import TPColors from '../common/TPColors'
 import HomePage from './HomePage'
 import Icon from 'react-native-vector-icons/Ionicons';
+var Fabric = require('react-native-fabric');
+var { Answers } = Fabric;
+
 
 export default class LoginPage extends Page {
 
@@ -54,11 +57,13 @@ export default class LoginPage extends Page {
         const result = await Api.login(this.state.username, this.state.password);
         this.setState({loading: false});
         if (result) {
+            Answers.logLogin('Email', true);
             this.props.navigator.resetTo({
                 name: 'HomePage',
                 component: HomePage
             });
         } else {
+            Answers.logLogin('Email', false);
             Alert.alert('提示','用户名或密码不正确');
         }
     }
