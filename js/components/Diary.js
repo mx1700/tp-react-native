@@ -48,13 +48,14 @@ export default class Diary extends Component {
       </View>
     );
 
+    const lines = this.props.showAllContent ? 0 : 5;
     const view = (
         <View style={{backgroundColor: 'white'}}>
           <View style={styles.box}>
             {icon}
             <View style={styles.body}>
               {title}
-              <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>
+              <Text style={styles.content} numberOfLines={lines}>{diary.content}</Text>
               {photoView}
               {this.renderActionBar(diary)}
             </View>
@@ -133,6 +134,7 @@ export default class Diary extends Component {
 
 Diary.propTypes = {
   showComment: React.PropTypes.bool,
+  showAllContent: React.PropTypes.bool,
   diary: React.PropTypes.object,
   editable: React.PropTypes.bool,
   deletable: React.PropTypes.bool,
@@ -141,6 +143,7 @@ Diary.propTypes = {
 
 Diary.defaultProps = {
   showComment: true,
+  showAllContent: false,
   editable: false,
   deletable: false,
 };

@@ -313,7 +313,8 @@ export default class DiaryPage extends Page {
               data={this.state.diary}
               navigator={this.props.navigator}
               onIconPress={this._onDiaryIconPress.bind(this)}
-              showComment={false}/>
+              showComment={false}
+              showAllContent={true} />
           <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
             {content}
           </Text>
