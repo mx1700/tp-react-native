@@ -873,8 +873,9 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.timepill.diary-app";
 				PRODUCT_NAME = tp_react_native;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "266675ce-2075-4433-b80c-f250547c77be";
 			};
 			name = Debug;
 		};
@@ -883,7 +884,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: li zhaoguang (96T8KJDKQ3)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -901,8 +902,9 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.timepill.diary-app";
 				PRODUCT_NAME = tp_react_native;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "266675ce-2075-4433-b80c-f250547c77be";
 			};
 			name = Release;
 		};

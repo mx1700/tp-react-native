@@ -68,8 +68,8 @@ export default class WritePage extends Page {
             Alert.alert('错误', '日记本加载失败');
             return;
         }
-        //const abooks = books.filter(it => !it.isExpired);
-        const abooks = [];
+        const abooks = books.filter(it => !it.isExpired);
+        //const abooks = [];
         if (abooks.length == 0) {
             Alert.alert('提示','没有可用日记本,无法写日记',[
                 {text: '取消', onPress: () =>  this.props.navigator.pop()},
