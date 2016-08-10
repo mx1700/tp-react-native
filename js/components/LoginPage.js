@@ -123,7 +123,7 @@ export default class LoginPage extends Page {
                         </View>
                     </View>
                     <TPButton
-                        caption="登陆"
+                        caption="登录"
                         onPress={this._login.bind(this)}
                         type="bordered"
                         style={{marginTop: 25, marginHorizontal: 30}}/>
