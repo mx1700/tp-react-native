@@ -1,6 +1,7 @@
 package com.tp_react_native;
 
 import com.facebook.react.ReactActivity;
+import com.smixx.fabric.FabricPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 
 public class MainActivity extends ReactActivity {
