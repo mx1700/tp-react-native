@@ -35,7 +35,6 @@ export default class WritePage extends Page {
 
     constructor(props) {
         super(props);
-        console.log(props);
         const diary = props.diary;
         this.state = {
             selectBookId: diary == null ? 0 : diary.notebook_id,
@@ -69,7 +68,6 @@ export default class WritePage extends Page {
             return;
         }
         const abooks = books.filter(it => !it.isExpired);
-        //const abooks = [];
         if (abooks.length == 0) {
             Alert.alert('提示','没有可用日记本,无法写日记',[
                 {text: '取消', onPress: () =>  this.props.navigator.pop()},
