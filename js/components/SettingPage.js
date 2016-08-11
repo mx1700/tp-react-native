@@ -14,7 +14,7 @@ import TPButton from '../common/TPButton';
 import * as Api from '../Api'
 
 
-export default class SettingPage extends Page {
+export default class SettingPage extends Component {
     logout() {
         Alert.alert('提示','确认退出登录?',[
             {text: '取消', onPress: () => console.log('OK Pressed!')},

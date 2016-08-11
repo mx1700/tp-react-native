@@ -21,7 +21,7 @@ var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
 
-export default class LoginPage extends Page {
+export default class LoginPage extends Component {
 
     constructor() {
         super();

@@ -26,7 +26,7 @@ import ErrorView from '../common/ErrorListView'
 
 var moment = require('moment');
 
-export default class DiaryPage extends Page {
+export default class DiaryPage extends Component {
 
   constructor(props) {
     super(props);

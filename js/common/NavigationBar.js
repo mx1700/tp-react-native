@@ -27,11 +27,11 @@ import NavBar from 'react-native-navbar';
 function NavigationBarIOS(props) {
   //console.log(props);
 
-  let attr = {}
+  let attr = {};
   if (props.back) {
     attr.leftButton = {
       title: props.back,
-    }
+    };
     if (props.backPress) {
       attr.leftButton.handler = props.backPress;
     }
@@ -45,9 +45,14 @@ function NavigationBarIOS(props) {
     attr.leftButton = props.leftButton;
   }
 
+  let style = {borderColor: '#bbb', borderBottomWidth: StyleSheet.hairlineWidth}
+  if (props.noBorder == true) {
+    style = {};
+  }
+
   return (
     <NavBar
-      style={{borderColor: '#bbb', borderBottomWidth: StyleSheet.hairlineWidth}}
+      style={style}
       title={{title: props.title}}
       {...attr}
     />

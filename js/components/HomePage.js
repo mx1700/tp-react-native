@@ -12,7 +12,7 @@ import WritePage from './WritePage'
 import MessagePage from './MessagePage'
 import NotificationCenter from '../common/NotificationCenter'
 
-export default class HomePage extends Page {
+export default class HomePage extends Component {
 
   constructor(props) {
     super(props);

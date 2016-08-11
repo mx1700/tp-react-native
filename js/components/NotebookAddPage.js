@@ -23,7 +23,7 @@ import ImagePicker from 'react-native-image-picker'
 import TPColor from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default class NotebookAddPage extends Page {
+export default class NotebookAddPage extends Component {
 
     constructor(props) {
         super(props);

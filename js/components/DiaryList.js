@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
   Text,
   View,
   Image,
   ToolbarAndroid,
   Platform,
   ListView,
-  TouchableHighlight,
   RefreshControl,
   ActivityIndicator,
   InteractionManager,

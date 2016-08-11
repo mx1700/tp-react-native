@@ -33,7 +33,7 @@ import NotebookAddPage from './NotebookAddPage'
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
-export default class WritePage extends Page {
+export default class WritePage extends Component {
 
     constructor(props) {
         super(props);

@@ -22,7 +22,7 @@ import DiaryPage from './DiaryPage'
 import NotificationCenter from '../common/NotificationCenter'
 import ErrorView from '../common/ErrorListView'
 
-export default class MessagePage extends Page {
+export default class MessagePage extends Component {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({
