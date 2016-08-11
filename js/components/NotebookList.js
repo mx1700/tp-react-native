@@ -34,21 +34,27 @@ export default class NotebookList extends Component {
         }
     }
 
-    componentWillMount(){
-        InteractionManager.runAfterInteractions(() => {
-            this._loadBooks();
-        });
+    // componentDidMount(){
+    //     //InteractionManager.runAfterInteractions(() => {
+    //         this._loadBooks();
+    //     //});
+    // }
+
+    init() {
+        if (!this.loadingOnes) {
+            this._onRefresh();
+        }
+        this.loadingOnes = true;
     }
 
     _onRefresh() {
+        this.setState({
+            refreshing: true
+        });
         this._loadBooks();
     }
 
     async _loadBooks() {
-        this.setState({
-            refreshing: true
-        });
-
         let books;
         try {
             books = this.props.mySelf
@@ -96,10 +102,10 @@ export default class NotebookList extends Component {
     _renderBook(book) {
         return (
             <TouchableOpacity key={book.id} style={{flex: 1, alignItems:'center', paddingBottom: 15}}>
-                <View style={{borderWidth:StyleSheet.hairlineWidth, borderColor: '#e5e5e5', backgroundColor: '#f8f8f8', alignItems:'center', paddingBottom: 5}}>
+                <View style={{width: 140, borderWidth:StyleSheet.hairlineWidth, borderColor: '#e5e5e5', backgroundColor: '#f8f8f8', alignItems:'center', paddingBottom: 5}}>
                     <Image style={{width: 140, height: 105}} source={{uri: book.coverUrl}} />
                     <View style={{alignItems: 'center', justifyContent: 'center', padding: 5, height: 55}}>
-                        <Text>{book.subject}</Text>
+                        <Text style={{textAlign: 'center'}}>{book.subject}</Text>
                     </View>
                     <Text style={{ fontSize: 10, color: TPColors.inactiveText}}>{book.created} 创建</Text>
                     <Text style={{ fontSize: 10, color: TPColors.inactiveText}}>{book.expired} 过期</Text>

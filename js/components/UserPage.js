@@ -97,6 +97,14 @@ export default class UserPage extends Component {
         })
     }
 
+    _onValueChange(v) {
+        const index = v == '今天的日记' ? 0 : 1;
+        this.setState({selectedIndex: index})
+        if (index == 1) {
+            this.refs.bookView.init();
+        }
+    }
+
     render() {
         const name = this.props.myself ? '我的' : this.props.user.name;
         let navAttrs;
@@ -152,10 +160,11 @@ export default class UserPage extends Component {
                     <SegmentedControlIOS
                         selectedIndex={this.state.selectedIndex}
                         values={['今天的日记', '日记本']}
-                        onValueChange={(v) => this.setState({selectedIndex: v == '今天的日记' ? 0 : 1})}
+                        onValueChange={(v) => this._onValueChange(v)}
                     />
                 </View>
                 <NotebookList
+                    ref="bookView"
                     style={bookStyle}
                     userId={this.getId()}
                     mySelf={this.props.myself}
