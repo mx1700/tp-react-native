@@ -73,7 +73,15 @@ export default class DiaryList extends Component {
     }
     console.log(data, page);
     if (data) {
-      var diaries = page == 1 ? data.diaries : this.state.diaries.concat(data.diaries);
+        let diaries;
+        if (page == 1) {
+            diaries = data.diaries;
+        } else {
+            const last = this.state.diaries[this.state.diaries.length-1];
+            const news = data.diaries.filter(d => d.id < last.id);
+            diaries = this.state.diaries.concat(news);
+        }
+
       this.setState({
         diaries: diaries,
         diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
