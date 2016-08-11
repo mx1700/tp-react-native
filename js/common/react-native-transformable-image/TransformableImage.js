@@ -102,12 +102,14 @@ export default class TransformableImage extends Component {
         style={this.props.style}>
         <Image
           {...this.props}
-          style={[this.props.style, {backgroundColor: 'transparent'}]}
+          style={[this.props.style, {backgroundColor: 'transparent', alignItems: 'center', justifyContent:'center'}]}
           resizeMode={'contain'}
           onLoadStart={this.onLoadStart.bind(this)}
           onLoad={this.onLoad.bind(this)}
           capInsets={{left: 0.1, top: 0.1, right: 0.1, bottom: 0.1}} //on iOS, use capInsets to avoid image downsampling
-        />
+        >
+          {this.props.children}
+        </Image>
       </ViewTransformer>
     );
   }

@@ -118,12 +118,12 @@ export default class Diary extends Component {
                 }
               });
             }}
-          style={{ width: 220, marginTop: 15, backgroundColor: "#f8f8f8", padding: 0 }}
+          style={{ width: 160, marginTop: 15, backgroundColor: "#f8f8f8", padding: 0 }}
           >
           <Image style={styles.photo}
                  key={diary.id}
             resizeMode="cover"
-            source={{uri: diary.photoUrl}} />
+            source={{uri: diary.photoThumbUrl.replace('w240-h320', 'w320-h320-c320:320')}} />
         </TouchableOpacity>
       )
       : null;
