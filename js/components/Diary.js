@@ -123,7 +123,7 @@ export default class Diary extends Component {
           <Image style={styles.photo}
                  key={diary.id}
             resizeMode="cover"
-            source={{uri: diary.photoThumbUrl.replace('w240-h320', 'w320-h320-c320:320')}} />
+            source={{uri: diary.photoThumbUrl.replace('w240-h320', 'w320-h320-c320:320-q75')}} />
         </TouchableOpacity>
       )
       : null;
