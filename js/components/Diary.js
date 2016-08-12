@@ -39,12 +39,12 @@ export default class Diary extends Component {
       <View style={styles.title}>
         <Text style={styles.title_name}>{diary.user.name}</Text>
         <Text style={[styles.title_text, {flex: 1}]} numberOfLines={1}>《{diary.notebook_subject}》</Text>
-        <Text style={styles.title_text}>{moment(diary.created).format('H:m')}</Text>
+        <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
       </View>
     ) : (
       <View style={styles.title}>
         <Text style={styles.title_h}>《{diary.notebook_subject}》</Text>
-        <Text style={styles.title_text}>{moment(diary.created).format('H:m')}</Text>
+        <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
       </View>
     );
 

@@ -340,7 +340,7 @@ export default class DiaryPage extends Component {
               <View style={styles.body}>
                 <View style={styles.title}>
                   <Text style={styles.title_name}>{comment.user.name}</Text>
-                  <Text style={styles.title_text}>{moment(comment.created).format('H:m')}</Text>
+                  <Text style={styles.title_text}>{moment(comment.created).format('H:mm')}</Text>
                 </View>
                 <Text style={styles.content}>{content}</Text>
               </View>
