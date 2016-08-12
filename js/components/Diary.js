@@ -114,7 +114,7 @@ export default class Diary extends Component {
                 name: 'PhotoPage',
                 component: PhotoPage,
                 params: {
-                  source: {uri: diary.photoUrl}
+                  source: {uri: diary.photoUrl.replace('w640', 'w640-q75')}
                 }
               });
             }}
