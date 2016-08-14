@@ -50,7 +50,7 @@ export default class MessagePage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 45 * 1000)
+        }, 60 * 1000)
     }
 
     componentWillUnmount() {
@@ -99,12 +99,16 @@ export default class MessagePage extends Component {
         }
 
         try {
-            await Api.deleteMessage(ids);
             const newMsg = this.state.messages.filter((msg) => ids.indexOf(msg.id) == -1);
             this._setMsgList(newMsg);
+            await Api.deleteMessage(ids);
         } catch (err) {
             console.log(err);
         }
+    }
+
+    _onDeletePress(msg) {
+        this._setRead(msg).done();
     }
 
     async _loadMessages() {
@@ -141,6 +145,7 @@ export default class MessagePage extends Component {
 
             }, []);
 
+        console.log(rowData);
         this.setState({
             messagesDataSource: this.state.messagesDataSource.cloneWithRows(rowData),
             messages: list,
@@ -198,6 +203,9 @@ export default class MessagePage extends Component {
                 <View key={msg.link_id} style={styles.message}>
                     <Icon name="ios-text" size={16} style={styles.icon} color={TPColors.light} />
                     <Text style={{flex: 1, lineHeight: 20}}>{body}</Text>
+                    <TPTouchable onPress={() => this._onDeletePress(msg)}>
+                        <Icon name="md-close" size={16} style={styles.delete} color={TPColors.inactiveText} />
+                    </TPTouchable>
                 </View>
             </TPTouchable>
         )
@@ -210,6 +218,9 @@ export default class MessagePage extends Component {
                 <View style={styles.message}>
                     <Icon name="ios-heart" size={16} style={styles.icon} color='#d9534f' />
                     <Text key={msg.link_id} style={{flex: 1, lineHeight: 20}}>{body}</Text>
+                    <TPTouchable onPress={() => this._onDeletePress(msg)}>
+                        <Icon name="md-close" size={16} style={styles.delete} color={TPColors.inactiveText} />
+                    </TPTouchable>
                 </View>
             </TPTouchable>
         )
@@ -228,17 +239,21 @@ export default class MessagePage extends Component {
 }
 
 const styles = StyleSheet.create({
-   message: {
-       padding: 20,
-       borderColor: TPColors.cellBorder,
-       borderBottomWidth: StyleSheet.hairlineWidth,
-       flexDirection: 'row'
-   },
-   icon: {
-       marginRight: 10,
-       marginTop: 1,
-       lineHeight: 20,
-   }
+    message: {
+        padding: 20,
+        borderColor: TPColors.cellBorder,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        flexDirection: 'row'
+    },
+    icon: {
+        marginRight: 10,
+        marginTop: 1,
+        lineHeight: 20,
+    },
+    delete: {
+        lineHeight: 20,
+        paddingHorizontal: 8,
+    }
 });
 
 function unique(array){
