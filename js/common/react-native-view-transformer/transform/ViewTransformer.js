@@ -157,9 +157,15 @@ export default class ViewTransformer extends React.Component {
   }
 
   onResponderGrant(evt, gestureState) {
+    //console.log(JSON.parse(JSON.stringify(gestureState)));
     this.props.onTransformStart && this.props.onTransformStart();
     this.setState({responderGranted: true});
     this.measureLayout();
+
+    this.longPressTimer = setTimeout(() => {
+      this.props.onLongPress && this.props.onLongPress();
+      this.longPressTimer = null;
+    }, 750);
   }
 
   onResponderMove(evt, gestureState) {
@@ -216,8 +222,14 @@ export default class ViewTransformer extends React.Component {
       return;
     }
 
-    if (!gestureState.doubleTapUp && gestureState.singleTapUp) {
-      this.singleTimer = setTimeout(() => this.props.onPress && this.props.onPress(), 320);
+    //console.log(JSON.parse(JSON.stringify(gestureState)));
+
+    if (this.longPressTimer) {
+      clearTimeout(this.longPressTimer);
+
+      if (!gestureState.doubleTapUp && gestureState.singleTapUp) {
+        this.singleTimer = setTimeout(() => this.props.onPress && this.props.onPress(), 320);
+      }
     }
 
     if (gestureState.doubleTapUp && this.singleTimer) {

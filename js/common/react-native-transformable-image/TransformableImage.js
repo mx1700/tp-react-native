@@ -96,6 +96,7 @@ export default class TransformableImage extends Component {
         onTransformGestureReleased={this.props.onTransformGestureReleased}
         onViewTransformed={this.props.onViewTransformed}
         onPress={this.props.onPress}
+        onLongPress={this.props.onLongPress}
         maxScale={maxScale}
         contentAspectRatio={contentAspectRatio}
         onLayout={this.onLayout.bind(this)}

@@ -8,6 +8,9 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     Text,
+    CameraRoll,
+    ActionSheetIOS,
+    Alert
 } from 'react-native';
 import ZoomImage from '../common/react-native-transformable-image/TransformableImage';
 
@@ -43,10 +46,30 @@ export default class PhotoPage extends Component {
         alert('图片加载失败')
     }
 
-    handleLoad() {
+    handleLoad(e) {
         this.setState({
             loading: false
         });
+        console.log(e);
+        Object.keys(e).map(p => console.log(e[p]) );
+    }
+
+    onLongPress() {
+        ActionSheetIOS.showActionSheetWithOptions({
+            options:['保存照片', '取消'],
+            cancelButtonIndex:1,
+        }, (index) => {
+            if(index == 0) {
+                this.saveImage().done();
+            }
+        });
+
+    }
+
+    async saveImage() {
+        //TODO: android 不支持
+        await CameraRoll.saveToCameraRoll(this.props.source.uri);
+        Alert.alert('提示','保存成功');
     }
 
     render() {
@@ -72,6 +95,7 @@ export default class PhotoPage extends Component {
                 <ZoomImage
                     style={{flex: 1}}
                     onPress={() => this.props.navigator.pop()}
+                    onLongPress={this.onLongPress.bind(this)}
                     source={this.props.source}
                     onLoadStart={this.handleLoadStart.bind(this)}
                     onProgress={this.handleProgress.bind(this)}
