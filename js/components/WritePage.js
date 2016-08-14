@@ -47,6 +47,8 @@ export default class WritePage extends Component {
             photoUri: null,
             photoSource: null,
             photoInfo: null,
+            loadBookError: false,
+            bookEmptyError: false,
         };
     }
 
@@ -67,14 +69,17 @@ export default class WritePage extends Component {
         } catch(err) {
             console.log(err);
             Alert.alert('错误', '日记本加载失败');
+            this.state.loadBookError = true;
             return;
         }
         const abooks = books.filter(it => !it.isExpired);
+        //const abooks = [];
         if (abooks.length == 0) {
             Alert.alert('提示','没有可用日记本,无法写日记',[
                 {text: '取消', onPress: () =>  this.props.navigator.pop()},
                 {text: '创建一个', onPress: () => this._createBook()}
             ]);
+            this.state.bookEmptyError = true;
             return;
         }
         if (this.props.diary == null) {
@@ -90,8 +95,13 @@ export default class WritePage extends Component {
     }
 
     _writePress() {
-        if (this.state.selectBookId == 0) {
-            Alert.alert('提示','日记本列表加载失败');
+        if (this.state.loadBookError) {
+            Alert.alert('失败','日记本列表加载失败');
+            return;
+        }
+
+        if (this.state.bookEmptyError) {
+            Alert.alert('失败','没有可用的日记本');
             return;
         }
 
@@ -195,6 +205,8 @@ export default class WritePage extends Component {
         this.setState({
             selectBookId: book.id,
             books: books,
+            bookEmptyError: true,
+            loadBookError: true,
         });
     }
 
