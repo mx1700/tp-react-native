@@ -47,7 +47,11 @@ export default class DiaryList extends Component {
   }
 
   refresh() {
-    this._onRefresh()
+      if (this.state.refreshing) {
+          return;
+      }
+    this._onRefresh();
+      this.refs.list.scrollTo({x: 0, y:0, animated: false})
   }
 
   async _loadTodayDiaries(page) {
@@ -175,6 +179,7 @@ export default class DiaryList extends Component {
   render() {
     return (
       <ListView
+          ref="list"
         dataSource={this.state.diariesDateSource}
         renderRow={(rowData) =>
           <Diary data={rowData}

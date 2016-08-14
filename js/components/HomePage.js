@@ -66,11 +66,15 @@ export default class HomePage extends Component {
           selectedIconName="ios-home"
           selected={this.state.selectedTab == 'home'}
           onPress={() => {
+              if (this.state.selectedTab == 'home') {
+                  this.refs.homeList.refresh();
+                  return;
+              }
             this.setState({
               selectedTab: 'home'
             });
           }}>
-          <HomeDiaryList navigator={this.props.navigator} />
+          <HomeDiaryList ref="homeList" navigator={this.props.navigator} />
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
@@ -79,11 +83,15 @@ export default class HomePage extends Component {
           selectedIconName="ios-heart"
           selected={this.state.selectedTab == 'follow'}
           onPress={() => {
+              if (this.state.selectedTab == 'follow') {
+                  this.refs.followList.refresh();
+                  return;
+              }
             this.setState({
               selectedTab: 'follow'
             });
           }}>
-          <FollowDiaryList navigator={this.props.navigator} />
+          <FollowDiaryList ref="followList" navigator={this.props.navigator} />
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS

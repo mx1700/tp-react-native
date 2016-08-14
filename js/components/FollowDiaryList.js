@@ -25,6 +25,10 @@ export default class FollowDiaryList extends Component {
     }
   }
 
+  refresh() {
+    this.refs.list.refresh();
+  }
+
   _toDiaryPage(diary) {
     this.props.navigator.push({
       name: 'DiaryPage',
@@ -40,6 +44,7 @@ export default class FollowDiaryList extends Component {
       <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
         <NavigationBar title="关注日记" />
         <DiaryList
+            ref="list"
         style={{}}
           navigator={this.props.navigator}
           getDiariesPage={this._loadTodayDiaries.bind(this)}
