@@ -16,7 +16,6 @@ import {
 import * as Api from '../Api'
 import Diary from './Diary'
 import TPColors from 'TPColors'
-import DiaryPage from './DiaryPage'
 import UserPage from './UserPage'
 import WritePage from './WritePage'
 import ErrorView from '../common/ErrorListView'
@@ -60,9 +59,7 @@ export default class DiaryList extends Component {
     }
     let data = null;
     try {
-      //console.log('_loadTodayDiaries', this.state)
-      const page_size = this.state.page_size;
-      data = await this.props.getDiariesPage(page, page_size);
+      data = await this.props.getDiariesPage(page, this.state.page_size);
     } catch(e) {
       if(e.response && e.response.status == 401) {
         this.props.navigator.toLogin();

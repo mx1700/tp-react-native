@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    ToolbarAndroid,
     Platform,
     RefreshControl,
     ActivityIndicator,
@@ -12,6 +11,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import * as Api from '../Api'
+import NotebookPage from './NotebookPage'
 import TPColors from '../common/TPColors'
 var GridView = require('../common/GridView');
 
@@ -74,6 +74,16 @@ export default class NotebookList extends Component {
         console.log(books);
     }
 
+    _bookPress(book) {
+        this.props.navigator.push({
+            name: 'NotebookPage',
+            component: NotebookPage,
+            params: {
+                notebook: book
+            }
+        })
+    }
+
     render() {
         return (
             <GridView
@@ -84,7 +94,7 @@ export default class NotebookList extends Component {
                 renderSeparator={null}
                 items={this.state.books}
                 fillIncompleteRow={false}
-                renderItem={this._renderBook}
+                renderItem={this._renderBook.bind(this)}
                 //renderSectionHeader={this._renderHeader}
                 automaticallyAdjustContentInsets={false}
                 style={[{paddingTop: 15}, this.props.style]}
@@ -101,7 +111,7 @@ export default class NotebookList extends Component {
 
     _renderBook(book) {
         return (
-            <TouchableOpacity key={book.id} style={{flex: 1, alignItems:'center', paddingBottom: 15}}>
+            <TouchableOpacity key={book.id} onPress={() => this._bookPress(book)} style={{flex: 1, alignItems:'center', paddingBottom: 15}}>
                 <View style={{width: 140, borderWidth:StyleSheet.hairlineWidth, borderColor: '#e5e5e5', borderRadius: 5, backgroundColor: '#f8f8f8', alignItems:'center', paddingBottom: 5, overflow: 'hidden'}}>
                     <Image style={{width: 140, height: 105}} source={{uri: book.coverUrl}} />
                     <View style={{alignItems: 'center', justifyContent: 'center', padding: 5, height: 55}}>

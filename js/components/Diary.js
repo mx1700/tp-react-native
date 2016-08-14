@@ -35,18 +35,24 @@ export default class Diary extends Component {
         </View>
       ) : null;
 
-    const title = diary.user ? (
-      <View style={styles.title}>
-        <Text style={styles.title_name}>{diary.user.name}</Text>
-        <Text style={[styles.title_text, {flex: 1}]} numberOfLines={1}>《{diary.notebook_subject}》</Text>
-        <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
-      </View>
-    ) : (
-      <View style={styles.title}>
-        <Text style={styles.title_h}>《{diary.notebook_subject}》</Text>
-        <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
-      </View>
-    );
+    //
+    let title;
+    if (diary.user) {
+      title = <View style={styles.title}>
+                <Text style={styles.title_name}>{diary.user.name}</Text>
+                <Text style={[styles.title_text, {flex: 1}]} numberOfLines={1}>《{diary.notebook_subject}》</Text>
+                <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
+              </View>
+    } else {
+      const book = this.props.showBookSubject
+              ? (<Text style={styles.title_h}>《{diary.notebook_subject}》</Text>)
+              : null;
+
+      title = <View style={styles.title}>
+                {book}
+                <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
+              </View>
+    }
 
     const lines = this.props.showAllContent ? 0 : 5;
     const view = (
@@ -139,6 +145,7 @@ Diary.propTypes = {
   editable: React.PropTypes.bool,
   deletable: React.PropTypes.bool,
   onActionPress: React.PropTypes.func,
+  showBookSubject: React.PropTypes.bool,
 };
 
 Diary.defaultProps = {
@@ -146,6 +153,7 @@ Diary.defaultProps = {
   showAllContent: false,
   editable: false,
   deletable: false,
+  showBookSubject: true,
 };
 
 const styles = StyleSheet.create({

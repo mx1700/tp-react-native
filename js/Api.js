@@ -128,8 +128,13 @@ export async function getUserTodayDiaries(id) {
   return call('GET', '/users/' + id + '/diaries/')
 }
 
-export async function getNotebookTodayDiaries(id) {
-  return call('GET', '/notebooks/' + id + '/diaries/')
+export async function getNotebookTodayDiaries(id, page, page_size) {
+  return call('GET', '/notebooks/' + id + '/diaries?page=' + page + '&page_size=' + page_size)
+      .then((json) => {
+        json.page = Number(json.page)
+        json.page_size = Number(json.page_size)
+        return json;
+      });
 }
 
 export async function getNotebookDiaries(id, year, month, day) {

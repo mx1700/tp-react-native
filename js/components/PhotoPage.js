@@ -26,7 +26,17 @@ export default class PhotoPage extends Component {
         });
     }
 
-    handleProgress() {
+    handleProgress(event) {
+        const progress = event.nativeEvent.loaded / event.nativeEvent.total;
+        // RN is a bit buggy with these events, sometimes a loaded event and then a few
+        // 100% progress – sometimes in an infinite loop. So we just assume 100% progress
+        // actually means the image is no longer loading
+        // if (progress !== this.state.progress && this.state.progress !== 1) {
+        //     this.setState({
+        //         loading: progress < 1,
+        //         progress: progress,
+        //     });
+        // }
     }
 
     handleError() {
@@ -43,6 +53,9 @@ export default class PhotoPage extends Component {
         const loading = this.state.loading ? (
             <ActivityIndicator />
         ) : null;
+        //console.log(this.props.source);
+        //onProgress={this.handleProgress.bind(this)}
+
         return (
             <TouchableOpacity
                 activeOpacity={1}
@@ -54,7 +67,6 @@ export default class PhotoPage extends Component {
                     onPress={() => this.props.navigator.pop()}
                     source={this.props.source}
                     onLoadStart={this.handleLoadStart.bind(this)}
-                    onProgress={this.handleProgress.bind(this)}
                     onError={this.handleError.bind(this)}
                     onLoad={this.handleLoad.bind(this)}>
                     {loading}
