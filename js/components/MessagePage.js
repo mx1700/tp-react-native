@@ -50,7 +50,7 @@ export default class MessagePage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 60 * 1000)
+        }, 45 * 1000)
     }
 
     componentWillUnmount() {
@@ -100,6 +100,8 @@ export default class MessagePage extends Component {
 
         try {
             await Api.deleteMessage(ids);
+            const newMsg = this.state.messages.filter((msg) => ids.indexOf(msg.id) == -1);
+            this._setMsgList(newMsg);
         } catch (err) {
             console.log(err);
         }
@@ -109,12 +111,13 @@ export default class MessagePage extends Component {
         let list = [];
         try {
             list = await Api.getMessages(0);
-            //console.log(list);
-            NotificationCenter.trigger('tipCount', list.length);
         } catch (err) {
             console.log(err);
         }
+        this._setMsgList(list);
+    }
 
+    _setMsgList(list) {
         const rowData = list
             .reduce((ret, v) => {
                 if (v.type == 2) {  //关注
@@ -143,6 +146,7 @@ export default class MessagePage extends Component {
             messages: list,
             refreshing: false,
         });
+        NotificationCenter.trigger('tipCount', list.length);
     }
 
     render() {
