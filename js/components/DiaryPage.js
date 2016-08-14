@@ -398,9 +398,9 @@ export default class DiaryPage extends Component {
         ? (
             <TouchableOpacity onPress={() => this._onCommentActionPress(comment)}>
               <Icon name="ios-more"
-                    size={14}
+                    size={16}
                     color={TPColors.inactiveText}
-                    style={{ paddingHorizontal: 8 }} />
+                    style={{ paddingHorizontal: 12, paddingVertical: 8, marginBottom: -8 }} />
             </TouchableOpacity>
         ) : null;
 
@@ -478,6 +478,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingBottom: 10,
     alignItems: "flex-end",
+      marginTop: -8,
   },
   title_name: {
     fontWeight: 'bold',
