@@ -50,8 +50,8 @@ export default class PhotoPage extends Component {
         this.setState({
             loading: false
         });
-        console.log(e);
-        Object.keys(e).map(p => console.log(e[p]) );
+        // console.log(e);
+        // Object.keys(e).map(p => console.log(e[p]) );
     }
 
     onLongPress() {
