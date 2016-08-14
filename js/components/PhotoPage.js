@@ -16,7 +16,8 @@ export default class PhotoPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            progress: 0,
         };
     }
 
@@ -27,16 +28,15 @@ export default class PhotoPage extends Component {
     }
 
     handleProgress(event) {
-        const progress = event.nativeEvent.loaded / event.nativeEvent.total;
-        // RN is a bit buggy with these events, sometimes a loaded event and then a few
-        // 100% progress – sometimes in an infinite loop. So we just assume 100% progress
-        // actually means the image is no longer loading
-        // if (progress !== this.state.progress && this.state.progress !== 1) {
-        //     this.setState({
-        //         loading: progress < 1,
-        //         progress: progress,
-        //     });
-        // }
+        const progress = Math.floor(event.nativeEvent.loaded / event.nativeEvent.total * 100);
+        if (progress > this.state.progress) {
+            this.setState({
+                progress: progress,
+                loading: progress < 100,
+            });
+
+            //console.log(progress);
+        }
     }
 
     handleError() {
@@ -50,11 +50,18 @@ export default class PhotoPage extends Component {
     }
 
     render() {
+        const progress = this.state.progress > 0 ? this.state.progress + '%' : '';
         const loading = this.state.loading ? (
-            <ActivityIndicator />
+            <View>
+                <ActivityIndicator />
+                <Text style={{color: 'white', padding: 5, fontSize: 10}}>{progress}</Text>
+            </View>
         ) : null;
         //console.log(this.props.source);
         //onProgress={this.handleProgress.bind(this)}
+//                    onLoadStart={this.handleLoadStart.bind(this)}
+
+        //                    onLoad={this.handleLoad.bind(this)}>
 
         return (
             <TouchableOpacity
@@ -67,8 +74,10 @@ export default class PhotoPage extends Component {
                     onPress={() => this.props.navigator.pop()}
                     source={this.props.source}
                     onLoadStart={this.handleLoadStart.bind(this)}
+                    onProgress={this.handleProgress.bind(this)}
+                    onLoad={this.handleLoad.bind(this)}
                     onError={this.handleError.bind(this)}
-                    onLoad={this.handleLoad.bind(this)}>
+                    >
                     {loading}
                 </ZoomImage>
             </TouchableOpacity>
