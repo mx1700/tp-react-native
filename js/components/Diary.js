@@ -26,13 +26,13 @@ export default class Diary extends Component {
     const photoView = this.renderPhoto(diary);
 
     const icon = diary.user ? (
-        <View style={styles.user_icon_box}>
-          <RadiusTouchable onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
-            <View>
-              <Image key={diary.id} style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
-            </View>
+          <RadiusTouchable style={styles.user_icon_box} onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
+              <View style={styles.user_icon_bg}>
+                  <View>
+                    <Image key={diary.id} style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
+                  </View>
+              </View>
           </RadiusTouchable>
-        </View>
       ) : null;
 
     //
@@ -157,66 +157,71 @@ Diary.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  box: {
-    paddingVertical: 20,
-    paddingHorizontal: 15,
-    paddingBottom: 0,
-    flexDirection: "row"
-  },
-  body: {
-    flexDirection: "column",
-    flex: 1 ,
-    paddingTop: 2
-  },
-  title: {
-    flexDirection: "row",
-    paddingBottom: 5,
-    alignItems: "flex-end"
-  },
-  title_name: {
-    fontWeight: 'bold',
-    color: TPColors.contentText,
-    fontSize: 14
-  },
-  title_h: {
-    fontWeight: 'bold',
-    color: TPColors.contentText,
-    fontSize: 14
-  },
-  title_text: {
-    fontSize: 12,
-    color: TPColors.inactiveText
-  },
-  user_icon_box: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    marginRight: 12,
-    backgroundColor : TPColors.spaceBackground
-  },
-  user_icon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16
-  },
-  content: {
-    flex: 1,
-    lineHeight: 24,
-    color: TPColors.contentText,
-    fontSize: 15,
-    textAlignVertical: 'bottom',
-  },
-  photo: {
-    flex: 1,
-    height: 160
-  },
-  button_icon: {
-    marginRight: 8,
-    marginLeft: 2
-  },
-  line: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: TPColors.line,
-    marginHorizontal: 16
-  }
+    box: {
+        paddingVertical: 20,
+        paddingHorizontal: 15,
+        paddingBottom: 0,
+        flexDirection: "row"
+    },
+    body: {
+        flexDirection: "column",
+        flex: 1,
+        paddingTop: 2
+    },
+    title: {
+        flexDirection: "row",
+        paddingBottom: 5,
+        alignItems: "flex-end"
+    },
+    title_name: {
+        fontWeight: 'bold',
+        color: TPColors.contentText,
+        fontSize: 14
+    },
+    title_h: {
+        fontWeight: 'bold',
+        color: TPColors.contentText,
+        fontSize: 14
+    },
+    title_text: {
+        fontSize: 12,
+        color: TPColors.inactiveText
+    },
+    user_icon_box: {
+        padding: 10,
+        marginLeft: -10,
+        marginTop: -10
+    },
+    user_icon_bg: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        marginRight: 2,
+        backgroundColor: TPColors.spaceBackground,
+    },
+    user_icon: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+    },
+    content: {
+        flex: 1,
+        lineHeight: 24,
+        color: TPColors.contentText,
+        fontSize: 15,
+        textAlignVertical: 'bottom',
+    },
+    photo: {
+        flex: 1,
+        height: 160
+    },
+    button_icon: {
+        marginRight: 8,
+        marginLeft: 2
+    },
+    line: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: TPColors.line,
+        marginHorizontal: 16
+    }
 });

@@ -384,11 +384,10 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   user_icon_box: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    marginRight: 12,
-    backgroundColor: TPColors.spaceBackground,
+    padding: 10,
+    marginLeft: -10,
+    marginTop: -10,
+    marginRight: 2,
   },
   user_icon: {
     width: 32,
