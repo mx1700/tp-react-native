@@ -42,7 +42,9 @@ export default class UserDiaryList extends Component {
             name: 'DiaryPage',
             component: DiaryPage,
             params: {
-                diary: diary
+                diary: diary,
+                deletable: this.props.myself,
+                editable: this.props.myself,
             }
         })
     }

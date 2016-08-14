@@ -11,7 +11,8 @@ import {
     TextInput,
     InteractionManager,
     TouchableOpacity,
-    Alert
+    Alert,
+    ActionSheetIOS
 } from 'react-native';
 import Page from './Page'
 import * as Api from '../Api'
@@ -23,6 +24,8 @@ import KeyboardSpacer from 'react-native-keyboard-spacer'
 import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
 import ErrorView from '../common/ErrorListView'
+import WritePage from './WritePage'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var moment = require('moment');
 
@@ -227,6 +230,60 @@ export default class DiaryPage extends Component {
     })
   }
 
+  _onActionPress(diary) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options:['修改','删除', '取消'],
+      //title: '日记',
+      cancelButtonIndex:2,
+      destructiveButtonIndex: 1,
+    }, (index) => {
+      if(index == 0) {
+        this.props.navigator.push({
+          name: 'WritePage',
+          component: WritePage,
+          params: {
+            diary: diary
+          }
+        })
+      } else if (index == 1) {
+        Alert.alert('提示', '确认删除日记?',[
+          {text: '取消', onPress: () => console.log('OK Pressed!')},
+          {text: '删除', onPress: () => this.deleteDiary(diary)}
+        ]);
+      }
+    });
+  }
+
+  _onCommentActionPress(comment) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options:['删除回复', '取消'],
+      cancelButtonIndex:1,
+      destructiveButtonIndex: 0,
+    }, (index) => {
+      if(index == 0) {
+        Alert.alert('提示', '确认删除回复?',[
+          {text: '取消', onPress: () => console.log('OK Pressed!')},
+          {text: '删除', onPress: () => this.deleteComment(comment).done()}
+        ]);
+      }
+    });
+  }
+
+  async deleteComment(comment) {
+    const newComments = this.state.comments.filter(it => it.id != comment.id);
+    this.setState({
+      comments: newComments,
+      commentsDateSource: this.state.commentsDateSource.cloneWithRows(newComments),
+      comment_count: newComments.length,
+    });
+
+    try {
+      await Api.deleteComment(comment.id);
+    } catch(err) {
+      alert('删除回复失败');
+    }
+  }
+
   render() {
     const nav = (
         <NavigationBar
@@ -304,6 +361,11 @@ export default class DiaryPage extends Component {
   }
 
   renderTop() {
+    /*
+     deletable={this.props.deletable}
+     editable={this.props.editable}
+     没实现刷新,所以暂时不能在日记页面编辑删除
+     */
     const content = this.state.comment_count > 0
         ? `共 ${this.state.comment_count} 条回复`
         : '还没有人回复';
@@ -314,7 +376,9 @@ export default class DiaryPage extends Component {
               navigator={this.props.navigator}
               onIconPress={this._onDiaryIconPress.bind(this)}
               showComment={false}
-              showAllContent={true} />
+              showAllContent={true}
+              onActionPress={this._onActionPress.bind(this)}
+          />
           <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
             {content}
           </Text>
@@ -330,6 +394,16 @@ export default class DiaryPage extends Component {
         ? comment.content
         : `@${comment.recipient.name} ${comment.content}`;
 
+    const action = this.props.editable
+        ? (
+            <TouchableOpacity onPress={() => this._onCommentActionPress(comment)}>
+              <Icon name="ios-more"
+                    size={14}
+                    color={TPColors.inactiveText}
+                    style={{ paddingHorizontal: 8 }} />
+            </TouchableOpacity>
+        ) : null;
+
     return (
         <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
           <View style={style}>
@@ -340,7 +414,8 @@ export default class DiaryPage extends Component {
               <View style={styles.body}>
                 <View style={styles.title}>
                   <Text style={styles.title_name}>{comment.user.name}</Text>
-                  <Text style={styles.title_text}>{moment(comment.created).format('H:mm')}</Text>
+                  <Text style={[styles.title_text, {flex: 1}]}>{moment(comment.created).format('H:mm')}</Text>
+                  {action}
                 </View>
                 <Text style={styles.content}>{content}</Text>
               </View>
