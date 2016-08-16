@@ -77,7 +77,7 @@ export default class PhotoPage extends Component {
         const loading = this.state.loading ? (
             <View>
                 <ActivityIndicator />
-                <Text style={{color: 'white', padding: 5, fontSize: 10}}>{progress}</Text>
+                <Text style={{color: 'white', padding: 5, fontSize: 12}}>{progress}</Text>
             </View>
         ) : null;
         //console.log(this.props.source);

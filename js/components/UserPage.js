@@ -9,16 +9,29 @@ import {
     TouchableOpacity,
     SegmentedControlIOS,
     Text,
+    ScrollView,
+    StatusBar
 } from 'react-native';
 import * as Api from '../Api'
 import UserDiaryList from './UserDiaryList'
 import NotebookList from './NotebookList'
+import UserIntro from './UserIntro';
 import SettingPage from './SettingPage'
 import NavigationBar from 'NavigationBar'
 import NotificationCenter from '../common/NotificationCenter'
 import Icon from 'react-native-vector-icons/Ionicons';
+import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import TPColors from '../common/TPColors'
 
 export default class UserPage extends Component {
+
+    static propTypes = {
+        selectedIndex: React.PropTypes.number,
+    };
+
+    static defaultProps = {
+        selectedIndex: 0,
+    };
 
     constructor(props) {
         super(props);
@@ -28,7 +41,7 @@ export default class UserPage extends Component {
 
         this.state = {
             followed: false,
-            selectedIndex: 0,
+            selectedIndex: this.props.selectedIndex,
         }
     }
 
@@ -46,6 +59,9 @@ export default class UserPage extends Component {
     }
 
     _onWriteDiary() {
+        this.setState({
+            selectedIndex: 1,
+        });
         this.refs.list.refresh();
     }
 
@@ -98,11 +114,20 @@ export default class UserPage extends Component {
     }
 
     _onValueChange(v) {
-        const index = v == '今天的日记' ? 0 : 1;
-        this.setState({selectedIndex: index})
-        if (index == 1) {
-            this.refs.bookView.init();
+        let index;
+        switch (v) {
+            case '简介':
+                index = 0;
+                break;
+            case '日记':
+                index = 1;
+                this.refs.bookView.init();
+                break;
+            case '日记本':
+                index = 2;
+                break;
         }
+        this.setState({selectedIndex: index});
     }
 
     render() {
@@ -140,35 +165,41 @@ export default class UserPage extends Component {
             }
         }
 
-
-        const diaryStyle = this.state.selectedIndex == 0 ? null : { height: 0,flex: null };
-        const bookStyle = this.state.selectedIndex == 1 ? null :  { height: 0,flex: null,paddingTop: 0 };
+        const userStyle = this.state.selectedIndex == 0 ? null : {height: 0, flex: null};
+        const diaryStyle = this.state.selectedIndex == 1 ? null : {height: 0, flex: null};
+        const bookStyle = this.state.selectedIndex == 2 ? null : {height: 0, flex: null, paddingTop: 0};
 
         //我的页面在 tab 上,需要空出 tab 的高度
         const style = this.props.myself
             ? {flex: 1, backgroundColor: 'white', marginBottom: 49}
             : {flex: 1, backgroundColor: 'white'};
         return (
-
             <View style={style}>
                 <NavigationBar
-                    title={name}
-                    noBorder={true}
+                    title={(
+                        <SegmentedControlIOS
+                            style={{width: 220}}
+                            selectedIndex={this.state.selectedIndex}
+                            values={['简介', '日记', '日记本']}
+                            onValueChange={(v) => this._onValueChange(v)}
+                        />
+                    )}
                     {...navAttrs}
                 />
-                <View style={styles.tabBar}>
-                    <SegmentedControlIOS
-                        selectedIndex={this.state.selectedIndex}
-                        values={['今天的日记', '日记本']}
-                        onValueChange={(v) => this._onValueChange(v)}
-                    />
-                </View>
+
+                <UserIntro
+                    style={userStyle}
+                    user={this.props.user}
+                    userId={this.getId()}
+                    mySelf={this.props.myself}
+                />
+
                 <NotebookList
                     ref="bookView"
                     style={bookStyle}
                     userId={this.getId()}
                     mySelf={this.props.myself}
-                    navigator={this.props.navigator} />
+                    navigator={this.props.navigator}/>
 
                 <UserDiaryList
                     ref="list"
@@ -186,7 +217,8 @@ const styles = StyleSheet.create({
         borderColor: '#bbb',
         borderBottomWidth: StyleSheet.hairlineWidth,
         paddingVertical: 8,
-        paddingHorizontal: 8,
+        paddingHorizontal: 50,
         paddingTop: 0,
+        backgroundColor: 'white'
     }
 });

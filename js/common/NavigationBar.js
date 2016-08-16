@@ -50,10 +50,12 @@ function NavigationBarIOS(props) {
     style = {};
   }
 
+  const title = (!!props.title.props) ? props.title : {title: props.title};
+
   return (
     <NavBar
       style={style}
-      title={{title: props.title}}
+      title={title}
       {...attr}
     />
   );

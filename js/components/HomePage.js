@@ -132,7 +132,7 @@ export default class HomePage extends Component {
               selectedTab: 'my'
             });
           }}>
-          <UserPage navigator={this.props.navigator} myself={true} />
+          <UserPage navigator={this.props.navigator} myself={true} selectedIndex={1} />
         </Icon.TabBarItemIOS>
 
       </TabBarIOS>
