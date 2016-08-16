@@ -39,9 +39,12 @@ export default class UserPage extends Component {
             this._onWriteDiary = this._onWriteDiary.bind(this);
         }
 
+        let loaded = [false, false, false];
+        loaded[this.props.selectedIndex] = true;
         this.state = {
             followed: false,
             selectedIndex: this.props.selectedIndex,
+            loaded: loaded
         }
     }
 
@@ -121,13 +124,14 @@ export default class UserPage extends Component {
                 break;
             case '日记':
                 index = 1;
-                this.refs.bookView.init();
                 break;
             case '日记本':
                 index = 2;
                 break;
         }
-        this.setState({selectedIndex: index});
+        let loaded = this.state.loaded;
+        loaded[index] = true;
+        this.setState({selectedIndex: index, loaded: loaded});
     }
 
     render() {
@@ -169,6 +173,36 @@ export default class UserPage extends Component {
         const diaryStyle = this.state.selectedIndex == 1 ? null : {height: 0, flex: null};
         const bookStyle = this.state.selectedIndex == 2 ? null : {height: 0, flex: null, paddingTop: 0};
 
+        const user = this.state.loaded[0]
+            ? (
+            <UserIntro
+                style={userStyle}
+                user={this.props.user}
+                userId={this.getId()}
+                mySelf={this.props.myself}
+            />
+            ) : null;
+
+        const diaries = this.state.loaded[1]
+            ? (
+            <UserDiaryList
+                ref="list"
+                style={diaryStyle}
+                userId={this.getId()}
+                myself={this.props.myself}
+                navigator={this.props.navigator}/>
+        ) : null;
+
+        const books = this.state.loaded[2]
+            ? (
+            <NotebookList
+                ref="bookView"
+                style={bookStyle}
+                userId={this.getId()}
+                mySelf={this.props.myself}
+                navigator={this.props.navigator}/>
+            ) : null;
+
         //我的页面在 tab 上,需要空出 tab 的高度
         const style = this.props.myself
             ? {flex: 1, backgroundColor: 'white', marginBottom: 49}
@@ -187,26 +221,9 @@ export default class UserPage extends Component {
                     {...navAttrs}
                 />
 
-                <UserIntro
-                    style={userStyle}
-                    user={this.props.user}
-                    userId={this.getId()}
-                    mySelf={this.props.myself}
-                />
-
-                <NotebookList
-                    ref="bookView"
-                    style={bookStyle}
-                    userId={this.getId()}
-                    mySelf={this.props.myself}
-                    navigator={this.props.navigator}/>
-
-                <UserDiaryList
-                    ref="list"
-                    style={diaryStyle}
-                    userId={this.getId()}
-                    myself={this.props.myself}
-                    navigator={this.props.navigator}/>
+                {user}
+                {books}
+                {diaries}
             </View>
         );
     }

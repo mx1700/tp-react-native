@@ -30,22 +30,22 @@ export default class NotebookList extends Component {
         super(props);
         this.state = {
             books: [],
-            refreshing: false,
+            refreshing: true,
         }
     }
 
-    // componentDidMount(){
-    //     //InteractionManager.runAfterInteractions(() => {
-    //         this._loadBooks();
-    //     //});
+    componentDidMount(){
+        //InteractionManager.runAfterInteractions(() => {
+            this._loadBooks();
+        //});
+    }
+
+    // init() {
+    //     if (!this.loadingOnes) {
+    //         this._onRefresh();
+    //     }
+    //     this.loadingOnes = true;
     // }
-
-    init() {
-        if (!this.loadingOnes) {
-            this._onRefresh();
-        }
-        this.loadingOnes = true;
-    }
 
     _onRefresh() {
         this.setState({
