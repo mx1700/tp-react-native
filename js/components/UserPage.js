@@ -220,7 +220,6 @@ export default class UserPage extends Component {
                     )}
                     {...navAttrs}
                 />
-
                 {user}
                 {books}
                 {diaries}
