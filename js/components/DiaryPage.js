@@ -168,13 +168,15 @@ export default class DiaryPage extends Component {
      只有指定 initialListSize 足够大时，获取子内容高度才是准确的，不指定时，获取不准确
      */
     setTimeout(() => {
-      const listProps = this.refs.list.scrollProperties;
-      if (listProps.contentLength < listProps.visibleLength) {
-        return;
+      if(this && this.refs.list) {
+        const listProps = this.refs.list.scrollProperties;
+        if (listProps.contentLength < listProps.visibleLength) {
+          return;
+        }
+        const y = listProps.contentLength - listProps.visibleLength;
+        this.refs.list.scrollTo({x: 0, y: y, animated: true})
+        //console.log(this.refs.list, listProps)
       }
-      const y = listProps.contentLength - listProps.visibleLength;
-      this.refs.list.scrollTo({x: 0, y: y, animated: true})
-      //console.log(this.refs.list, listProps)
     }, 500)
   }
 
