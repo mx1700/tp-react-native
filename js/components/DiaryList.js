@@ -69,10 +69,10 @@ export default class DiaryList extends Component {
         this.props.navigator.toLogin();
         return;
       } else {
-        console.log(e.response);
+        //console.log(e.response);
       }
     }
-    console.log(data, page);
+    //console.log(data, page);
     if (data) {
         let diaries;
         if (page == 1) {

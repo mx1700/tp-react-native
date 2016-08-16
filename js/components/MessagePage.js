@@ -145,7 +145,7 @@ export default class MessagePage extends Component {
 
             }, []);
 
-        console.log(rowData);
+        //console.log(rowData);
         this.setState({
             messagesDataSource: this.state.messagesDataSource.cloneWithRows(rowData),
             messages: list,

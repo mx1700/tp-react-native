@@ -131,7 +131,7 @@ export default class WritePage extends Component {
                 : await Api.updateDiary(this.props.diary.id,
                                     this.state.selectBookId,
                                     this.state.content);
-            console.log('write:', r);
+            //console.log('write:', r);
         } catch (err) {
             console.log(err);
             Alert.alert('错误', '日记保存失败');
@@ -231,7 +231,7 @@ export default class WritePage extends Component {
         };
 
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+            //console.log('Response = ', response);
 
             if (response.didCancel) {
                 console.log('User cancelled image picker');

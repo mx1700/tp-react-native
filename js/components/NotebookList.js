@@ -71,7 +71,7 @@ export default class NotebookList extends Component {
             books: books,
             refreshing: false,
         });
-        console.log(books);
+        //console.log(books);
     }
 
     _bookPress(book) {

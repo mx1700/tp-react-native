@@ -57,7 +57,7 @@ export default class UserIntro extends Component {
             alert('简介加载失败');
             return;
         }
-        console.log(user);
+        //console.log(user);
         this.setState({
             user: user,
             loading: false,
