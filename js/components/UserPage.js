@@ -137,7 +137,8 @@ export default class UserPage extends Component {
         let navAttrs;
         if (this.props.myself) {
             navAttrs = {
-                rightButton: {
+                rightButton: <NavigationBar.Icon name="ios-cog" onPress={this._toSettingPage.bind(this)} />,
+                rightButton1: {
                     title: "设置",
                     handler: this._toSettingPage.bind(this)
                 }
@@ -149,18 +150,11 @@ export default class UserPage extends Component {
                 }
             };
             if (this.state.followed !== null) {
-                const icon = this.state.followed
-                    ? <Icon name="ios-heart" size={24} color='#d9534f'/>
-                    : <Icon name="ios-heart-outline" size={24} color='#0076FF'/>;
+                const rightButton = this.state.followed
+                        ? <NavigationBar.Icon name="ios-heart" color="#d9534f" onPress={this._followPress.bind(this)} />
+                        : <NavigationBar.Icon name="ios-heart-outline" onPress={this._followPress.bind(this)} />
 
-                navAttrs.rightButton = (
-                    <TouchableOpacity
-                        onPress={this._followPress.bind(this)}
-                        style={{flex: 1, padding: 10}}
-                    >
-                        {icon}
-                    </TouchableOpacity>
-                )
+                navAttrs.rightButton = rightButton;
             }
         }
 

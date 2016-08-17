@@ -104,4 +104,18 @@ const NavigationBar = Platform.OS === 'android'
   ? NavigationBarAndroid
   : NavigationBarIOS;
 
+NavigationBar.Icon = function(props) {
+  const color = props.color ? props.color : '#0076FF';
+  const icon = <Icon name={props.name} size={24} color={color} />
+  return (
+      <TouchableOpacity
+          onPress={props.onPress}
+          style={{flex: 1, padding: 10}}
+      >
+        {icon}
+      </TouchableOpacity>
+  );
+
+};
+
 module.exports = NavigationBar;
