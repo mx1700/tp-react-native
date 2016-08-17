@@ -292,7 +292,9 @@ export default class DiaryPage extends Component {
             title="日记详情"
             back="后退"
             backPress={() => {
-              this.refs.commentInput.setNativeProps({'editable': false});
+              if(this && this.refs.commentInput) {
+                this.refs.commentInput.setNativeProps({'editable': false});
+              }
               this.props.navigator.pop()
             }}
         />
