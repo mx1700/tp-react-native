@@ -78,7 +78,7 @@ export default class NotebookPage extends Component {
             const diaries = data.items.reduce((list, item) => {
                 const [year, month, day] =
                     item.created.substr(0, 10).split('-')
-                    .map(it => Number.parseInt(it));
+                    .map(it => Number(it));
 
                 let date = `${year}年${month}月${day}日`;
                 if (date == today) {
