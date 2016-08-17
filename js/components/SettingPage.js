@@ -6,13 +6,15 @@ import {
     Platform,
     RefreshControl,
     ActivityIndicator,
-    Alert
+    Alert,
+    Text,
+    TouchableOpacity
 } from 'react-native';
 import Page from './Page'
 import NavigationBar from 'NavigationBar'
 import TPButton from '../common/TPButton';
 import * as Api from '../Api'
-
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class SettingPage extends Component {
     logout() {
@@ -26,16 +28,61 @@ export default class SettingPage extends Component {
 
     }
     render() {
+        //                    <TPButton caption="退出登录" type="danger" onPress={this.logout.bind(this)} />
+
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
                 <NavigationBar
                     title="设置"
                     backPress={() => { this.props.navigator.pop() }}
                 />
-                <View style={{padding: 15}}>
-                <TPButton caption="退出登录" type="danger" onPress={this.logout.bind(this)} />
+                <View style={styles.group}>
+                    <TouchableOpacity style={styles.item}>
+                        <Text>修改个人信息</Text>
+                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18} color='#0076FF'/>
+                    </TouchableOpacity>
+                    <View style={styles.line} />
+                    <TouchableOpacity style={styles.item}>
+                        <Text>关于</Text>
+                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18} color='#0076FF'/>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={[styles.group, { marginTop: 45 }]}>
+                    <TouchableOpacity onPress={this.logout.bind(this)} style={styles.item}>
+                        <Text style={styles.button}>退出登录</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    group: {
+        marginTop: 30,
+        backgroundColor: 'white',
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#c8c7cc'
+    },
+    item: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15,
+        height: 40,
+    },
+    line: {
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#c8c7cc'
+    },
+    arrow: {
+        paddingTop: 1,
+    },
+    button: {
+        flex: 1,
+        textAlign: 'center',
+        color: '#d9534f'
+    }
+});
