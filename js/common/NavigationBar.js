@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import TPColors from 'TPColors'
 import NavBar from 'react-native-navbar';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // export default class NavigationBar extends Component {
 //
@@ -28,13 +29,16 @@ function NavigationBarIOS(props) {
   //console.log(props);
 
   let attr = {};
-  if (props.back) {
-    attr.leftButton = {
-      title: props.back,
-    };
-    if (props.backPress) {
-      attr.leftButton.handler = props.backPress;
-    }
+  if (props.backPress) {
+    const icon = <Icon name="ios-arrow-back" size={24} color='#0076FF'/>;
+    attr.leftButton = (
+        <TouchableOpacity
+            onPress={props.backPress}
+            style={{flex: 1, padding: 10, paddingHorizontal: 15}}
+        >
+          {icon}
+        </TouchableOpacity>
+    )
   }
 
   if (props.rightButton) {

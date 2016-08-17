@@ -149,11 +149,8 @@ export default class NotebookPage extends Component {
 
     render() {
         const navAttrs = {
-            leftButton: {
-                title: "后退",
-                handler: () => {
-                    this.props.navigator.pop()
-                }
+            backPress: () => {
+                this.props.navigator.pop()
             }
         };
 

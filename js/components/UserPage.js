@@ -144,11 +144,8 @@ export default class UserPage extends Component {
             };
         } else {
             navAttrs = {
-                leftButton: {
-                    title: "后退",
-                    handler: () => {
-                        this.props.navigator.pop()
-                    }
+                backPress: () => {
+                    this.props.navigator.pop()
                 }
             };
             if (this.state.followed !== null) {
