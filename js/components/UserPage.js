@@ -20,8 +20,6 @@ import SettingPage from './SettingPage'
 import NavigationBar from 'NavigationBar'
 import NotificationCenter from '../common/NotificationCenter'
 import Icon from 'react-native-vector-icons/Ionicons';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import TPColors from '../common/TPColors'
 
 export default class UserPage extends Component {
 

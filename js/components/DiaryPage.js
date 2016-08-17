@@ -383,7 +383,7 @@ export default class DiaryPage extends Component {
               showAllContent={true}
               onActionPress={this._onActionPress.bind(this)}
           />
-          <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 5, color: TPColors.inactiveText}}>
+          <Text style={{marginHorizontal: 16, marginTop: 20, marginBottom: 20, color: TPColors.inactiveText}}>
             {content}
           </Text>
         </View>

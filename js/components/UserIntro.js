@@ -96,6 +96,7 @@ export default class UserIntro extends Component {
                 {intro}
                 <Text style={{
                     marginTop: 10,
+                    marginBottom:30,
                     padding: 15,
                     color: TPColors.inactiveText,
                     lineHeight: 20,

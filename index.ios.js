@@ -23,7 +23,7 @@ class tp_react_native extends Component {
         fc.init();
         AppState.addEventListener('change', this.handleAppStateChange);
         CodePush.sync({installMode: CodePush.InstallMode.ON_NEXT_RESUME});
-        this.initFabric();
+        this.initFabric().done();
     }
 
     handleAppStateChange(appState) {
