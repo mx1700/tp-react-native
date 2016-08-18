@@ -177,7 +177,7 @@ export default class DiaryList extends Component {
   }
 
   render() {
-      console.log(this.state);
+      //console.log(this.state);
     return (
       <ListView
           ref="list"
