@@ -119,7 +119,7 @@ const SceneConfigs = Platform.OS === 'android'
 
 const BottomSceneConfigs = Platform.OS === 'android'
     ? Navigator.SceneConfigs.FloatFromBottomAndroid
-    : Navigator.SceneConfigs.FloatFromBottom;
+    : Navigator.SceneConfigs.FloatFromBottomAndroid;
 
 TPNavigator.childContextTypes = {
   addBackButtonListener: React.PropTypes.func,

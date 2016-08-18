@@ -95,14 +95,14 @@ export default class Diary extends Component {
               <Icon name="ios-more"
                     size={18}
                     color={TPColors.inactiveText}
-                    style={{paddingVertical: 4, paddingHorizontal: 8}} />
+                    style={{paddingVertical: 4, paddingHorizontal: 15, marginRight: 5}} />
             </TouchableOpacity>
           )
         : null;
 
     return comment != null || action != null
         ? (
-            <View style={{flexDirection: 'row', alignItems: "center", height: 45}}>
+            <View style={{flexDirection: 'row', alignItems: "center", height: 45, marginRight: -15}}>
               {comment}
               <View style={{flex: 1}} />
               {action}
@@ -159,7 +159,7 @@ Diary.defaultProps = {
 const styles = StyleSheet.create({
     box: {
         paddingVertical: 20,
-        paddingHorizontal: 15,
+        marginHorizontal: 15,
         paddingBottom: 0,
         flexDirection: "row"
     },
