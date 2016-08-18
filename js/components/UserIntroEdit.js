@@ -19,13 +19,17 @@ import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from '../common/TPColors'
 import NotificationCenter from '../common/NotificationCenter'
+import ImagePicker from 'react-native-image-picker'
+import LoadingModal from '../common/LoadingModal'
+import ImageResizer from 'react-native-image-resizer'
 
 export default class UserIntroEdit extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: null,
+            loading: false,
         };
         this._updateUserInfo = this._updateUserInfo.bind(this);
     }
@@ -48,8 +52,87 @@ export default class UserIntroEdit extends Component {
 
     async _loadUser() {
         const user = await Api.getSelfInfoByStore();
-        console.log(user);
         this.setState({user: user});
+    }
+
+    _editIcon() {
+        var options = {
+            title: '修改头像',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照',
+            chooseFromLibraryButtonTitle: '从相册选择',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else {
+                const source = Platform.OS === 'ios'
+                    ? {uri: response.uri.replace('file://', ''), isStatic: true}
+                    : {uri: response.uri, isStatic: true};
+                //
+                // this.setState({
+                //     photoSource: source,
+                //     photoUri: response.uri,
+                //     photoInfo: {
+                //         fileSize: response.fileSize,
+                //         width: response.width,
+                //         height: response.height,
+                //         isVertical: response.isVertical
+                //     }
+                // });
+
+                this._uploadIcon(response.uri, response.width, response.height)
+            }
+        });
+    }
+
+    async _uploadIcon(uri, width, height) {
+        const newUri = await this.resizePhoto(uri, width, height);
+        this.setState({loading: true});
+        let user;
+        try {
+            user = await Api.updateUserIcon(newUri);
+        } catch (err) {
+            console.log(err);
+            alert('更新失败');
+        } finally {
+            this.setState({loading: false})
+        }
+
+        if (user) {
+            await Api.updateUserInfoStore(user);
+            await this._loadUser();
+            NotificationCenter.trigger('updateUserInfo');
+            Alert.alert('提示', '头像修改成功')
+        }
+    }
+
+    async resizePhoto(uri, oWidth, oHeight) {
+        //图片最大 1440 * 900 像素
+        let width = 0;
+        let height = 0;
+        let maxPixel = 640 * 640;
+        let oPixel = oWidth * oHeight;
+        if (oPixel > maxPixel) {
+            width = Math.sqrt(oWidth * maxPixel / oHeight);
+            height = Math.sqrt(oHeight * maxPixel / oWidth);
+        } else {
+            width = oWidth;
+            height = oHeight;
+        }
+        console.log('resize to :', width, height);
+        const newUri = await ImageResizer.createResizedImage(uri, width, height, 'JPEG', 75)
+        return 'file://' + newUri;
     }
 
     _editName() {
@@ -80,7 +163,7 @@ export default class UserIntroEdit extends Component {
             const user = this.state.user;
             content = (
                 <View style={styles.group}>
-                    <TouchableOpacity style={styles.item}>
+                    <TouchableOpacity style={styles.item} onPress={this._editIcon.bind(this)}>
                         <Text style={styles.title}>头像</Text>
                         <View style={styles.right}>
                             <Image source={{uri: user.iconUrl}} style={{width: 28, height: 28, borderRadius: 14}} />
@@ -105,6 +188,7 @@ export default class UserIntroEdit extends Component {
         }
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
+                <LoadingModal loading={this.state.loading} />
                 <NavigationBar
                     title="修改个人信息"
                     backPress={() => { this.props.navigator.pop() }}
@@ -205,14 +289,7 @@ class UserIntroEditName extends Component {
     render() {
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
-                <Modal
-                    visible={this.state.loading}
-                    transparent={true}
-                    onRequestClose={() => {}}>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-                        <ActivityIndicator animating={true} color={TPColors.light} />
-                    </View>
-                </Modal>
+                <LoadingModal loading={this.state.loading} />
                 <NavigationBar
                     title="修改名字"
                     backPress={() => { this.props.navigator.pop() }}
@@ -277,14 +354,7 @@ class UserIntroEditIntro extends Component {
     render() {
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
-                <Modal
-                    visible={this.state.loading}
-                    transparent={true}
-                    onRequestClose={() => {}}>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-                        <ActivityIndicator animating={true} color={TPColors.light} />
-                    </View>
-                </Modal>
+                <LoadingModal loading={this.state.loading} />
                 <NavigationBar
                     title="修改个人简介"
                     backPress={() => { this.props.navigator.pop() }}
