@@ -45,12 +45,31 @@ export async function getSelfInfoByStore() {
   return user;
 }
 
+export async function updateUserInfoStore(newInfo) {
+  await TokenManager.setUser(newInfo);
+}
+
 export async function getSelfInfo() {
   return call('GET', '/users/my')
 }
 
 export async function getUserInfo(id) {
   return call('GET', '/users/' + id)
+}
+
+export async function updateUserIcon(photoUri) {
+  return upload('POST', '/users/icon', {
+    icon: {uri: photoUri, name: 'image.jpg', type: 'image/jpg'}
+  });
+  //TODO:更新本地缓存
+}
+
+export async function updateUserInfo(name, intro) {
+  return call('PUT', '/users', {
+    name: name,
+    intro: intro,
+  });
+  //TODO:更新本地缓存
 }
 
 export async function getSelfNotebooks() {

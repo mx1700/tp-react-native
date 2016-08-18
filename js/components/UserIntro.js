@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import * as Api from '../Api'
 import TPColors from '../common/TPColors'
+import NotificationCenter from '../common/NotificationCenter'
 var moment = require('moment');
 
 export default class UserIntro extends Component {
@@ -32,7 +33,8 @@ export default class UserIntro extends Component {
             user: props.user,
             userId: props.userId,
             loading: true,
-        }
+        };
+        this._updateUserInfo = this._updateUserInfo.bind(this);
     }
 
     getId() {
@@ -43,6 +45,19 @@ export default class UserIntro extends Component {
         InteractionManager.runAfterInteractions(() => {
             this._loadUser().done();
         });
+        if(this.props.mySelf) {
+            NotificationCenter.addLister('updateUserInfo', this._updateUserInfo)
+        }
+    }
+
+    componentWillUnmount() {
+        if(this.props.mySelf) {
+            NotificationCenter.removeLister('updateUserInfo', this._updateUserInfo)
+        }
+    }
+
+    _updateUserInfo() {
+        this._loadUser().done();
     }
 
     async _loadUser() {
@@ -58,6 +73,7 @@ export default class UserIntro extends Component {
             return;
         }
         //console.log(user);
+        console.log('listen');
         this.setState({
             user: user,
             loading: false,
