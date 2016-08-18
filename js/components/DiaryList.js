@@ -50,8 +50,8 @@ export default class DiaryList extends Component {
       if (this.state.refreshing) {
           return;
       }
-    this._onRefresh();
       this.refs.list.scrollTo({x: 0, y:0, animated: false})
+      this._onRefresh();
   }
 
   async _loadTodayDiaries(page) {
@@ -177,6 +177,7 @@ export default class DiaryList extends Component {
   }
 
   render() {
+      console.log(this.state);
     return (
       <ListView
           ref="list"
