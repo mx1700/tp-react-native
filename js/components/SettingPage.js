@@ -16,6 +16,7 @@ import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from '../common/TPColors'
 import UserIntroEdit from './UserIntroEdit'
+import AboutPage from './AboutPage'
 
 export default class SettingPage extends Component {
     logout() {
@@ -49,7 +50,14 @@ export default class SettingPage extends Component {
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18} color='#0076FF'/>
                     </TouchableOpacity>
                     <View style={styles.line} />
-                    <TouchableOpacity style={styles.item}>
+                    <TouchableOpacity
+                        style={styles.item}
+                        onPress={() =>
+                        this.props.navigator.push({
+                            name: 'AboutPage',
+                            component: AboutPage,
+                        })}
+                    >
                         <Text style={styles.title}>关于</Text>
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
                     </TouchableOpacity>

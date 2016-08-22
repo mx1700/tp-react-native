@@ -112,7 +112,15 @@ export default class NotebookList extends Component {
     _renderBook(book) {
         return (
             <TouchableOpacity key={book.id} onPress={() => this._bookPress(book)} style={{flex: 1, alignItems:'center', paddingBottom: 15}}>
-                <View style={{width: 140, borderWidth:StyleSheet.hairlineWidth, borderColor: '#e5e5e5', borderRadius: 5, backgroundColor: '#f8f8f8', alignItems:'center', paddingBottom: 5, overflow: 'hidden'}}>
+                <View style={{
+                    width: 140,
+                    shadowColor: '#000',
+                    shadowOpacity: 0.1,
+                    shadowOffset: { width: 0, height: 0 },
+                    backgroundColor: '#fff',
+                    alignItems:'center',
+                    paddingBottom: 5,
+                }}>
                     <Image style={{width: 140, height: 105}} source={{uri: book.coverUrl}} />
                     <View style={{alignItems: 'center', justifyContent: 'center', padding: 5, height: 55}}>
                         <Text style={{textAlign: 'center'}}>{book.subject}</Text>
