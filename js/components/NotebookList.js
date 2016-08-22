@@ -30,7 +30,7 @@ export default class NotebookList extends Component {
         super(props);
         this.state = {
             books: [],
-            refreshing: true,
+            refreshing: false,
         }
     }
 
@@ -55,6 +55,9 @@ export default class NotebookList extends Component {
     }
 
     async _loadBooks() {
+        this.setState({
+            refreshing: true
+        });
         let books;
         try {
             books = this.props.mySelf
