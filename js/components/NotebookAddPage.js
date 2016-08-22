@@ -20,7 +20,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from '../common/NavigationBar'
 import NotificationCenter from '../common/NotificationCenter'
 import ImagePicker from 'react-native-image-picker'
-import TPColor from '../common/TPColors'
+import TPColors from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class NotebookAddPage extends Component {
@@ -34,6 +34,7 @@ export default class NotebookAddPage extends Component {
         start.setMonth(today.getMonth() + 1);
         const end = new Date();
         end.setFullYear(today.getFullYear() + 1);
+        end.setDate(end.getDate() - 1);
 
         this.state = {
             subject: '',
@@ -94,13 +95,13 @@ export default class NotebookAddPage extends Component {
         const dateString = `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`;
 
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
                 <Modal
                     visible={this.state.loading}
                     transparent={true}
                     onRequestClose={() => {}}>
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-                        <ActivityIndicator animating={true} color={TPColor.light} />
+                        <ActivityIndicator animating={true} color={TPColors.light} />
                     </View>
                 </Modal>
                 <Modal
@@ -136,27 +137,29 @@ export default class NotebookAddPage extends Component {
                         handler: this. createPress.bind(this)
                     }}
                 />
-                <View style={{padding: 15}}>
-                    <TextInput
-                        style={{height: 45, padding: 10}}
-                        placeholder="主题"
-                        value={this.state.subject}
-                        onChangeText={(text) => this.setState({subject: text})}
-                        autoCorrect={false}
-                        autoFocus={true}
-                    />
-                    <View style={{borderColor: TPColor.cellBorder, borderBottomWidth: 1}} />
-                    <View style={{height: 45, padding: 10, flexDirection:"row", alignItems: 'center'}}>
-                        <Text style={{fontSize:16, flex: 1, color: TPColor.contentText}}>过期时间</Text>
+                <View style={styles.group}>
+                    <View style={styles.item}>
+                        <TextInput
+                            style={{flex: 1, fontSize: 16}}
+                            placeholder="主题"
+                            value={this.state.subject}
+                            onChangeText={(text) => this.setState({subject: text})}
+                            autoCorrect={false}
+                            autoFocus={true}
+                        />
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.item}>
+                        <Text style={styles.title}>过期时间</Text>
                         <TouchableOpacity onPress={this.openModal.bind(this)}>
-                            <Text style={{fontSize:16, color: TPColor.light}}>
+                            <Text style={{fontSize:16, color: TPColors.light}}>
                                 {dateString}
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{borderColor: TPColor.cellBorder, borderBottomWidth: 1}} />
-                    <View style={{height: 45, padding: 10, flexDirection:"row", alignItems: 'center'}}>
-                        <Text style={{fontSize:16, flex: 1, color: TPColor.contentText}}>公开日记本</Text>
+                    <View style={styles.line} />
+                    <View style={styles.item}>
+                        <Text style={styles.title}>公开日记本</Text>
                         <Switch
                             value={this.state.pub}
                             onValueChange={(v) => this.setState({pub: v})}
@@ -274,6 +277,39 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     closeButtonText: {
-        color: TPColor.light,
+        color: TPColors.light,
+    },
+    group: {
+        marginTop: 30,
+        backgroundColor: 'white',
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#c8c7cc'
+    },
+    item: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15,
+        height: 45,
+    },
+    title: {
+        fontSize: 16,
+        color: '#222222',
+    },
+    line: {
+        marginLeft: 15,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#c8c7cc'
+    },
+    arrow: {
+        paddingTop: 1,
+        color: TPColors.inactiveText,
+    },
+    button: {
+        flex: 1,
+        textAlign: 'center',
+        color: '#d9534f',
+        fontSize: 16,
     }
 });

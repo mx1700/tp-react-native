@@ -205,8 +205,8 @@ export default class WritePage extends Component {
         this.setState({
             selectBookId: book.id,
             books: books,
-            bookEmptyError: true,
-            loadBookError: true,
+            bookEmptyError: false,
+            loadBookError: false,
         });
     }
 
