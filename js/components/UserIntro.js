@@ -104,7 +104,7 @@ export default class UserIntro extends Component {
                 <View style={{height: 210, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
                     <Image
                         key={user.id}
-                        style={{width: 90, height: 90, borderRadius: 45}}
+                        style={{width: 90, height: 90, borderRadius: 45, backgroundColor: '#f3f3f3'}}
                         source={{uri: user.coverUrl}}
                     />
                     <Text style={{fontSize: 22, marginTop: 22, fontWeight: 'bold'}}>{user.name}</Text>
