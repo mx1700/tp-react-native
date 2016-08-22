@@ -92,7 +92,7 @@ export default class UserIntro extends Component {
 
         const intro = user.intro && user.intro.length > 0
             ? (
-            <Text style={{ padding: 15, color: TPColors.contentText, lineHeight: 20 }}>
+            <Text style={{ padding: 15, color: TPColors.contentText, lineHeight: 20, textAlign: 'center'}}>
                 {user.intro}
             </Text>
             ) : null;
@@ -101,7 +101,7 @@ export default class UserIntro extends Component {
             <ScrollView style={[{flex: 1, backgroundColor: 'white'}, this.props.style]}
                         automaticallyAdjustContentInsets={false}
             >
-                <View style={{height: 220, backgroundColor: '#f6f9ff', alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{height: 220, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
                     <Image
                         key={user.id}
                         style={{width: 90, height: 90, borderRadius: 45}}
@@ -111,7 +111,7 @@ export default class UserIntro extends Component {
                 </View>
                 {intro}
                 <Text style={{
-                    marginTop: 10,
+                    marginTop: 40,
                     marginBottom:30,
                     padding: 15,
                     color: TPColors.inactiveText,
