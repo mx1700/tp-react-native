@@ -101,24 +101,24 @@ export default class UserIntro extends Component {
             <ScrollView style={[{flex: 1, backgroundColor: 'white'}, this.props.style]}
                         automaticallyAdjustContentInsets={false}
             >
-                <View style={{height: 220, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{height: 210, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
                     <Image
                         key={user.id}
                         style={{width: 90, height: 90, borderRadius: 45}}
                         source={{uri: user.coverUrl}}
                     />
-                    <Text style={{fontSize: 22, marginTop: 15, fontWeight: 'bold'}}>{user.name}</Text>
+                    <Text style={{fontSize: 22, marginTop: 22, fontWeight: 'bold'}}>{user.name}</Text>
                 </View>
                 {intro}
                 <Text style={{
-                    marginTop: 40,
-                    marginBottom:30,
+                    marginTop: 30,
+                    marginBottom:50,
                     padding: 15,
                     color: TPColors.inactiveText,
                     lineHeight: 20,
                     textAlign: 'center'
                 }}>
-                    —— {moment(user.created).format('YYYY年M月D日')}加入胶囊 ——
+                     {moment(user.created).format('YYYY年M月D日')}加入胶囊
                 </Text>
             </ScrollView>
         );
