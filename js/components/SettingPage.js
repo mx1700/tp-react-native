@@ -20,11 +20,11 @@ import UserIntroEdit from './UserIntroEdit'
 export default class SettingPage extends Component {
     logout() {
         Alert.alert('提示','确认退出登录?',[
-            {text: '取消', onPress: () => console.log('OK Pressed!')},
-            {text: '确认退出', onPress: () => {
+            {text: '退出', onPress: () => {
                 Api.logout();
                 this.props.navigator.toLogin();
-            }}
+            }},
+            {text: '取消', onPress: () => console.log('OK Pressed!')},
         ]);
 
     }

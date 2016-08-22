@@ -249,8 +249,8 @@ export default class DiaryPage extends Component {
         })
       } else if (index == 1) {
         Alert.alert('提示', '确认删除日记?',[
+          {text: '删除', onPress: () => this.deleteDiary(diary)},
           {text: '取消', onPress: () => console.log('OK Pressed!')},
-          {text: '删除', onPress: () => this.deleteDiary(diary)}
         ]);
       }
     });
