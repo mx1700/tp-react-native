@@ -34,14 +34,14 @@ export default class NotebookPage extends Component {
             page_size: 20,
             more: false,
             loading_more: false,
-            refreshing: false,
+            refreshing: true,
             emptyList: false,
             errorPage: false,
             loadMoreError: false,
         };
     }
 
-    componentWillMount(){
+    componentDidMount(){
         InteractionManager.runAfterInteractions(() => {
             this._loadDiaries(this.state.page).done();
         });
@@ -181,14 +181,17 @@ export default class NotebookPage extends Component {
                            navigator={this.props.navigator} />
                 }
                 renderSectionHeader={(s, id) =>
-                    <View style={{backgroundColor: '#f5f5f5', paddingHorizontal: 15, paddingVertical: 8}}>
+                    <View style={{
+                        backgroundColor: '#f3f3f3',
+                        paddingHorizontal: 15,
+                        paddingVertical: 8,
+                    }}>
                         <Text style={{color: TPColors.contentText}}>{id}</Text>
                     </View>
                 }
                 refreshControl={
                     <RefreshControl
                         refreshing={this.state.refreshing}
-                        enabled={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)}
                         colors={[TPColors.light]}
                         tintColor={TPColors.light} />

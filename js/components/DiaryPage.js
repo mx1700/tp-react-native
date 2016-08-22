@@ -17,7 +17,7 @@ import {
 import Page from './Page'
 import * as Api from '../Api'
 import Diary from './Diary'
-import TPColors from 'TPColors'
+import TPColors from '../common/TPColors'
 import UserPage from './UserPage'
 import NavigationBar from 'NavigationBar'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
   },
   comment_input: {
     flex: 1,
-    borderColor: TPColors.inactive,
+    borderColor: '#bbb',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,
