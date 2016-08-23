@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     title_h: {
         fontWeight: 'bold',
-        color: TPColors.contentText,
+        color: '#222222',
         fontSize: 14
     },
     title_text: {
