@@ -84,8 +84,8 @@ export default class Diary extends Component {
   renderActionBar(diary) {
     const comment = diary.comment_count > 0 && this.props.showComment
         ? (<View style={{flexDirection: "row"}}>
-            <Icon name="ios-text-outline" size={14} color={TPColors.inactiveText} style={styles.button_icon} />
-            <Text style={{fontSize: 12, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
+            <Icon name="ios-text-outline" size={16} color={TPColors.inactiveText} style={styles.button_icon} />
+            <Text style={{fontSize: 14, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
           </View>)
         : null;
 
