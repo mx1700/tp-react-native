@@ -17,6 +17,7 @@ import Diary from './Diary'
 import NavigationBar from 'NavigationBar'
 import ErrorView from '../common/ErrorListView'
 import DiaryPage from './DiaryPage'
+import NotebookAddPage from './NotebookAddPage'
 var moment = require('moment');
 
 export default class NotebookPage extends Component {
@@ -38,10 +39,13 @@ export default class NotebookPage extends Component {
             emptyList: false,
             errorPage: false,
             loadMoreError: false,
+            isSelf: false,
+            notebook: this.props.notebook
         };
     }
 
     componentDidMount(){
+        this._loadSelf().done();
         InteractionManager.runAfterInteractions(() => {
             this._loadDiaries(this.state.page).done();
         });
@@ -51,8 +55,12 @@ export default class NotebookPage extends Component {
         this._loadDiaries(1).done()
     }
 
-    _onEndReached() {
-        this._loadDiaries(1).done()
+    async _loadSelf() {
+        const user = await Api.getSelfInfoByStore();
+        const isSelf = this.state.notebook.user_id == user.id;
+        this.setState({
+            isSelf: isSelf
+        })
     }
 
     async _loadDiaries(page) {
@@ -64,7 +72,7 @@ export default class NotebookPage extends Component {
         }
         let data = null;
         try {
-            data = await Api.getNotebookTodayDiaries(this.props.notebook.id, page, this.state.page_size);
+            data = await Api.getNotebookTodayDiaries(this.state.notebook.id, page, this.state.page_size);
         } catch(e) {
             console.log(e);
         }
@@ -138,7 +146,7 @@ export default class NotebookPage extends Component {
             name: 'DiaryPage',
             component: DiaryPage,
             params: {
-                diary: diary
+                diary: diary,
             }
         })
     }
@@ -147,14 +155,31 @@ export default class NotebookPage extends Component {
         alert('action')
     }
 
+    _toEditNotebookPage() {
+        this.props.navigator.push({
+            name: 'NotebookAddPage',
+            component: NotebookAddPage,
+            params: {
+                notebook: this.state.notebook,
+                onSaved: (book) => {
+                    this.setState({notebook: book})
+                }
+            }
+        })
+    }
+
     render() {
-        const navAttrs = {
+        let navAttrs = {
             backPress: () => {
                 this.props.navigator.pop()
             }
         };
 
-        const title = `《${this.props.notebook.subject}》`;
+        if (this.state.isSelf) {
+            navAttrs.rightButton = <NavigationBar.Icon name="ios-cog" onPress={this._toEditNotebookPage.bind(this)}/>;
+        }
+
+        const title = `《${this.state.notebook.subject}》`;
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>

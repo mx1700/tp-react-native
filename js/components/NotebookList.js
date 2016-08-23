@@ -102,7 +102,7 @@ export default class NotebookList extends Component {
     }
 
     render() {
-        console.log('render books')
+        //console.log('render books')
         return (
             <GridView
                 itemsPerRow={2}

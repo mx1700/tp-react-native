@@ -12,16 +12,18 @@ import {
     Modal,
     TouchableOpacity,
     Alert,
-    Switch
+    Switch,
 } from 'react-native';
 import Page from './Page'
 import * as Api from '../Api'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from '../common/NavigationBar'
 import NotificationCenter from '../common/NotificationCenter'
-import ImagePicker from 'react-native-image-picker'
 import TPColors from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
+import ImagePicker from 'react-native-image-picker'
+import LoadingModal from '../common/LoadingModal'
+import ImageResizer from 'react-native-image-resizer'
 
 export default class NotebookAddPage extends Component {
 
@@ -37,9 +39,9 @@ export default class NotebookAddPage extends Component {
         end.setDate(end.getDate() - 1);
 
         this.state = {
-            subject: '',
+            subject: this.props.notebook ? this.props.notebook.subject : '',
             date: date,
-            pub: true,
+            pub: this.props.notebook ? this.props.notebook.isPublic : true,
             modalVisible: false,
             start: start,
             end: end,
@@ -65,7 +67,12 @@ export default class NotebookAddPage extends Component {
         const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
         let book = null;
         try {
-            book = await Api.createNotebook(this.state.subject, '', dateString, this.state.pub ? 10 : 1);
+            if (!this.props.notebook) {
+                book = await Api.createNotebook(this.state.subject, '', dateString, this.state.pub ? 10 : 1);
+            } else {
+                book = await Api.updateNotebook(this.props.notebook.id, this.state.subject,
+                    this.props.notebook.description, this.state.pub ? 10 : 1)
+            }
             //console.log(book);
         } catch (err) {
             console.log(err);
@@ -79,6 +86,9 @@ export default class NotebookAddPage extends Component {
             if (this.props.onCreated) {
                 this.props.onCreated(book);
             }
+            if (this.props.onSaved) {
+                this.props.onSaved(book);
+            }
             NotificationCenter.trigger('onAddNotebook');
         }
     }
@@ -91,20 +101,111 @@ export default class NotebookAddPage extends Component {
         this.setState({modalVisible: false});
     }
 
+    _editCover() {
+        var options = {
+            title: '设置封面',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照',
+            chooseFromLibraryButtonTitle: '从相册选择',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else {
+                const source = Platform.OS === 'ios'
+                    ? {uri: response.uri.replace('file://', ''), isStatic: true}
+                    : {uri: response.uri, isStatic: true};
+
+                this._uploadIcon(response.uri, response.width, response.height)
+            }
+        });
+    }
+
+    async _uploadIcon(uri, width, height) {
+        const newUri = await this.resizePhoto(uri, width, height);
+        this.setState({loading: true});
+        let book;
+        try {
+            book = await Api.updateNotebookCover(this.props.notebook.id, newUri);
+        } catch (err) {
+            console.log(err);
+            alert('更新失败');
+        } finally {
+            this.setState({loading: false})
+        }
+        //console.log(book);
+        if (book) {
+            Alert.alert('提示', '封面设置成功');
+            if (this.props.onCreated) {
+                this.props.onCreated(book);
+            }
+            if (this.props.onSaved) {
+                this.props.onSaved(book);
+            }
+            NotificationCenter.trigger('onAddNotebook');
+        }
+    }
+
+    async resizePhoto(uri, oWidth, oHeight) {
+        //图片最大 1440 * 900 像素
+        let width = 0;
+        let height = 0;
+        let maxPixel = 640 * 640;
+        let oPixel = oWidth * oHeight;
+        if (oPixel > maxPixel) {
+            width = Math.sqrt(oWidth * maxPixel / oHeight);
+            height = Math.sqrt(oHeight * maxPixel / oWidth);
+        } else {
+            width = oWidth;
+            height = oHeight;
+        }
+        //console.log('resize to :', width, height);
+        const newUri = await ImageResizer.createResizedImage(uri, width, height, 'JPEG', 75)
+        return 'file://' + newUri;
+    }
+
     render() {
         const date = this.state.date;
         const dateString = `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`;
+        const title = !this.props.notebook ? '创建日记本' : '修改日记本';
+
+        const dataSelect = this.props.notebook ? null : (
+          <View>
+              <View style={styles.item}>
+                  <Text style={styles.title}>过期时间</Text>
+                  <TouchableOpacity onPress={this.openModal.bind(this)}>
+                      <Text style={{fontSize:16, color: TPColors.light}}>
+                          {dateString}
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+              <View style={styles.line} />
+          </View>
+        );
+
+        const setCoverView = !this.props.notebook ? null : (
+            <View style={styles.group}>
+                <TouchableOpacity style={styles.item} onPress={this._editCover.bind(this)}>
+                    <Text style={{flex: 1, textAlign: 'center', color: TPColors.light, fontSize: 16}}>设置封面</Text>
+                </TouchableOpacity>
+            </View>
+        );
+
+        //console.log(dataSelect);
 
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
-                <Modal
-                    visible={this.state.loading}
-                    transparent={true}
-                    onRequestClose={() => {}}>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-                        <ActivityIndicator animating={true} color={TPColors.light} />
-                    </View>
-                </Modal>
+                <LoadingModal loading={this.state.loading} />
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -128,8 +229,7 @@ export default class NotebookAddPage extends Component {
                     </View>
                 </Modal>
                 <NavigationBar
-                    title="创建日记本"
-                    back="取消"
+                    title={title}
                     backPress={() => {
                         this.props.navigator.pop()
                     }}
@@ -150,15 +250,7 @@ export default class NotebookAddPage extends Component {
                         />
                     </View>
                     <View style={styles.line} />
-                    <View style={styles.item}>
-                        <Text style={styles.title}>过期时间</Text>
-                        <TouchableOpacity onPress={this.openModal.bind(this)}>
-                            <Text style={{fontSize:16, color: TPColors.light}}>
-                                {dateString}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.line} />
+                    {dataSelect}
                     <View style={styles.item}>
                         <Text style={styles.title}>公开日记本</Text>
                         <Switch
@@ -167,6 +259,7 @@ export default class NotebookAddPage extends Component {
                         />
                     </View>
                 </View>
+                {setCoverView}
             </View>
         );
     }

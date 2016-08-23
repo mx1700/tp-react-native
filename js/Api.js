@@ -101,6 +101,12 @@ export async function updateNotebook(id, subject, description, privacy) {
   })
 }
 
+export async function updateNotebookCover(bookId, photoUri) {
+  return upload('POST', `/notebooks/${bookId}/cover`, {
+    cover: {uri: photoUri, name: 'image.jpg', type: 'image/jpg'},
+  })
+}
+
 export async function deleteNotebook(id) {
   return call('DELETE', '/notebooks/' + id)
 }
