@@ -144,7 +144,7 @@ export default class NotebookList extends Component {
                     alignItems:'center',
                     paddingBottom: 5,
                 }}>
-                    <Image style={{width: 140, height: 105, flexDirection: 'row', justifyContent: 'flex-end'}} source={{uri: book.coverUrl}}>
+                    <Image key={book.id} style={{width: 140, height: 105, flexDirection: 'row', justifyContent: 'flex-end'}} source={{uri: book.coverUrl}}>
                         {label}
                     </Image>
                     <View style={{alignItems: 'center', justifyContent: 'center', padding: 5, height: 55}}>
