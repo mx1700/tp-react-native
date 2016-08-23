@@ -112,6 +112,7 @@ var GridView = React.createClass({
               enableEmptySections={true}
               automaticallyAdjustContentInsets={this.props.automaticallyAdjustContentInsets}
               refreshControl={this.props.refreshControl}
+              removeClippedSubviews={this.props.removeClippedSubviews}
             />
            );
   },

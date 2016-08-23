@@ -79,6 +79,7 @@ export default class NotebookAddPage extends Component {
             if (this.props.onCreated) {
                 this.props.onCreated(book);
             }
+            NotificationCenter.trigger('onAddNotebook');
         }
     }
 

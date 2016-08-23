@@ -6,15 +6,12 @@ import {
     Platform,
     RefreshControl,
     ActivityIndicator,
-    TouchableOpacity,
     SegmentedControlIOS,
-    Text,
-    ScrollView,
-    StatusBar
 } from 'react-native';
 import * as Api from '../Api'
 import UserDiaryList from './UserDiaryList'
 import NotebookList from './NotebookList'
+import NotebookAddPage from './NotebookAddPage'
 import UserIntro from './UserIntro';
 import SettingPage from './SettingPage'
 import NavigationBar from 'NavigationBar'
@@ -114,6 +111,13 @@ export default class UserPage extends Component {
         })
     }
 
+    _toNotebookAddPage() {
+        this.props.navigator.push({
+            name: 'NotebookAddPage',
+            component: NotebookAddPage
+        })
+    }
+
     _onValueChange(v) {
         let index;
         switch (v) {
@@ -136,13 +140,15 @@ export default class UserPage extends Component {
         const name = this.props.myself ? '我的' : this.props.user.name;
         let navAttrs;
         if (this.props.myself) {
-            navAttrs = {
-                rightButton: <NavigationBar.Icon name="ios-cog" onPress={this._toSettingPage.bind(this)} />,
-                rightButton1: {
-                    title: "设置",
-                    handler: this._toSettingPage.bind(this)
+            if(this.state.selectedIndex != 2) {
+                navAttrs = {
+                    rightButton: <NavigationBar.Icon name="ios-cog" onPress={this._toSettingPage.bind(this)} />,
+                };
+            } else {
+                navAttrs = {
+                    rightButton: <NavigationBar.Icon name="md-add" onPress={this._toNotebookAddPage.bind(this)} />,
                 }
-            };
+            }
         } else {
             navAttrs = {
                 backPress: () => {
@@ -150,11 +156,9 @@ export default class UserPage extends Component {
                 }
             };
             if (this.state.followed !== null) {
-                const rightButton = this.state.followed
-                        ? <NavigationBar.Icon name="ios-heart" color="#d9534f" onPress={this._followPress.bind(this)} />
-                        : <NavigationBar.Icon name="ios-heart-outline" onPress={this._followPress.bind(this)} />
-
-                navAttrs.rightButton = rightButton;
+                navAttrs.rightButton = this.state.followed
+                    ? <NavigationBar.Icon name="ios-heart" color="#d9534f" onPress={this._followPress.bind(this)}/>
+                    : <NavigationBar.Icon name="ios-heart-outline" onPress={this._followPress.bind(this)}/>;
             }
         }
 

@@ -14,6 +14,7 @@ import * as Api from '../Api'
 import NotebookPage from './NotebookPage'
 import TPColors from '../common/TPColors'
 var GridView = require('../common/GridView');
+import NotificationCenter from '../common/NotificationCenter'
 
 export default class NotebookList extends Component {
 
@@ -31,13 +32,29 @@ export default class NotebookList extends Component {
         this.state = {
             books: [],
             refreshing: false,
-        }
+        };
+        this._onAddNotebook = this._onAddNotebook.bind(this);
     }
 
     componentDidMount(){
         //InteractionManager.runAfterInteractions(() => {
             this._loadBooks();
         //});
+        if (this.props.mySelf) {
+            NotificationCenter.addLister('onAddNotebook', this._onAddNotebook)
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.mySelf) {
+            NotificationCenter.removeLister('onAddNotebook', this._onAddNotebook)
+        }
+    }
+
+    _onAddNotebook() {
+        InteractionManager.runAfterInteractions(() => {
+            this._loadBooks().done();
+        });
     }
 
     // init() {
@@ -48,9 +65,6 @@ export default class NotebookList extends Component {
     // }
 
     _onRefresh() {
-        this.setState({
-            refreshing: true
-        });
         this._loadBooks();
     }
 
@@ -88,6 +102,7 @@ export default class NotebookList extends Component {
     }
 
     render() {
+        console.log('render books')
         return (
             <GridView
                 itemsPerRow={2}
@@ -100,6 +115,7 @@ export default class NotebookList extends Component {
                 renderItem={this._renderBook.bind(this)}
                 //renderSectionHeader={this._renderHeader}
                 automaticallyAdjustContentInsets={false}
+                removeClippedSubviews={false}
                 style={[{paddingTop: 15}, this.props.style]}
                 refreshControl={
                     <RefreshControl
