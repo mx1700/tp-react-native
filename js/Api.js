@@ -35,7 +35,6 @@ export async function logout() {
 export async function getSelfInfoByStore() {
   let user = await TokenManager.getUser();
   if (!user) {
-    console.warn('user_info not in store.')
     user = await getSelfInfo();
     if (user) {
       TokenManager.setUser(user);

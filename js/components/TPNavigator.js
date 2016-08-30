@@ -77,7 +77,6 @@ export default class TPNavigator extends Component {
   }
 
   render() {
-    //TODO:根据平台更换动画效果，ios 使用 PushFromRight ， android 用 FloatFromBottomAndroid
     return (
       <MyNavigator
         ref="navigator"

@@ -36,9 +36,11 @@ class tp_react_native extends Component {
         let user;
         try {
             user = await Api.getSelfInfoByStore();
-        } finally {
+        } catch(err) {
+            console.log(err)
+        }
+        finally {
             if (user) {
-                console.log(user);
                 Crashlytics.setUserName(user.name);
                 Crashlytics.setUserIdentifier(user.id.toString());
             }
