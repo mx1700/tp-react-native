@@ -22,13 +22,13 @@ class tp_react_native extends Component {
     componentDidMount() {
         fc.init();
         AppState.addEventListener('change', this.handleAppStateChange);
-        CodePush.sync({installMode: CodePush.InstallMode.ON_NEXT_RESUME});
+        CodePush.sync();
         this.initFabric().done();
     }
 
     handleAppStateChange(appState) {
         if (appState === 'active') {
-            CodePush.sync({installMode: CodePush.InstallMode.ON_NEXT_RESUME});
+            CodePush.sync();
         }
     }
 
