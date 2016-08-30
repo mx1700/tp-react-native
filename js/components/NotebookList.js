@@ -134,7 +134,7 @@ export default class NotebookList extends Component {
             <Text style={{height: 14, fontSize: 10, padding: 2, marginRight: 10, backgroundColor: 'red', color: 'white', opacity: 0.75}}>私密</Text>
         );
         return (
-            <TouchableOpacity key={book.id} onPress={() => this._bookPress(book)} style={{flex: 1, alignItems:'center', paddingBottom: 15}}>
+            <TouchableOpacity key={book.id} onPress={() => this._bookPress(book)} style={{flex: 1, alignItems:'center', paddingBottom: 15, backgroundColor:'white'}}>
                 <View style={{
                     width: 140,
                     shadowColor: '#000',

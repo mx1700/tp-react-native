@@ -76,7 +76,7 @@ export default class NotebookAddPage extends Component {
             //console.log(book);
         } catch (err) {
             console.log(err);
-            Alert.alert('错误', '创建日记本失败');
+            Alert.alert('错误', !this.props.notebook ? '创建日记本失败' : '修改日记本失败');
         } finally {
             this.setState({loading: false});
         }
