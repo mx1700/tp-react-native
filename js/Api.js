@@ -34,12 +34,12 @@ export async function logout() {
 
 export async function getSelfInfoByStore() {
   let user = await TokenManager.getUser();
-  if (!user) {
-    user = await getSelfInfo();
-    if (user) {
-      TokenManager.setUser(user);
-    }
-  }
+  // if (!user) {
+  //   user = await getSelfInfo();
+  //   if (user) {
+  //     TokenManager.setUser(user);
+  //   }
+  // }
 
   return user;
 }

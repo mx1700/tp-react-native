@@ -112,6 +112,13 @@ export default class MessagePage extends Component {
     }
 
     async _loadMessages() {
+        let user = await Api.getSelfInfoByStore();
+        if (!user) {
+            this.setState({
+                refreshing: false,
+            });
+            return;
+        }
         let list = [];
         try {
             list = await Api.getMessages(0);
