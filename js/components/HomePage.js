@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import WritePage from './WritePage'
 import MessagePage from './MessagePage'
 import NotificationCenter from '../common/NotificationCenter'
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 export default class HomePage extends Component {
 
@@ -23,6 +24,7 @@ export default class HomePage extends Component {
 
     this.updateTipCount = this.updateTipCount.bind(this);
       this._onWriteDiary = this._onWriteDiary.bind(this);
+      this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
     componentDidMount() {
@@ -54,8 +56,6 @@ export default class HomePage extends Component {
     const titleConfig = {
       title: '胶囊日记'
     };
-
-    //console.log(this.state);
 
     return (
       <TabBarIOS translucent={false}>

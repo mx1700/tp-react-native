@@ -10,6 +10,7 @@
     "js-md5": "^0.4.1",
     "moment": "^2.14.1",
     "react": "15.2.1",
+    "react-addons-pure-render-mixin": "^15.2.1",
     "react-native": "^0.30.0",
     "react-native-code-push": "^1.13.6-beta",
     "react-native-device-info": "^0.9.3",

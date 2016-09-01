@@ -10,8 +10,15 @@ import TPColors from 'TPColors'
 import DiaryList from './DiaryList'
 import NavigationBar from 'NavigationBar'
 import DiaryPage from './DiaryPage'
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+
 
 export default class HomeDiaryList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+  }
 
   _loadTodayDiaries(page, page_size) {
     return this.loadDiary(page, page_size);
@@ -41,6 +48,7 @@ export default class HomeDiaryList extends Component {
   }
 
   render() {
+    console.log('home diary list render');
     return (
       <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
         <NavigationBar title="胶囊日记" />

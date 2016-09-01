@@ -9,8 +9,14 @@ import * as Api from 'Api'
 import DiaryList from './DiaryList'
 import NavigationBar from 'NavigationBar'
 import DiaryPage from './DiaryPage'
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 export default class FollowDiaryList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+  }
 
   _loadTodayDiaries(page, page_size) {
     return this.loadDiary(page, page_size);
