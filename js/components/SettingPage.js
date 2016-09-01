@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from '../common/TPColors'
 import UserIntroEdit from './UserIntroEdit'
 import AboutPage from './AboutPage'
+import PasswordPage from './PasswordPage'
 
 export default class SettingPage extends Component {
     logout() {
@@ -59,6 +60,21 @@ export default class SettingPage extends Component {
                         })}
                     >
                         <Text style={styles.title}>关于</Text>
+                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.group}>
+                    <TouchableOpacity onPress={
+                        () => this.props.navigator.push({
+                            name: 'PasswordPage',
+                            component: PasswordPage,
+                            params: {
+                                type: 'setting'
+                            }
+                        })
+                    } style={styles.item}>
+                        <Text style={styles.title}>设置启动密码</Text>
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
                     </TouchableOpacity>
                 </View>

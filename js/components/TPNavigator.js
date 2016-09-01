@@ -5,24 +5,48 @@ import {
   BackAndroid,
   StyleSheet,
   StatusBar,
+    View,
 } from 'react-native';
 import HomePage from './HomePage'
 import LoginPage from './LoginPage'
+import * as Api from '../Api'
+import PasswordPage from '../components/PasswordPage'
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
 class DefaultPage extends Component {
+  state = {
+    hasPassword: null
+  };
+
+  componentWillMount() {
+    Api.getLoginPassword()
+        .then((pwd) => {
+          if(pwd) {
+            this.props.navigator.resetTo({
+              name: 'PasswordPage',
+              component: PasswordPage,
+              params: {
+                type: 'login'
+              }
+            })
+          } else {
+            this.setState({
+              hasPassword: false,
+            })
+          }
+        })
+        .catch(() => {
+          alert('启动失败')
+        })
+  }
+
   render() {
-    // <View style={{flex: 1}}>
-    //   // <StatusBar
-    //   //   translucent={true}
-    //   //   backgroundColor="rgba(0, 0, 0, 0.2)"
-    //   //   barStyle="light-content"/>
-    //   <HomePage navigator={this.props.navigator} />
-    // </View>
-    return (
-      <HomePage navigator={this.props.navigator} />
-    )
+    if (this.state.hasPassword === false) {
+      return <HomePage navigator={this.props.navigator} />
+    } else {
+      return <View style={{flex: 1, backgroundColor: 'white'}} />
+    }
   }
 }
 

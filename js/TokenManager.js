@@ -36,6 +36,14 @@ class TokenManager {
     this.user = value;
     return value;
   }
+
+  async getLoginPassword() {
+    return AsyncStorage.getItem('login_password');
+  }
+
+  async setLoginPassword(password) {
+    return AsyncStorage.setItem('login_password', password);
+  }
 }
 
 export default new TokenManager()

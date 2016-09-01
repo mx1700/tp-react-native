@@ -199,7 +199,14 @@ export async function getMessages(last_id = 0) {
 export async function deleteMessage(ids) {
   return call('POST', '/tip/read/' + ids.join(','))
 }
-//TODO: 提醒
+
+export async function getLoginPassword() {
+  return TokenManager.getLoginPassword()
+}
+
+export async function setLoginPassword(password) {
+  return TokenManager.setLoginPassword(password);
+}
 
 //==========================================================================
 
