@@ -191,7 +191,8 @@ export default class DiaryPage extends Component {
       reply_user_id: comment.user.id,
       reply_user_name: comment.user.name,
       comment_content: content,
-    })
+    });
+    this.refs.commentInput.focus();
   }
 
   _onCommentContentChange(text) {
