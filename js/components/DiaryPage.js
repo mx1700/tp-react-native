@@ -326,13 +326,8 @@ export default class DiaryPage extends Component {
           </View>
       )
     }
-    //enableEmptySections 不加会报一个不理解的警告
-    const comment_sending_box = this.state.comment_sending
-        ? (<View style={styles.comment_sending}>
-      <ActivityIndicator animating={true} color={TPColors.light} size="small"/>
-    </View>)
-        : null;
 
+    //enableEmptySections 不加会报一个不理解的警告
     return (
         <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
           {nav}
@@ -346,21 +341,41 @@ export default class DiaryPage extends Component {
               keyboardDismissMode="on-drag"
               initialListSize={99}
           />
-          <View style={styles.comment_box}>
-            <TextInput style={styles.comment_input}
-                       ref="commentInput"
-                       value={this.state.comment_content}
-                       placeholder="回复日记"
-                       autoCorrect={false}
-                       maxLength={100}
-                       onSubmitEditing={this._addCommentPress.bind(this)}
-                       selectionColor={TPColors.light}
-                       enablesReturnKeyAutomatically={true}
-                       returnKeyType="send"
-                       onChangeText={(text) => this._onCommentContentChange(text)}/>
-            {comment_sending_box}
-          </View>
+          {this.renderCommentInputBox()}
           <KeyboardSpacer />
+        </View>
+    );
+  }
+
+  renderCommentInputBox() {
+    const [date, ] = this.state.diary.created.split(' ');
+    const [year, month, day] = date.split('-');
+    const now = new Date();
+    if (now.getFullYear() != parseInt(year) ||
+        now.getMonth() + 1 != parseInt(month) ||
+        now.getDate() != parseInt(day)) {
+      return null;
+    }
+    const comment_sending_box = this.state.comment_sending
+        ? (<View style={styles.comment_sending}>
+      <ActivityIndicator animating={true} color={TPColors.light} size="small"/>
+    </View>)
+        : null;
+
+    return (
+        <View style={styles.comment_box}>
+          <TextInput style={styles.comment_input}
+                     ref="commentInput"
+                     value={this.state.comment_content}
+                     placeholder="回复日记"
+                     autoCorrect={false}
+                     maxLength={100}
+                     onSubmitEditing={this._addCommentPress.bind(this)}
+                     selectionColor={TPColors.light}
+                     enablesReturnKeyAutomatically={true}
+                     returnKeyType="send"
+                     onChangeText={(text) => this._onCommentContentChange(text)}/>
+          {comment_sending_box}
         </View>
     );
   }
