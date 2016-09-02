@@ -148,7 +148,8 @@ export default class FollowUsersPage extends Component {
                     enableEmptySections={true}
                     automaticallyAdjustContentInsets={false}
                     style={this.props.style}
-                    rightOpenValue={-75}
+                    rightOpenValue={-60}
+                    disableRightSwipe={true}
                     renderHiddenRow={this.renderAction.bind(this)}
                 />
             </View>
@@ -173,7 +174,7 @@ export default class FollowUsersPage extends Component {
     renderAction(user) {
         return (
             <TouchableOpacity style={{flex: 1, flexDirection:'row',backgroundColor:'#f9f9f9', justifyContent: 'flex-end'}} onPress={() => this._deleteUser(user)}>
-                <View style={{width: 75, backgroundColor: '#d9534f', alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{width: 60, backgroundColor: '#d9534f', alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{color: 'white'}}>删除</Text>
                 </View>
             </TouchableOpacity>
