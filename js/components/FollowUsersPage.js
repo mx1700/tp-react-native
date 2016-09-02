@@ -164,7 +164,7 @@ export default class FollowUsersPage extends Component {
                 key={user.id}
             >
                 <View style={{flexDirection: 'row', padding: 15, paddingHorizontal: 25, borderBottomWidth: 1, borderColor: TPColors.cellBorder, alignItems: 'center', backgroundColor: 'white'}}>
-                    <Image source={{uri: user.iconUrl}} style={{ width: 32, height: 32, borderRadius: 16, marginRight: 25 }} />
+                    <Image source={{uri: user.iconUrl}} style={{ width: 32, height: 32, borderRadius: 16, marginRight: 15 }} />
                     <Text>{user.name}</Text>
                 </View>
             </TPTouchable>
