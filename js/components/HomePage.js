@@ -58,7 +58,7 @@ export default class HomePage extends Component {
     };
 
     return (
-      <TabBarIOS translucent={false}>
+      <TabBarIOS translucent={false} barTintColor="#F9F9F9">
 
         <Icon.TabBarItemIOS
           title="首页"

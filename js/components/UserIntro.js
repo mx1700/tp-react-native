@@ -121,7 +121,7 @@ export default class UserIntro extends Component {
                         style={{width: 90, height: 90, borderRadius: 45, backgroundColor: '#f3f3f3'}}
                         source={{uri: user.coverUrl}}
                     />
-                    <Text style={{fontSize: 22, marginTop: 22, fontWeight: 'bold'}}>{user.name}</Text>
+                    <Text style={{fontSize: 22, marginTop: 30, fontWeight: 'bold'}}>{user.name}</Text>
                 </View>
                 {intro}
                 <Text style={{

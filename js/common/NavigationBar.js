@@ -58,9 +58,12 @@ function NavigationBarIOS(props) {
 
   return (
     <NavBar
-      style={style}
+      style={{...style, backgroundColor: '#F9F9F9'}}
       title={title}
       {...attr}
+      statusBar={{
+        tintColor: '#F9F9F9'
+      }}
     />
   );
 }
