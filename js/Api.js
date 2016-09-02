@@ -180,6 +180,10 @@ export async function getDiaryComments(diaryId) {
   return call('GET', '/diaries/' + diaryId + '/comments')
 }
 
+export async function getRelationUsers(page, page_size) {
+  return call('GET', `/relation?page=${page}&page_size=${page_size}`);
+}
+
 export async function getRelation(user_id) {
   return call('GET', '/relation/' + user_id);
 }

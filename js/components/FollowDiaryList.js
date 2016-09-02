@@ -9,6 +9,7 @@ import * as Api from 'Api'
 import DiaryList from './DiaryList'
 import NavigationBar from 'NavigationBar'
 import DiaryPage from './DiaryPage'
+import FollowUsersPage from './FollowUsersPage'
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 export default class FollowDiaryList extends Component {
@@ -45,10 +46,22 @@ export default class FollowDiaryList extends Component {
     })
   }
 
+  _openFollowUsersPage() {
+    this.props.navigator.push({
+      name: 'FollowUsersPage',
+      component: FollowUsersPage,
+    })
+  }
+
   render() {
+      const rightButton = <NavigationBar.Icon name="ios-contacts" onPress={this._openFollowUsersPage.bind(this)} />;
+
     return (
       <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
-        <NavigationBar title="关注日记" />
+        <NavigationBar
+            title="关注日记"
+            rightButton={rightButton}
+        />
         <DiaryList
             ref="list"
         style={{}}

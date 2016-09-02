@@ -26,7 +26,7 @@ export default class MessagePage extends Component {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1.link_id !== r2.link_id
+            rowHasChanged: (r1, r2) => r1 !== r2
         });
         this.state = ({
             messages: [],
@@ -50,7 +50,7 @@ export default class MessagePage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 25 * 1000)
+        }, 60 * 1000)
     }
 
     componentWillUnmount() {
@@ -125,6 +125,7 @@ export default class MessagePage extends Component {
         } catch (err) {
             console.log(err);
         }
+        console.log(list);
         this._setMsgList(list);
     }
 
@@ -206,8 +207,8 @@ export default class MessagePage extends Component {
         const users = unique(msg.list.map(it => it.content.author.name)).join('、');
         const body = `${users} 回复了你`;
         return (
-            <TPTouchable onPress={() => this._onCommentPress(msg)}>
-                <View key={msg.link_id} style={styles.message}>
+            <TPTouchable key={msg.link_id} onPress={() => this._onCommentPress(msg)}>
+                <View style={styles.message}>
                     <Icon name="ios-text" size={16} style={styles.icon} color={TPColors.light} />
                     <Text style={{flex: 1, lineHeight: 20}}>{body}</Text>
                     <TPTouchable onPress={() => this._onDeletePress(msg)}>
@@ -221,7 +222,7 @@ export default class MessagePage extends Component {
     renderFollow(msg) {
         const body = `${msg.content.user.name} 关注了你`;
         return (
-            <TPTouchable onPress={() => this._onFollowPress(msg)}>
+            <TPTouchable key={msg.link_id} onPress={() => this._onFollowPress(msg)}>
                 <View style={styles.message}>
                     <Icon name="ios-heart" size={16} style={styles.icon} color='#d9534f' />
                     <Text key={msg.link_id} style={{flex: 1, lineHeight: 20}}>{body}</Text>
