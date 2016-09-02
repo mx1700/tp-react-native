@@ -48,7 +48,7 @@ export default class HomeDiaryList extends Component {
   }
 
   render() {
-    console.log('home diary list render');
+    //console.log('home diary list render');
     return (
       <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
         <NavigationBar title="胶囊日记" />
