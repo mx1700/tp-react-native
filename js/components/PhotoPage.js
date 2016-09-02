@@ -93,7 +93,7 @@ export default class PhotoPage extends Component {
                 style={{flex: 1, backgroundColor: '#000'}}
                 onPress={() => this.props.navigator.pop()}
             >
-                <StatusBar hidden={true} animated={true} />
+                <StatusBar hidden={true} animated={true} showHideTransition="fade" />
                 <ZoomImage
                     style={{flex: 1}}
                     onPress={() => this.props.navigator.pop()}

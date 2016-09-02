@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Alert,
+    StatusBar,
 } from 'react-native';
 import NavigationBar from 'NavigationBar'
 import PasswordInput from '../common/PasswordInput'
@@ -172,6 +173,7 @@ export default class PasswordPage extends Component {
 
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
+                <StatusBar barStyle="default" />
                 {nav}
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 200}}>
                     <Text style={{fontSize: 24}}>{this.state.title}</Text>
