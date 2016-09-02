@@ -115,14 +115,13 @@ export default class FollowUsersPage extends Component {
     }
 
     _deleteUser(user) {
+        const users = this.state.users.filter((it) => it.id != user.id);
+        const ids = users.map(it => it.id);
+        this.setState({
+            users: users,
+            usersDateSource: this.state.usersDateSource.cloneWithRows(this.arrayToMap(users, it => it.id), ids),
+        });
         Api.deleteFollow(user.id)
-            .then(() => {
-                const users = this.state.users.filter((it) => it.id != user.id);
-                this.setState({
-                    users: users,
-                    usersDateSource: this.state.usersDateSource.cloneWithRows(users),
-                })
-            })
     }
 
     render() {
