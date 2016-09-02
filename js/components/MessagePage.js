@@ -125,7 +125,7 @@ export default class MessagePage extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log(list);
+        //console.log(list);
         this._setMsgList(list);
     }
 
