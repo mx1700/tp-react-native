@@ -72,12 +72,26 @@ export default class UserIntro extends Component {
             alert('简介加载失败');
             return;
         }
-        //console.log(user);
-        console.log('listen');
         this.setState({
             user: user,
             loading: false,
-        })
+        });
+
+        if(this.props.mySelf && user) {
+            let newUser;
+            try {
+                newUser = await Api.getUserInfo(user.id)
+            } catch(err) {
+                console.log(err)
+            }
+            if (newUser) {
+                Api.updateUserInfoStore(newUser);
+                this.setState({
+                    user: newUser,
+                    loading: false,
+                });
+            }
+        }
     }
 
     render() {
