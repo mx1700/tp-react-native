@@ -106,7 +106,7 @@ export default class UserIntro extends Component {
 
         const intro = user.intro && user.intro.length > 0
             ? (
-            <Text style={{ padding: 15, color: TPColors.contentText, lineHeight: 20, textAlign: 'center'}}>
+            <Text style={{ padding: 15, color: TPColors.contentText, lineHeight: 24, textAlign: 'center'}}>
                 {user.intro}
             </Text>
             ) : null;
@@ -126,7 +126,7 @@ export default class UserIntro extends Component {
                 {intro}
                 <Text style={{
                     marginTop: 30,
-                    marginBottom:50,
+                    marginBottom:60,
                     padding: 15,
                     color: TPColors.inactiveText,
                     lineHeight: 20,
