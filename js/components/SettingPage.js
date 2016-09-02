@@ -51,20 +51,6 @@ export default class SettingPage extends Component {
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18} color='#0076FF'/>
                     </TouchableOpacity>
                     <View style={styles.line} />
-                    <TouchableOpacity
-                        style={styles.item}
-                        onPress={() =>
-                        this.props.navigator.push({
-                            name: 'AboutPage',
-                            component: AboutPage,
-                        })}
-                    >
-                        <Text style={styles.title}>关于</Text>
-                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.group}>
                     <TouchableOpacity onPress={
                         () => this.props.navigator.push({
                             name: 'PasswordPage',
@@ -75,6 +61,18 @@ export default class SettingPage extends Component {
                         })
                     } style={styles.item}>
                         <Text style={styles.title}>设置启动密码</Text>
+                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
+                    </TouchableOpacity>
+                    <View style={styles.line} />
+                    <TouchableOpacity
+                        style={styles.item}
+                        onPress={() =>
+                        this.props.navigator.push({
+                            name: 'AboutPage',
+                            component: AboutPage,
+                        })}
+                    >
+                        <Text style={styles.title}>关于</Text>
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
                     </TouchableOpacity>
                 </View>
