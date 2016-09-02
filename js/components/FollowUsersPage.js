@@ -65,7 +65,7 @@ export default class FollowUsersPage extends Component {
             console.log(err);
         }
 
-        console.log(data);
+        //console.log(data);
 
         if (data) {
             let users;
