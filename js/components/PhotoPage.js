@@ -10,7 +10,8 @@ import {
     Text,
     CameraRoll,
     ActionSheetIOS,
-    Alert
+    Alert,
+    StatusBar
 } from 'react-native';
 import ZoomImage from '../common/react-native-transformable-image/TransformableImage';
 
@@ -92,6 +93,7 @@ export default class PhotoPage extends Component {
                 style={{flex: 1, backgroundColor: '#000'}}
                 onPress={() => this.props.navigator.pop()}
             >
+                <StatusBar hidden={true} animated={true} />
                 <ZoomImage
                     style={{flex: 1}}
                     onPress={() => this.props.navigator.pop()}
