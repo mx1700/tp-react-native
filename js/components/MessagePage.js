@@ -50,7 +50,7 @@ export default class MessagePage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 60 * 1000)
+        }, 25 * 1000)
     }
 
     componentWillUnmount() {
