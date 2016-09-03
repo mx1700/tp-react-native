@@ -124,8 +124,7 @@ export default class PasswordPage extends Component {
                 return;
             }
             Api.setLoginPassword(password).then(() => {
-                Alert.alert('提示', '设置成功');
-                this.props.navigator.pop();
+                Alert.alert('提示', '设置成功', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);
             }).catch(() => {
                 Alert.alert('错误', '设置失败');
             })
@@ -142,8 +141,7 @@ export default class PasswordPage extends Component {
             return;
         }
         Api.setLoginPassword('').then(() => {
-            Alert.alert('提示', '密码已清除');
-            this.props.navigator.pop();
+            Alert.alert('提示', '密码已清除', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);
         }).catch(() => {
             Alert.alert('错误', '设置失败');
         })
