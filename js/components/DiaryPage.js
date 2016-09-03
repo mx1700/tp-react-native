@@ -306,27 +306,27 @@ export default class DiaryPage extends Component {
   }
 
   _onDiaryMorePress() {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options:['修改','删除', '取消'],
-      cancelButtonIndex:2,
-      destructiveButtonIndex: 1,
-    }, (index) => {
-      if(index == 0) {
-        this.props.navigator.push({
-          name: 'WritePage',
-          component: WritePage,
-          params: {
-            diary: this.state.diary
-            //TODO:增加回调,更新日记内容
+      ActionSheetIOS.showActionSheetWithOptions({
+          options: ['修改', '删除', '取消'],
+          cancelButtonIndex: 2,
+          destructiveButtonIndex: 1,
+      }, (index) => {
+          if (index == 0) {
+              this.props.navigator.push({
+                  name: 'WritePage',
+                  component: WritePage,
+                  params: {
+                      diary: this.state.diary,
+                      onSuccess: this._editSuccess
+                  }
+              })
+          } else if (index == 1) {
+              Alert.alert('提示', '确认删除日记?', [
+                  {text: '删除', onPress: () => this.deleteDiary(this.state.diary)},
+                  {text: '取消', onPress: () => console.log('OK Pressed!')},
+              ]);
           }
-        })
-      } else if (index == 1) {
-        Alert.alert('提示', '确认删除日记?',[
-          {text: '删除', onPress: () => this.deleteDiary(this.state.diary)},
-          {text: '取消', onPress: () => console.log('OK Pressed!')},
-        ]);
-      }
-    });
+      });
   }
 
   async deleteDiary(diary) {
@@ -342,6 +342,10 @@ export default class DiaryPage extends Component {
     Alert.alert('提示', '日记已删除', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);
     NotificationCenter.trigger('onDeleteDiary');
   }
+
+  _editSuccess = (r) => {
+      this.setState({diary: r})
+  };
 
   render() {
     let nav = (

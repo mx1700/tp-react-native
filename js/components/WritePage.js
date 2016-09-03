@@ -117,7 +117,7 @@ export default class WritePage extends Component {
         this.setState({loading: true});
 
         let photoUri = this.state.photoUri;
-        if(photoUri) {
+        if (photoUri) {
             if (this.state.photoInfo.fileSize > 1024 * 1024) {
                 photoUri = await this.resizePhoto(photoUri);
             }
@@ -126,11 +126,11 @@ export default class WritePage extends Component {
         try {
             r = this.props.diary == null
                 ? await Api.addDiary(this.state.selectBookId,
-                                    this.state.content,
-                                    photoUri)
+                this.state.content,
+                photoUri)
                 : await Api.updateDiary(this.props.diary.id,
-                                    this.state.selectBookId,
-                                    this.state.content);
+                this.state.selectBookId,
+                this.state.content);
             //console.log('write:', r);
         } catch (err) {
             console.log(err);
@@ -145,7 +145,10 @@ export default class WritePage extends Component {
             this.props.navigator.pop();
             NotificationCenter.trigger('onWriteDiary');
             const type = photoUri == null ? 'text' : 'photo';
-            Answers.logCustom('WriteDiary', { type: type })
+            Answers.logCustom('WriteDiary', {type: type});
+            if (this.props.onSuccess) {
+                this.props.onSuccess(r);
+            }
         }
     }
 
@@ -367,6 +370,7 @@ export default class WritePage extends Component {
 
 WritePage.propTypes = {
     diary: React.PropTypes.object,
+    onSuccess: React.PropTypes.func,
 };
 
 WritePage.defaultProps = {
