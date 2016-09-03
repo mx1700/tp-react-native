@@ -44,18 +44,21 @@ export default class UserPage extends Component {
 
     componentDidMount() {
         if (this.props.myself) {
-            NotificationCenter.addLister('onWriteDiary', this._onWriteDiary)
+            NotificationCenter.addLister('onWriteDiary', this._onWriteDiary);
+            NotificationCenter.addLister('onDeleteDiary', this._onWriteDiary);
         }
         this._loadRelation();
     }
 
     componentWillUnmount() {
         if (this.props.myself) {
-            NotificationCenter.removeLister('onWriteDiary', this._onWriteDiary)
+            NotificationCenter.removeLister('onWriteDiary', this._onWriteDiary);
+            NotificationCenter.removeLister('onDeleteDiary', this._onWriteDiary);
         }
     }
 
     _onWriteDiary() {
+        //console.log('_onWriteDiary');
         this.setState({
             selectedIndex: 1,
         });

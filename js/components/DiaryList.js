@@ -180,6 +180,7 @@ export default class DiaryList extends Component {
   }
 
   render() {
+      //console.log('DiaryList render');
       //console.log(this.state);
     return (
       <ListView
@@ -209,6 +210,7 @@ export default class DiaryList extends Component {
         //renderHeader={() => <View style={{height: 4}}></View>}
         // onScroll={(event) => console.log(event.nativeEvent)}
         style={this.props.style}
+          removeClippedSubviews={this.props.removeClippedSubviews}
       />
     );
   }
@@ -263,9 +265,11 @@ DiaryList.propTypes = {
   editable: React.PropTypes.bool,
   deletable: React.PropTypes.bool,
   getDiariesPage: React.PropTypes.func,
+    removeClippedSubviews: React.PropTypes.bool,
 };
 
 DiaryList.defaultProps = {
   editable: false,
   deletable: false,
+    removeClippedSubviews: true,
 };

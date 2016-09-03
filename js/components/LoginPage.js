@@ -91,7 +91,7 @@ export default class LoginPage extends Component {
                     <View style={styles.inputBox}>
                         <View style={{flexDirection: 'row'}}>
                             <View style={styles.icon_box}>
-                                <Icon name="ios-mail-outline" size={24} color={TPColors.inactiveText}
+                                <Icon name="ios-mail-outline" size={20} color={TPColors.inactiveText}
                                       style={{paddingTop: 2}}/>
                             </View>
                             <TextInput
@@ -110,7 +110,7 @@ export default class LoginPage extends Component {
                         <View style={styles.line} />
                         <View style={{flexDirection: 'row'}}>
                             <View style={styles.icon_box}>
-                                <Icon name="ios-medical-outline" size={20} color={TPColors.inactiveText}
+                                <Icon name="ios-medical-outline" size={18} color={TPColors.inactiveText}
                                       style={{paddingTop: 1}}/>
                             </View>
                             <TextInput

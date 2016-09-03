@@ -12,9 +12,8 @@ import {
     InteractionManager,
     TouchableOpacity,
     Alert,
-    ActionSheetIOS
+    ActionSheetIOS,
 } from 'react-native';
-import Page from './Page'
 import * as Api from '../Api'
 import Diary from './Diary'
 import TPColors from '../common/TPColors'
@@ -26,6 +25,7 @@ import RadiusTouchable from 'RadiusTouchable'
 import ErrorView from '../common/ErrorListView'
 import WritePage from './WritePage'
 import Icon from 'react-native-vector-icons/Ionicons';
+import NotificationCenter from '../common/NotificationCenter'
 
 var moment = require('moment');
 
@@ -48,6 +48,7 @@ export default class DiaryPage extends Component {
       diary: this.props.diary,
       commentsLoadingError: false,
       diaryLoadingError: false,
+      isMy: null,
     }
   }
 
@@ -55,6 +56,8 @@ export default class DiaryPage extends Component {
     InteractionManager.runAfterInteractions(() => {
       if (!this.props.diary) {
         this._loadDiary();
+      } else {
+        this._loadIsMy();
       }
       this._loadComments();
     });
@@ -62,6 +65,13 @@ export default class DiaryPage extends Component {
 
   getDiaryId() {
     return this.props.diary ? this.props.diary.id : this.props.diary_id;
+  }
+
+  async _loadIsMy() {
+    const user = await Api.getSelfInfoByStore();
+    this.setState({
+      isMy: this.state.diary.user_id == user.id
+    });
   }
 
   async _loadDiary() {
@@ -81,7 +91,8 @@ export default class DiaryPage extends Component {
         diary: diary,
         comment_count: diary.comment_count,
         diaryLoadingError: false,
-      })
+      });
+      this._loadIsMy();
     } else {
       this.setState({
         diary: null,
@@ -159,8 +170,6 @@ export default class DiaryPage extends Component {
         comment_sending: false,
       });
     }
-
-
   }
 
   _scrollToBottom() {
@@ -174,7 +183,7 @@ export default class DiaryPage extends Component {
           return;
         }
         const y = listProps.contentLength - listProps.visibleLength;
-        this.refs.list.scrollTo({x: 0, y: y, animated: true})
+        this.refs.list.scrollTo({x: 0, y: y, animated: true});
         //console.log(this.refs.list, listProps)
       }
     }, 500)
@@ -198,14 +207,14 @@ export default class DiaryPage extends Component {
   _onCommentContentChange(text) {
     //console.log(text);
     if (this.state.reply_user_name == '') {
-      this.setState({comment_content: text})
+      this.setState({comment_content: text});
       return
     }
     if (text.startsWith('@' + this.state.reply_user_name + ' ')) {
-      this.setState({comment_content: text})
+      this.setState({comment_content: text});
       return
     }
-    text = text.substr(this.state.reply_user_name.length + 1)
+    text = text.substr(this.state.reply_user_name.length + 1);
     this.setState({
       reply_user_id: 0,
       reply_user_name: '',
@@ -287,8 +296,55 @@ export default class DiaryPage extends Component {
     }
   }
 
+  _isTodayDiary() {
+    const [date, ] = this.state.diary.created.split(' ');
+    const [year, month, day] = date.split('-');
+    const now = new Date();
+    return !(now.getFullYear() != parseInt(year) ||
+    now.getMonth() + 1 != parseInt(month) ||
+    now.getDate() != parseInt(day));
+  }
+
+  _onDiaryMorePress() {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options:['修改','删除', '取消'],
+      cancelButtonIndex:2,
+      destructiveButtonIndex: 1,
+    }, (index) => {
+      if(index == 0) {
+        this.props.navigator.push({
+          name: 'WritePage',
+          component: WritePage,
+          params: {
+            diary: this.state.diary
+            //TODO:增加回调,更新日记内容
+          }
+        })
+      } else if (index == 1) {
+        Alert.alert('提示', '确认删除日记?',[
+          {text: '删除', onPress: () => this.deleteDiary(this.state.diary)},
+          {text: '取消', onPress: () => console.log('OK Pressed!')},
+        ]);
+      }
+    });
+  }
+
+  async deleteDiary(diary) {
+    let r;
+    try {
+      r = await Api.deleteDiary(diary.id);
+      //r = true;
+    } catch (err) {
+      console.log(err);  //TODO:友好提示
+      alert('删除失败');
+      return;
+    }
+    Alert.alert('提示', '日记已删除', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);
+    NotificationCenter.trigger('onDeleteDiary');
+  }
+
   render() {
-    const nav = (
+    let nav = (
         <NavigationBar
             title="日记详情"
             back="后退"
@@ -327,7 +383,28 @@ export default class DiaryPage extends Component {
       )
     }
 
-    //enableEmptySections 不加会报一个不理解的警告
+    const isToday = this._isTodayDiary();
+    this.isToday = isToday;
+    const commentInput = isToday ? this.renderCommentInputBox() : null;
+    const editButton = isToday && this.state.isMy
+      ? (
+        <NavigationBar.Icon name="ios-more" onPress={this._onDiaryMorePress.bind(this)}/>
+    ) : null;
+
+    nav = (
+        <NavigationBar
+            title="日记详情"
+            back="后退"
+            backPress={() => {
+              if(this && this.refs.commentInput) {
+                this.refs.commentInput.setNativeProps({'editable': false});
+              }
+              this.props.navigator.pop()
+            }}
+            rightButton={editButton}
+        />
+    );
+
     return (
         <View style={{flex: 1, backgroundColor: 'white', justifyContent: "space-between"}}>
           {nav}
@@ -337,25 +414,17 @@ export default class DiaryPage extends Component {
               renderRow={this.renderComment.bind(this)}
               renderFooter={this.renderFooter.bind(this)}
               renderHeader={this.renderTop.bind(this)}
-              enableEmptySections={true}
+              enableEmptySections={true}      //enableEmptySections 不加会报一个不理解的警告
               keyboardDismissMode="on-drag"
               initialListSize={99}
           />
-          {this.renderCommentInputBox()}
+          {commentInput}
           <KeyboardSpacer />
         </View>
     );
   }
 
   renderCommentInputBox() {
-    const [date, ] = this.state.diary.created.split(' ');
-    const [year, month, day] = date.split('-');
-    const now = new Date();
-    if (now.getFullYear() != parseInt(year) ||
-        now.getMonth() + 1 != parseInt(month) ||
-        now.getDate() != parseInt(day)) {
-      return null;
-    }
     const comment_sending_box = this.state.comment_sending
         ? (<View style={styles.comment_sending}>
       <ActivityIndicator animating={true} color={TPColors.light} size="small"/>
@@ -382,7 +451,6 @@ export default class DiaryPage extends Component {
 
   renderTop() {
     /*
-     deletable={this.props.deletable}
      editable={this.props.editable}
      没实现刷新,所以暂时不能在日记页面编辑删除
      */
@@ -414,7 +482,7 @@ export default class DiaryPage extends Component {
         ? comment.content
         : `@${comment.recipient.name} ${comment.content}`;
 
-    const action = this.props.editable
+    const action = this.isToday && this.state.isMy
         ? (
             <TouchableOpacity onPress={() => this._onCommentActionPress(comment)}>
               <Icon name="ios-more"

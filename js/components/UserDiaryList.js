@@ -43,8 +43,6 @@ export default class UserDiaryList extends Component {
             component: DiaryPage,
             params: {
                 diary: diary,
-                deletable: this.props.myself,
-                editable: this.props.myself,
             }
         })
     }
@@ -52,13 +50,15 @@ export default class UserDiaryList extends Component {
     render() {
         return (
             <DiaryList ref="list"
-                       style={this.props.style}
-                       navigator={this.props.navigator}
-                       deletable={this.props.myself}
-                       editable={this.props.myself}
-                       myself={this.props.myself}
-                       getDiariesPage={this._loadTodayDiaries.bind(this)}
-                       onDiaryPress={this._toDiaryPage.bind(this)}/>
+               style={this.props.style}
+               navigator={this.props.navigator}
+               deletable={this.props.myself}
+               editable={this.props.myself}
+               myself={this.props.myself}
+               getDiariesPage={this._loadTodayDiaries.bind(this)}
+               onDiaryPress={this._toDiaryPage.bind(this)}
+                       removeClippedSubviews={false}
+            />
         );
     }
 }
