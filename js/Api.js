@@ -212,6 +212,10 @@ export async function setLoginPassword(password) {
   return TokenManager.setLoginPassword(password);
 }
 
+export async function report(user_id, diary_id) {
+  return call('POST', '/reports/');
+}
+
 //==========================================================================
 
 var baseUrl = 'https://open.timepill.net/api';

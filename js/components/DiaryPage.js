@@ -306,27 +306,41 @@ export default class DiaryPage extends Component {
   }
 
   _onDiaryMorePress() {
+    if (this.state.isMy) {
       ActionSheetIOS.showActionSheetWithOptions({
-          options: ['修改', '删除', '取消'],
-          cancelButtonIndex: 2,
-          destructiveButtonIndex: 1,
+        options: ['修改', '删除', '取消'],
+        cancelButtonIndex: 2,
+        destructiveButtonIndex: 1,
       }, (index) => {
-          if (index == 0) {
-              this.props.navigator.push({
-                  name: 'WritePage',
-                  component: WritePage,
-                  params: {
-                      diary: this.state.diary,
-                      onSuccess: this._editSuccess
-                  }
-              })
-          } else if (index == 1) {
-              Alert.alert('提示', '确认删除日记?', [
-                  {text: '删除', onPress: () => this.deleteDiary(this.state.diary)},
-                  {text: '取消', onPress: () => console.log('OK Pressed!')},
-              ]);
-          }
+        if (index == 0) {
+          this.props.navigator.push({
+            name: 'WritePage',
+            component: WritePage,
+            params: {
+              diary: this.state.diary,
+              onSuccess: this._editSuccess
+            }
+          })
+        } else if (index == 1) {
+          Alert.alert('提示', '确认删除日记?', [
+            {text: '删除', onPress: () => this.deleteDiary(this.state.diary)},
+            {text: '取消', onPress: () => console.log('OK Pressed!')},
+          ]);
+        }
       });
+    } else {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['举报', '取消'],
+        cancelButtonIndex: 1,
+        destructiveButtonIndex: 0,
+      }, (index) => {
+        if (index == 0) {
+          Api.report(this.state.diary.user_id, this.state.diary.id)
+              .catch(err => console.log(err));
+          Alert.alert('提示', '感谢你的贡献')
+        }
+      });
+    }
   }
 
   async deleteDiary(diary) {
@@ -390,7 +404,7 @@ export default class DiaryPage extends Component {
     const isToday = this._isTodayDiary();
     this.isToday = isToday;
     const commentInput = isToday ? this.renderCommentInputBox() : null;
-    const editButton = isToday && this.state.isMy
+    const editButton = isToday && this.state.isMy !== null
       ? (
         <NavigationBar.Icon name="ios-more" onPress={this._onDiaryMorePress.bind(this)}/>
     ) : null;
