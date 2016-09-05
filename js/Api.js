@@ -213,7 +213,10 @@ export async function setLoginPassword(password) {
 }
 
 export async function report(user_id, diary_id) {
-  return call('POST', '/reports/');
+  return call('POST', '/reports/', {
+    user_id: user_id,
+    diary_id: diary_id,
+  });
 }
 
 //==========================================================================
