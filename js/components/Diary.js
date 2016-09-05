@@ -9,6 +9,8 @@ import {
   RefreshControl,
   ActivityIndicator,
     TouchableOpacity,
+    ActionSheetIOS,
+    Clipboard
 } from 'react-native';
 import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
@@ -20,6 +22,17 @@ var Lightbox = require('Lightbox');
 var moment = require('moment');
 
 export default class Diary extends Component {
+
+    contentLongPress = () => {
+        ActionSheetIOS.showActionSheetWithOptions({
+            options: ['复制', '取消'],
+            cancelButtonIndex: 1,
+        }, (index) => {
+            if (index == 0) {
+                Clipboard.setString(this.props.data.content);
+            }
+        });
+    };
 
   render() {
     var diary = this.props.data;
@@ -54,14 +67,20 @@ export default class Diary extends Component {
               </View>
     }
 
-    const lines = this.props.showAllContent ? 0 : 5;
+    const content = this.props.showAllContent
+        ? (
+            <TouchableOpacity delayLongPress={500} activeOpacity={0.5} onLongPress={this.contentLongPress}>
+                <Text style={styles.content}>{diary.content}</Text>
+            </TouchableOpacity>
+        )
+        : <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>;
     const view = (
         <View style={{backgroundColor: 'white'}}>
           <View style={styles.box}>
             {icon}
             <View style={styles.body}>
               {title}
-              <Text style={styles.content} numberOfLines={lines}>{diary.content}</Text>
+                {content}
               {photoView}
               {this.renderActionBar(diary)}
             </View>

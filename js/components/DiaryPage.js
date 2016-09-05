@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     Alert,
     ActionSheetIOS,
+    Clipboard
 } from 'react-native';
 import * as Api from '../Api'
 import Diary from './Diary'
@@ -361,6 +362,17 @@ export default class DiaryPage extends Component {
       this.setState({diary: r})
   };
 
+  _onCommentLongPress = (comment) => {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['复制内容', '取消'],
+      cancelButtonIndex: 1,
+    }, (index) => {
+      if (index == 0) {
+        Clipboard.setString(comment.content);
+      }
+    });
+  };
+
   render() {
     let nav = (
         <NavigationBar
@@ -511,7 +523,12 @@ export default class DiaryPage extends Component {
         ) : null;
 
     return (
-        <TPTouchable onPress={() => this._onCommentPress(comment)} underlayColor="#efefef">
+        <TPTouchable
+            onPress={() => this._onCommentPress(comment)}
+            underlayColor="#efefef"
+            delayLongPress={500}
+            onLongPress={() => this._onCommentLongPress(comment)}
+        >
           <View style={style}>
             <View style={styles.box}>
               <RadiusTouchable style={styles.user_icon_box} onPress={() => this._onIconPress(comment.user)}>
