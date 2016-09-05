@@ -511,8 +511,13 @@ export default class DiaryPage extends Component {
         && this.props.new_comments.some(it => it == comment.id);
     const style = new_comment ? {backgroundColor: '#eef5ff'} : null;
     const content = comment.recipient == null
-        ? comment.content
-        : `@${comment.recipient.name} ${comment.content}`;
+        ? <Text style={styles.content}>{comment.content}</Text>
+        : (
+            <Text style={styles.content}>
+              <Text style={{color: TPColors.light}}>@{comment.recipient.name} </Text>
+              {comment.content}
+            </Text>
+        );
 
     const action = this.isToday && this.state.isMy
         ? (
@@ -542,7 +547,7 @@ export default class DiaryPage extends Component {
                   <Text style={[styles.title_text, {flex: 1}]}>{moment(comment.created).format('H:mm')}</Text>
                   {action}
                 </View>
-                <Text style={styles.content}>{content}</Text>
+                {content}
               </View>
             </View>
             <View style={styles.line}/>
