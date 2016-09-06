@@ -264,7 +264,7 @@ async function upload(method, api, body) {
   })
       .then(checkStatus)
       .then(parseJSON),
-      30000)
+      60000)
 }
 
 
