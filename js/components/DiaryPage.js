@@ -470,7 +470,7 @@ export default class DiaryPage extends Component {
                      value={this.state.comment_content}
                      placeholder="回复日记"
                      autoCorrect={false}
-                     maxLength={100}
+                     maxLength={500}
                      onSubmitEditing={this._addCommentPress.bind(this)}
                      selectionColor={TPColors.light}
                      enablesReturnKeyAutomatically={true}

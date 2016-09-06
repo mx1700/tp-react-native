@@ -302,7 +302,7 @@ export default class WritePage extends Component {
                     style={{flex: 1, padding: 15, fontSize: 14}}
                     autoCorrect={false}
                     autoFocus={false}
-                    maxLength={500}
+                    maxLength={5000}
                     multiline={true}
                     placeholder="记录点滴生活"
                     value={this.state.content}
