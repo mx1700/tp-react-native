@@ -45,7 +45,11 @@ class DefaultPage extends Component {
     if (this.state.hasPassword === false) {
       return <HomePage navigator={this.props.navigator} />
     } else {
-      return <View style={{flex: 1, backgroundColor: 'white'}} />
+      return (
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+              <StatusBar barStyle="default" />
+            </View>
+            )
     }
   }
 }
