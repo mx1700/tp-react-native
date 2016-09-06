@@ -148,7 +148,7 @@ export default class UserPage extends Component {
                 };
             } else {
                 navAttrs = {
-                    rightButton: <NavigationBar.Icon name="md-add" onPress={this._toNotebookAddPage.bind(this)} />,
+                    rightButton: <NavigationBar.Icon name="ios-add-circle-outline" onPress={this._toNotebookAddPage.bind(this)} />,
                 }
             }
         } else {
