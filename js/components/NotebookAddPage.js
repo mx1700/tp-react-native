@@ -14,27 +14,26 @@ import {
     Alert,
     Switch,
 } from 'react-native';
-import Page from './Page'
 import * as Api from '../Api'
-import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NavigationBar from '../common/NavigationBar'
 import NotificationCenter from '../common/NotificationCenter'
 import TPColors from '../common/TPColors'
-import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker'
 import LoadingModal from '../common/LoadingModal'
 import ImageResizer from 'react-native-image-resizer'
+import TimeHelper from '../common/TimeHelper'
+
 
 export default class NotebookAddPage extends Component {
 
     constructor(props) {
         super(props);
-        const today = new Date();
-        const date = new Date();
+        const today = TimeHelper.now();
+        const date = TimeHelper.now();
         date.setMonth(today.getMonth() + 1);
-        const start = new Date();
+        const start = TimeHelper.now();
         start.setMonth(today.getMonth() + 1);
-        const end = new Date();
+        const end = TimeHelper.now();
         end.setFullYear(today.getFullYear() + 1);
         end.setDate(end.getDate() - 1);
 

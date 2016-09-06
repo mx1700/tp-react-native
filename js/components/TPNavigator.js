@@ -100,10 +100,6 @@ export default class TPNavigator extends Component {
     return false;
   }
 
-  toLogin() {
-    alert(1);
-  }
-
   render() {
     return (
       <MyNavigator

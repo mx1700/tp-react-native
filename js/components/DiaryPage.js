@@ -27,6 +27,7 @@ import ErrorView from '../common/ErrorListView'
 import WritePage from './WritePage'
 import Icon from 'react-native-vector-icons/Ionicons';
 import NotificationCenter from '../common/NotificationCenter'
+import TimeHelper from '../common/TimeHelper'
 
 var moment = require('moment');
 
@@ -302,7 +303,7 @@ export default class DiaryPage extends Component {
   _isTodayDiary() {
     const [date, ] = this.state.diary.created.split(' ');
     const [year, month, day] = date.split('-');
-    const now = new Date();
+    const now = new TimeHelper.now();
     return !(now.getFullYear() != parseInt(year) ||
     now.getMonth() + 1 != parseInt(month) ||
     now.getDate() != parseInt(day));
