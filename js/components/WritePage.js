@@ -12,6 +12,7 @@ import {
     TextInput,
     Picker,
     Animated,
+    Easing,
     Dimensions,
     Modal,
     InteractionManager,
@@ -49,6 +50,8 @@ export default class WritePage extends Component {
             photoInfo: null,
             loadBookError: false,
             bookEmptyError: false,
+            fadeAnimOpacity: new Animated.Value(0),
+            fadeAnimHeight: new Animated.Value(0),
         };
     }
 
@@ -188,7 +191,18 @@ export default class WritePage extends Component {
     }
 
     closeModal() {
-        this.setState({modalVisible: false});
+        Animated.parallel([
+            Animated.timing(
+                this.state.fadeAnimOpacity,
+                {toValue: 0, duration: 350, easing: Easing.out(Easing.cubic)}
+            ),
+            Animated.timing(
+                this.state.fadeAnimHeight,
+                {toValue: 0, duration: 350, easing: Easing.out(Easing.cubic)}
+            )
+        ]).start(() => {
+            this.setState({modalVisible: false});
+        });
     }
 
     _imagePress() {
@@ -197,7 +211,7 @@ export default class WritePage extends Component {
     }
 
     _createBook() {
-        this.setState({modalVisible: false});
+        this.closeModal();
         this.props.navigator.push({
             name: 'NotebookAddPage',
             component: NotebookAddPage,
@@ -324,13 +338,28 @@ export default class WritePage extends Component {
     renderSelectBook() {
         return (
             <Modal
-                animationType="slide"
+                animationType="none"
                 transparent={true}
                 visible={this.state.modalVisible}
-                onRequestClose={() => { }}>
+                onRequestClose={() => {
+                    alert(1)
+                }}
+                onShow={() => {
+                    Animated.parallel([
+                        Animated.timing(
+                            this.state.fadeAnimOpacity,
+                            {toValue: 0.4, duration: 350, easing: Easing.out(Easing.cubic)}
+                        ),
+                        Animated.timing(
+                            this.state.fadeAnimHeight,
+                            {toValue: 250, duration: 350, easing: Easing.out(Easing.cubic)}
+                        )
+                    ]).start();
+                }}
+            >
                 <View style={{ flex: 1}}>
-                    <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.3)" }} />
-                    <View style={{height: 250, backgroundColor: '#fff'}}>
+                    <Animated.View style={{ flex: 1, backgroundColor: "black", opacity: this.state.fadeAnimOpacity }} />
+                    <Animated.View style={{height: this.state.fadeAnimHeight, backgroundColor: '#fff'}}>
                         <View style={styles.closeButtonContainer}>
                             <TouchableOpacity onPress={ this._createBook.bind(this) } style={styles.closeButton}>
                                 <Text style={styles.closeButtonText}>新添日记本</Text>
@@ -347,7 +376,7 @@ export default class WritePage extends Component {
                                 <Picker.Item key={book.id} label={book.subject} value={book.id} />
                             ))}
                         </Picker>
-                    </View>
+                    </Animated.View>
                 </View>
             </Modal>
         );

@@ -8,6 +8,7 @@ import {
     TextInput,
     Picker,
     Animated,
+    Easing,
     Dimensions,
     Modal,
     TouchableOpacity,
@@ -45,6 +46,8 @@ export default class NotebookAddPage extends Component {
             start: start,
             end: end,
             loading: false,
+            fadeAnimOpacity: new Animated.Value(0),
+            fadeAnimHeight: new Animated.Value(0),
         }
     }
 
@@ -97,7 +100,18 @@ export default class NotebookAddPage extends Component {
     }
 
     closeModal() {
-        this.setState({modalVisible: false});
+        Animated.parallel([
+            Animated.timing(
+                this.state.fadeAnimOpacity,
+                {toValue: 0, duration: 350, easing: Easing.out(Easing.cubic)}
+            ),
+            Animated.timing(
+                this.state.fadeAnimHeight,
+                {toValue: 0, duration: 350, easing: Easing.out(Easing.cubic)}
+            )
+        ]).start(() => {
+            this.setState({modalVisible: false});
+        });
     }
 
     _editCover() {
@@ -206,13 +220,26 @@ export default class NotebookAddPage extends Component {
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
                 <LoadingModal loading={this.state.loading} />
                 <Modal
-                    animationType="slide"
+                    animationType="none"
                     transparent={true}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => { }}>
+                    onRequestClose={() => { }}
+                    onShow={() => {
+                        Animated.parallel([
+                            Animated.timing(
+                                this.state.fadeAnimOpacity,
+                                {toValue: 0.4, duration: 350, easing: Easing.out(Easing.cubic)}
+                            ),
+                            Animated.timing(
+                                this.state.fadeAnimHeight,
+                                {toValue: 250, duration: 350, easing: Easing.out(Easing.cubic)}
+                            )
+                        ]).start();
+                    }}
+                >
                     <View style={{ flex: 1}}>
-                        <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.3)" }} />
-                        <View style={{height: 250, backgroundColor: '#fff'}}>
+                        <Animated.View style={{ flex: 1, backgroundColor: "black", opacity: this.state.fadeAnimOpacity }} />
+                        <Animated.View style={{height: this.state.fadeAnimHeight, backgroundColor: '#fff'}}>
                             <View style={styles.closeButtonContainer}>
                                 <TouchableOpacity onPress={ this.closeModal.bind(this) } style={styles.closeButton}>
                                     <Text style={styles.closeButtonText}>确定</Text>
@@ -224,7 +251,7 @@ export default class NotebookAddPage extends Component {
                                 end={this.state.end}
                                 onChange={(v) => { this.setState({date: v}) }}
                             />
-                        </View>
+                        </Animated.View>
                     </View>
                 </Modal>
                 <NavigationBar
