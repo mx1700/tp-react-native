@@ -56,12 +56,18 @@ export default class DiaryPage extends Component {
 
   componentWillMount() {
     InteractionManager.runAfterInteractions(() => {
+      let load;
       if (!this.props.diary) {
-        this._loadDiary();
+        load = this._loadDiary();
       } else {
-        this._loadIsMy();
+        load = this._loadIsMy();
       }
-      this._loadComments();
+      Promise.all([this._loadComments(), load])
+          .then(() => {
+            if (this.props.new_comments) {
+              this._scrollToBottom();
+            }
+          });
     });
   }
 
@@ -133,8 +139,6 @@ export default class DiaryPage extends Component {
         commentsLoadingError: true,
       });
     }
-
-
   }
 
   _addCommentPress() {
