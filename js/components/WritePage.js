@@ -59,7 +59,11 @@ export default class WritePage extends Component {
     }
 
     componentDidMount() {
-        this.refs.contentInput.focus();
+        setTimeout(() => {
+            if (this.refs.contentInput) {
+                this.refs.contentInput.focus();
+            }
+        }, 500);
     }
 
     async _loadBooks() {
@@ -301,7 +305,6 @@ export default class WritePage extends Component {
                     ref="contentInput"
                     style={{flex: 1, padding: 15, fontSize: 15, lineHeight: 24}}
                     autoCorrect={false}
-                    autoFocus={false}
                     maxLength={5000}
                     multiline={true}
                     placeholder="记录点滴生活"
