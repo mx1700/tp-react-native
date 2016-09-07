@@ -8,7 +8,8 @@ import {
     ActivityIndicator,
     Alert,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Linking
 } from 'react-native';
 import Page from './Page'
 import NavigationBar from 'NavigationBar'
@@ -63,14 +64,27 @@ export default class SettingPage extends Component {
                         <Text style={styles.title}>设置启动密码</Text>
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
                     </TouchableOpacity>
+
+
+                </View>
+
+                <View style={[styles.group]}>
+                    <TouchableOpacity
+                        style={styles.item}
+                        onPress={() =>
+                            Linking.openURL("https://itunes.apple.com/us/app/jiao-nang-ri-ji/id1142102323?l=zh&ls=1&mt=8")}
+                    >
+                        <Text style={styles.title}>去 App Store 评价</Text>
+                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
+                    </TouchableOpacity>
                     <View style={styles.line} />
                     <TouchableOpacity
                         style={styles.item}
                         onPress={() =>
-                        this.props.navigator.push({
-                            name: 'AboutPage',
-                            component: AboutPage,
-                        })}
+                            this.props.navigator.push({
+                                name: 'AboutPage',
+                                component: AboutPage,
+                            })}
                     >
                         <Text style={styles.title}>关于</Text>
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
