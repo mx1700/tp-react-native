@@ -299,7 +299,7 @@ export default class WritePage extends Component {
                 />
                 <TextInput
                     ref="contentInput"
-                    style={{flex: 1, padding: 15, fontSize: 14}}
+                    style={{flex: 1, padding: 15, fontSize: 15, lineHeight: 24}}
                     autoCorrect={false}
                     autoFocus={false}
                     maxLength={5000}
