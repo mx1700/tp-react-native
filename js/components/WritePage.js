@@ -75,7 +75,7 @@ export default class WritePage extends Component {
     async _loadDraft() {
         const draft = await Api.getDraft();
         if (draft && draft.length > 0) {
-            Alert.alert('提示', '有一篇日记草稿，是否加载？', [
+            Alert.alert('提示', '有一篇日记草稿，是否加载？\n草稿加载后将会清空草稿箱', [
                 {text: '取消'},
                 {
                     text: '加载草稿',
@@ -205,7 +205,7 @@ export default class WritePage extends Component {
             this.backPage();
             return;
         }
-        Alert.alert('提示', '日记还未保存，退出将丢失日记内容',[
+        Alert.alert('提示', '日记还未保存，退出将丢失日记内容\n如果已经有一篇草稿，再次保存将会被覆盖',[
             {text: '确认退出', onPress: () => {
                 this.backPage();
             }},
@@ -223,7 +223,7 @@ export default class WritePage extends Component {
             if (this.refs.contentInput) {
                 this.props.navigator.pop();
             }
-        }, 350);
+        }, 500);
     }
 
     openModal() {
