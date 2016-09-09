@@ -58,6 +58,9 @@ export default class WritePage extends Component {
     componentWillMount(){
         InteractionManager.runAfterInteractions(() => {
             this._loadBooks();
+            if (!this.props.diary) {
+                this._loadDraft();
+            }
         });
     }
 
@@ -67,6 +70,24 @@ export default class WritePage extends Component {
                 this.refs.contentInput.focus();
             }
         }, 500);
+    }
+
+    async _loadDraft() {
+        const draft = await Api.getDraft();
+        if (draft && draft.length > 0) {
+            Alert.alert('提示', '有一篇日记草稿，是否加载？', [
+                {text: '取消'},
+                {
+                    text: '加载草稿',
+                    onPress: () => {
+                        this.setState({
+                            content: draft,
+                        });
+                        Api.clearDraft();
+                    }
+                }
+            ]);
+        }
     }
 
     async _loadBooks() {
@@ -186,6 +207,10 @@ export default class WritePage extends Component {
         }
         Alert.alert('提示', '日记还未保存，退出将丢失日记内容',[
             {text: '确认退出', onPress: () => {
+                this.backPage();
+            }},
+            {text: '保存草稿', onPress: () => {
+                Api.saveDraft(this.state.content);
                 this.backPage();
             }},
             {text: '取消'},

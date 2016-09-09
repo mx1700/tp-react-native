@@ -235,6 +235,18 @@ export async function readUpdateNews() {
   return TokenManager.setUpdateVersion(UpdateInfo.version);
 }
 
+export async function saveDraft(content) {
+  return TokenManager.setDraft(content)
+}
+
+export async function getDraft() {
+  return TokenManager.getDraft()
+}
+
+export async function clearDraft() {
+  return TokenManager.setDraft('')
+}
+
 //==========================================================================
 
 var baseUrl = 'http://openbeta.timepill.net/api';

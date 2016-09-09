@@ -52,6 +52,14 @@ class TokenManager {
   async setUpdateVersion(version) {
     return AsyncStorage.setItem('update_version', JSON.stringify(version));
   }
+
+  async setDraft(content) {
+      return AsyncStorage.setItem('draft', JSON.stringify(content));
+  }
+
+  async getDraft() {
+    return JSON.parse(await AsyncStorage.getItem('draft'));
+  }
 }
 
 export default new TokenManager()
