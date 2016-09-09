@@ -180,10 +180,25 @@ export default class WritePage extends Component {
     }
 
     _cancelPress() {
-        //TODO:增加取消确认
-        //关闭键盘
+        if (this.state.content.length == 0) {
+            this.backPage();
+            return;
+        }
+        Alert.alert('提示', '日记还未保存，退出将丢失日记内容',[
+            {text: '确认退出', onPress: () => {
+                this.backPage();
+            }},
+            {text: '取消'},
+        ]);
+    }
+
+    backPage() {
         this.refs.contentInput.setNativeProps({'editable':false});
-        this.props.navigator.pop();
+        setTimeout(() => {
+            if (this.refs.contentInput) {
+                this.props.navigator.pop();
+            }
+        }, 350);
     }
 
     openModal() {
