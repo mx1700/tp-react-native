@@ -16,12 +16,16 @@ import {
 import NavigationBar from '../common/NavigationBar'
 var DeviceInfo = require('react-native-device-info');
 import CodePush from "react-native-code-push";
+import * as Api from '../Api'
+import TPColors from '../common/TPColors'
+import NotificationCenter from '../common/NotificationCenter'
 
 export default class AboutPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             info: null,
+            news: Api.getUpdateNews()
         };
     }
 
@@ -33,6 +37,9 @@ export default class AboutPage extends Component {
                 }
                 console.log(update);
             });
+
+        Api.readUpdateNews();
+        NotificationCenter.trigger('onReadUpdateNews');
     }
 
     render() {
@@ -46,7 +53,9 @@ export default class AboutPage extends Component {
                 />
                 <View style={{flex: 1, padding: 15, alignItems: 'center', justifyContent: 'center'}}>
                     <Image source={require('./img/Icon.png')} style={{width: 200, height: 200, borderRadius: 50}} />
-                    <Text style={{paddingTop: 20, paddingBottom: 100}}>版本: {DeviceInfo.getReadableVersion()}{label}</Text>
+                    <Text style={{paddingTop: 20, paddingBottom: 60}}>版本: {DeviceInfo.getReadableVersion()}{label}</Text>
+                    <Text style={{color: TPColors.inactiveText}}>{this.state.news.date} 更新日志</Text>
+                    <Text style={{lineHeight: 20}}>{this.state.news.info}</Text>
                 </View>
             </View>
         );

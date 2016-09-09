@@ -38,7 +38,8 @@ export default class UserPage extends Component {
         this.state = {
             followed: false,
             selectedIndex: this.props.selectedIndex,
-            loaded: loaded
+            loaded: loaded,
+            news: false,
         }
     }
 
@@ -46,14 +47,19 @@ export default class UserPage extends Component {
         if (this.props.myself) {
             NotificationCenter.addLister('onWriteDiary', this._onWriteDiary);
             NotificationCenter.addLister('onDeleteDiary', this._onWriteDiary);
+            NotificationCenter.addLister('onReadUpdateNews', this.onReadUpdateNews);
+
+            this._loadUpdateState();
+        } else {
+            this._loadRelation();
         }
-        this._loadRelation();
     }
 
     componentWillUnmount() {
         if (this.props.myself) {
             NotificationCenter.removeLister('onWriteDiary', this._onWriteDiary);
             NotificationCenter.removeLister('onDeleteDiary', this._onWriteDiary);
+            NotificationCenter.removeLister('onReadUpdateNews', this.onReadUpdateNews);
         }
     }
 
@@ -85,6 +91,21 @@ export default class UserPage extends Component {
     _followPress() {
         this.updateRelation()
     }
+
+    async _loadUpdateState() {
+        const hasNews = await Api.hasUnreadUpdateNews();
+        if (!hasNews) return;
+
+        this.setState({
+            news: hasNews
+        });
+    }
+
+    onReadUpdateNews = () => {
+        this.setState({
+            news: false
+        })
+    };
 
     async updateRelation() {
         const rel = this.state.followed;
@@ -144,7 +165,7 @@ export default class UserPage extends Component {
         if (this.props.myself) {
             if(this.state.selectedIndex != 2) {
                 navAttrs = {
-                    rightButton: <NavigationBar.Icon name="ios-cog" onPress={this._toSettingPage.bind(this)} />,
+                    rightButton: <NavigationBar.Icon name="ios-cog" onPress={this._toSettingPage.bind(this)} badge={this.state.news} />,
                 };
             } else {
                 navAttrs = {

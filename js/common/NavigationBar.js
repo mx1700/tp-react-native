@@ -89,6 +89,27 @@ function NavigationBarAndroid(props) {
 var STATUS_BAR_HEIGHT = 20;
 var HEADER_HEIGHT = 56;
 
+const NavigationBar = Platform.OS === 'android'
+  ? NavigationBarAndroid
+  : NavigationBarIOS;
+
+NavigationBar.Icon = function(props) {
+  const color = props.color ? props.color : '#0076FF';
+  const icon = <Icon name={props.name} size={24} color={color}/>
+  const badge = props.badge == true
+      ? <View style={styles.badge}/>
+      : null;
+  return (
+      <TouchableOpacity
+          onPress={props.onPress}
+          style={{flex: 1, padding: 10}}
+      >
+        {icon}
+        {badge}
+      </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   toolbar: {
     height: HEADER_HEIGHT,
@@ -101,24 +122,15 @@ const styles = StyleSheet.create({
     marginRight: -1,
     borderRightColor: 'transparent',
   },
+  badge: {
+    width: 9,
+    height: 9,
+    backgroundColor: 'red',
+    position: 'absolute',
+    top: 11,
+    right: 9,
+    borderRadius: 5,
+  }
 });
-
-const NavigationBar = Platform.OS === 'android'
-  ? NavigationBarAndroid
-  : NavigationBarIOS;
-
-NavigationBar.Icon = function(props) {
-  const color = props.color ? props.color : '#0076FF';
-  const icon = <Icon name={props.name} size={24} color={color} />
-  return (
-      <TouchableOpacity
-          onPress={props.onPress}
-          style={{flex: 1, padding: 10}}
-      >
-        {icon}
-      </TouchableOpacity>
-  );
-
-};
 
 module.exports = NavigationBar;

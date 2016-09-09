@@ -11,7 +11,6 @@ import {
     TouchableOpacity,
     Linking
 } from 'react-native';
-import Page from './Page'
 import NavigationBar from 'NavigationBar'
 import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,8 +18,32 @@ import TPColors from '../common/TPColors'
 import UserIntroEdit from './UserIntroEdit'
 import AboutPage from './AboutPage'
 import PasswordPage from './PasswordPage'
+import NotificationCenter from '../common/NotificationCenter'
 
 export default class SettingPage extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasUpdateNews: false
+        };
+    }
+
+    onReadUpdateNews = () => {
+        this.setState({
+            hasUpdateNews: false
+        })
+    };
+
+    componentDidMount() {
+        this._loadUpdateState();
+        NotificationCenter.addLister('onReadUpdateNews', this.onReadUpdateNews);
+    }
+
+    componentWillUnmount() {
+        NotificationCenter.removeLister('onReadUpdateNews', this.onReadUpdateNews);
+    }
+
     logout() {
         Alert.alert('提示','确认退出登录?',[
             {text: '退出', onPress: () => {
@@ -31,9 +54,24 @@ export default class SettingPage extends Component {
         ]);
 
     }
-    render() {
-        //                    <TPButton caption="退出登录" type="danger" onPress={this.logout.bind(this)} />
 
+    async _loadUpdateState() {
+        const hasNews = await Api.hasUnreadUpdateNews();
+        if (!hasNews) return;
+
+        this.setState({
+            hasUpdateNews: hasNews
+        });
+    }
+
+    render() {
+        const badge = this.state.hasUpdateNews
+            ? (
+            <View style={styles.badge}>
+                <Text style={styles.badge_text}>1</Text>
+            </View>
+            )
+            : null;
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
                 <NavigationBar
@@ -87,6 +125,7 @@ export default class SettingPage extends Component {
                             })}
                     >
                         <Text style={styles.title}>关于</Text>
+                        {badge}
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
                     </TouchableOpacity>
                 </View>
@@ -119,6 +158,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         color: '#222222',
+        flex: 1,
     },
     line: {
         marginLeft: 15,
@@ -134,5 +174,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#d9534f',
         fontSize: 16,
+    },
+    badge: {
+        backgroundColor: 'red',
+        paddingHorizontal:8,
+        paddingVertical: 2,
+        borderRadius: 12,
+        marginRight: 10
+    },
+    badge_text: {
+        color: 'white',
+        fontSize: 12,
+        fontFamily: 'Arial'
     }
 });

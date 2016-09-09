@@ -44,6 +44,14 @@ class TokenManager {
   async setLoginPassword(password) {
     return AsyncStorage.setItem('login_password', password);
   }
+
+  async getUpdateVersion() {
+    return JSON.parse(await AsyncStorage.getItem('update_version'));
+  }
+
+  async setUpdateVersion(version) {
+    return AsyncStorage.setItem('update_version', JSON.stringify(version));
+  }
 }
 
 export default new TokenManager()

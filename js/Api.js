@@ -3,6 +3,7 @@
  */
 
 import TokenManager from './TokenManager'
+import UpdateInfo from './UpdateInfo';
 
 export async function getTodayDiaries(page = 1, page_size = 20) {
   return call('GET', '/diaries/today?page=' + page + '&page_size=' + page_size)
@@ -219,11 +220,26 @@ export async function report(user_id, diary_id) {
   });
 }
 
+
+
+export async function hasUnreadUpdateNews() {
+  const updateVersion = await TokenManager.getUpdateVersion();
+  return updateVersion < UpdateInfo.version;
+}
+
+export function getUpdateNews() {
+  return UpdateInfo;
+}
+
+export async function readUpdateNews() {
+  return TokenManager.setUpdateVersion(UpdateInfo.version);
+}
+
 //==========================================================================
 
-var baseUrl = 'https://open.timepill.net/api';
+var baseUrl = 'http://openbeta.timepill.net/api';
 async function call(method, api, body) {
-  console.log('request:', baseUrl + api)
+  console.log('request:', baseUrl + api);
   var token = await TokenManager.getToken();
   // if (body) {
   //   let formData = new FormData();
