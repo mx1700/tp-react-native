@@ -65,21 +65,20 @@ export default class WritePage extends Component {
         };
     }
 
-    componentWillMount(){
+    // componentWillMount(){
+    //
+    // }
+
+    componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this._loadBooks();
             if (!this.props.diary) {
                 this._loadDraft();
             }
-        });
-    }
-
-    componentDidMount() {
-        setTimeout(() => {
             if (this.refs.contentInput) {
                 this.refs.contentInput.focus();
             }
-        }, 400);
+        });
     }
 
     async _loadDraft() {
@@ -187,12 +186,15 @@ export default class WritePage extends Component {
                 hideOnPress: true,
             });
             this.props.navigator.pop();
-            NotificationCenter.trigger('onWriteDiary');
-            const type = photoUri == null ? 'text' : 'photo';
-            Answers.logCustom('WriteDiary', {type: type});
-            if (this.props.onSuccess) {
-                this.props.onSuccess(r);
-            }
+
+            InteractionManager.runAfterInteractions(() => {
+                NotificationCenter.trigger('onWriteDiary');
+                const type = photoUri == null ? 'text' : 'photo';
+                Answers.logCustom('WriteDiary', {type: type});
+                if (this.props.onSuccess) {
+                    this.props.onSuccess(r);
+                }
+            });
         }
     }
 
@@ -217,29 +219,47 @@ export default class WritePage extends Component {
     }
 
     _cancelPress() {
+        if (this.refs.contentInput) {
+            this.refs.contentInput.setNativeProps({'editable': false});
+        }
+
         if (this.state.content.length == 0 || this.props.diary) {
             this.backPage();
             return;
         }
-        Alert.alert('提示', '日记还未保存，退出将丢失日记内容\n如果已经有一篇草稿，再次保存将会被覆盖',[
-            {text: '确认退出', onPress: () => {
-                this.backPage();
-            }},
-            {text: '保存草稿', onPress: () => {
-                Api.saveDraft(this.state.content);
-                this.backPage();
-            }},
-            {text: '取消'},
-        ]);
+        InteractionManager.runAfterInteractions(() => {
+            Alert.alert('提示', '日记还未保存，确认删除并退出?\n保存草稿将会覆盖之前草稿', [
+                {
+                    text: '删除日记', onPress: () => this.backPage()
+                },
+                {
+                    text: '保存草稿', onPress: () => {
+                        Api.saveDraft(this.state.content);
+                        this.backPage();
+                    }
+                },
+                {
+                    text: '取消', onPress: () => {
+                        if (this.refs.contentInput) {
+                            this.refs.contentInput.setNativeProps({'editable': true});
+                            this.refs.contentInput.focus();
+                        }
+                    }
+                },
+            ]);
+        });
     }
 
     backPage() {
-        this.refs.contentInput.setNativeProps({'editable':false});
+        // if (this.refs.contentInput) {
+        //     this.refs.contentInput.setNativeProps({'editable': false});
+        // }
         setTimeout(() => {
-            if (this.refs.contentInput) {
+            InteractionManager.runAfterInteractions(() => {
                 this.props.navigator.pop();
-            }
-        }, 500);
+            });
+        }, 350);
+
     }
 
     openModal() {
