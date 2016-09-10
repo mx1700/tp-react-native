@@ -20,17 +20,25 @@ import {
     Image,
     Alert,
 } from 'react-native';
-import Page from './Page'
+
+import {
+    NavigationBar,
+    LabelButton,
+    NotificationCenter,
+    TPColors,
+    TimeHelper,
+} from '../common'
+
 import * as Api from '../Api'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
-import NavigationBar from 'NavigationBar'
-import LabelButton from '../common/LabelButton'
-import NotificationCenter from '../common/NotificationCenter'
 import ImagePicker from 'react-native-image-picker'
-import TPColor from '../common/TPColors'
 import Icon from 'react-native-vector-icons/Ionicons'
 import ImageResizer from 'react-native-image-resizer'
+import Toast from 'react-native-root-toast';
 import NotebookAddPage from './NotebookAddPage'
+
+var moment = require('moment');
+var locale = require('moment/locale/zh-cn');
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
@@ -170,6 +178,12 @@ export default class WritePage extends Component {
 
 
         if (r) {
+            Toast.show("日记保存完成", {
+                duration: 2000,
+                position: -120,
+                shadow: false,
+                hideOnPress: true,
+            });
             this.props.navigator.pop();
             NotificationCenter.trigger('onWriteDiary');
             const type = photoUri == null ? 'text' : 'photo';
@@ -330,6 +344,7 @@ export default class WritePage extends Component {
 
     render() {
         //console.log(this.state);
+
         const selectedBook = this.state.books.length > 0
             ? this.state.books.filter(it => it.id == this.state.selectBookId).pop()
             : null;
@@ -346,18 +361,22 @@ export default class WritePage extends Component {
                     transparent={true}
                     onRequestClose={() => {}}>
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
-                        <ActivityIndicator animating={true} color={TPColor.light} />
+                        <ActivityIndicator animating={true} color={TPColors.light} />
                     </View>
                 </Modal>
                 {this.renderSelectBook()}
                 <NavigationBar
-                    title={this.props.diary == null ? '写日记' : '修改日记'}
-                    rightButton={{ title: "保存", handler: this._writePress.bind(this) }}
-                    leftButton={{ title: "取消", handler: this._cancelPress.bind(this) }}
+                    title={this.renderTitle()}
+                    rightButton1={{ title: "保存", handler: this._writePress.bind(this) }}
+                    leftButton1={{ title: "取消", handler: this._cancelPress.bind(this) }}
+                    leftButton={<NavigationBar.Icon name="md-close"
+                                                    onPress={this._cancelPress.bind(this)} />}
+                    rightButton={<NavigationBar.Icon name="md-checkmark"
+                                                     onPress={this._writePress.bind(this)} />}
                 />
                 <TextInput
                     ref="contentInput"
-                    style={{flex: 1, padding: 15, fontSize: 15, lineHeight: 24}}
+                    style={{flex: 1, padding: 15, paddingTop: 10, fontSize: 15, lineHeight: 24, color: TPColors.contentText}}
                     autoCorrect={false}
                     maxLength={5000}
                     multiline={true}
@@ -373,6 +392,24 @@ export default class WritePage extends Component {
                 <KeyboardSpacer />
             </View>
         );
+    }
+
+    renderTitle() {
+        if (this.props.diary) {
+            return '修改日记';
+        }
+        var local = moment.locale('zh-cn');
+        const now = TimeHelper.now();
+        const time = moment(now);
+
+        return (
+            <View style={{alignItems: 'center'}}>
+                <Text style={{fontSize: 12, color: '#777', paddingBottom: 2}}>{time.format('LL')}</Text>
+                <Text style={{fontSize: 11, color: '#777'}}>{time.format('dddd')}</Text>
+            </View>
+
+        );
+
     }
 
     renderSelectBook() {
@@ -429,7 +466,7 @@ export default class WritePage extends Component {
         const content = this.state.photoSource != null
             ? (<Image source={this.state.photoSource}
                       style={{width: 30, height: 30}} />)
-            : (<Icon name="ios-image-outline" size={30} style={{paddingTop: 4}} color={TPColor.light} />);
+            : (<Icon name="ios-image-outline" size={30} style={{paddingTop: 4}} color={TPColors.light} />);
         return (
             <TouchableOpacity
                 style={{width: 30, height: 30, alignItems: "center", justifyContent: 'center'}}
@@ -473,6 +510,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     closeButtonText: {
-        color: TPColor.light,
+        color: TPColors.light,
+        fontSize: 15,
     }
 });
