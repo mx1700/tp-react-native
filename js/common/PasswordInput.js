@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: '#ccc',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        borderRadius: 5,
     },
     inputItem: {
         height: 45,

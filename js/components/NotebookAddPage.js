@@ -23,7 +23,7 @@ import ImagePicker from 'react-native-image-picker'
 import LoadingModal from '../common/LoadingModal'
 import ImageResizer from 'react-native-image-resizer'
 import TimeHelper from '../common/TimeHelper'
-
+const dismissKeyboard = require('dismissKeyboard');
 
 export default class NotebookAddPage extends Component {
 
@@ -84,6 +84,7 @@ export default class NotebookAddPage extends Component {
         }
 
         if (book) {
+            dismissKeyboard();
             this.props.navigator.pop();
             if (this.props.onCreated) {
                 this.props.onCreated(book);
@@ -257,6 +258,7 @@ export default class NotebookAddPage extends Component {
                 <NavigationBar
                     title={title}
                     backPress={() => {
+                        dismissKeyboard();
                         this.props.navigator.pop()
                     }}
                     rightButton={{

@@ -5,11 +5,16 @@ import {
     Alert,
     StatusBar,
 } from 'react-native';
-import NavigationBar from 'NavigationBar'
-import PasswordInput from '../common/PasswordInput'
 import HomePage from './HomePage'
 import * as Api from '../Api'
-import TPColors from '../common/TPColors'
+import {
+    NotificationCenter,
+    TPColors,
+    PasswordInput,
+    NavigationBar
+} from '../common'
+import Toast from 'react-native-root-toast';
+const dismissKeyboard = require('dismissKeyboard');
 
 export default class PasswordPage extends Component {
     static propTypes = {
@@ -21,7 +26,7 @@ export default class PasswordPage extends Component {
         super(props);
         if (this.props.type == 'setting') {
             this.state = {
-                title: '请输入新密码',
+                title: '请输入密码',
                 password: null,
                 step: 1,
                 oldPassword: false,
@@ -34,7 +39,6 @@ export default class PasswordPage extends Component {
                 oldPassword: false,
             };
         }
-
     }
 
     componentDidMount() {
@@ -42,7 +46,7 @@ export default class PasswordPage extends Component {
             Api.getLoginPassword().then((pwd) => {
                 if(pwd) {
                     this.setState({
-                        title: '请输入旧密码',
+                        title: '请输入密码',
                         password: null,
                         step: 0,
                         oldPassword: pwd,
@@ -97,15 +101,17 @@ export default class PasswordPage extends Component {
         }
         this.refs.input.clear();
 
-        if (this.state.step == 0) {
+        if (this.state.step == 0) { //取消密码
             if (this.state.oldPassword === password) {
-                this.setState({
-                    title: '请输入新密码',
-                    password: null,
-                    step: 1,
-                })
+                // this.setState({
+                //     title: '请输入新密码',
+                //     password: null,
+                //     step: 1,
+                // })
+                this._clearPassword();
+                return;
             } else {
-                Alert.alert('提示','旧密码不正确');
+                Alert.alert('提示','密码不正确');
             }
         } else if (this.state.step == 1) {
             this.setState({
@@ -115,7 +121,7 @@ export default class PasswordPage extends Component {
             });
         } else if (this.state.step == 2) {
             if (this.state.password !== password) {
-                Alert.alert('设置失败', '两次输入的密码不相同,请重新输入')
+                Alert.alert('设置失败', '两次输入的密码不相同,请重新输入');
                 this.setState({
                     title: '请输入新密码',
                     password: null,
@@ -124,7 +130,15 @@ export default class PasswordPage extends Component {
                 return;
             }
             Api.setLoginPassword(password).then(() => {
-                Alert.alert('提示', '设置成功', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);
+                dismissKeyboard();
+                this.props.navigator.pop();
+                NotificationCenter.trigger('onUpdateStartupPassword');
+                Toast.show("密码已设置", {
+                    duration: 2000,
+                    position: -80,
+                    shadow: false,
+                    hideOnPress: true,
+                });
             }).catch(() => {
                 Alert.alert('错误', '设置失败');
             })
@@ -136,35 +150,43 @@ export default class PasswordPage extends Component {
             Alert.alert('错误', '密码加载失败');
             return;
         }
-        if (this.state.step == 0) {
-            Alert.alert('提示', '请先输入旧密码后再清除密码');
-            return;
-        }
+        // if (this.state.step == 0) {
+        //     Alert.alert('提示', '请先输入旧密码后再清除密码');
+        //     return;
+        // }
         Api.setLoginPassword('').then(() => {
-            Alert.alert('提示', '密码已清除', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);
+            dismissKeyboard();
+            this.props.navigator.pop();
+            NotificationCenter.trigger('onUpdateStartupPassword');
+            Toast.show("密码已清除", {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
         }).catch(() => {
             Alert.alert('错误', '设置失败');
         })
     }
 
     render() {
-        const rightButton = this.props.type == 'setting' && this.state.oldPassword
-            ? {
-                title: '清除密码',
-                handler: this._clearPassword.bind(this)
-            }
-            : null;
-
+        const title = this.state.step == 0
+            ? '取消启动密码' : '设置启动密码';
         const nav = this.props.type == 'setting'
             ? (
             <NavigationBar
-                title="设置密码"
-                backPress={() => this.props.navigator.pop() }
-                rightButton={rightButton}
+                title={title}
+                backPress={() => {
+                    dismissKeyboard();
+                    this.props.navigator.pop();
+                } }
             />
-            ) : null;
+            ) : (
+            <NavigationBar
+                title="胶囊日记" />
+        );
 
-        const tip = this.props.type == 'setting'
+        const tip = this.props.type == 'setting' && this.state.step != 0
             ? (
                 <Text style={{marginTop: 50, fontSize: 11, color: TPColors.inactiveText}}>提示: 从后台切切换前台时不需要输入密码</Text>
             ) : null;

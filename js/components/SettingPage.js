@@ -9,23 +9,24 @@ import {
     Alert,
     Text,
     TouchableOpacity,
-    Linking
+    Linking,
+    Switch
 } from 'react-native';
+import { NotificationCenter, TPColors } from '../common'
 import NavigationBar from 'NavigationBar'
 import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
-import TPColors from '../common/TPColors'
 import UserIntroEdit from './UserIntroEdit'
 import AboutPage from './AboutPage'
 import PasswordPage from './PasswordPage'
-import NotificationCenter from '../common/NotificationCenter'
 
 export default class SettingPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            hasUpdateNews: false
+            hasUpdateNews: false,
+            hasPassword: false,
         };
     }
 
@@ -35,13 +36,21 @@ export default class SettingPage extends Component {
         })
     };
 
+    onUpdateStartupPassword = () => {
+        Api.getLoginPassword()
+            .then((v) => this.setState({hasPassword: v != null && v.length > 0}));
+    };
+
     componentDidMount() {
         this._loadUpdateState();
+        this.onUpdateStartupPassword();
         NotificationCenter.addLister('onReadUpdateNews', this.onReadUpdateNews);
+        NotificationCenter.addLister('onUpdateStartupPassword', this.onUpdateStartupPassword);
     }
 
     componentWillUnmount() {
         NotificationCenter.removeLister('onReadUpdateNews', this.onReadUpdateNews);
+        NotificationCenter.removeLister('onUpdateStartupPassword', this.onUpdateStartupPassword);
     }
 
     logout() {
@@ -63,6 +72,18 @@ export default class SettingPage extends Component {
             hasUpdateNews: hasNews
         });
     }
+
+    changePassword = () => {
+        setTimeout(() => {
+            this.props.navigator.push({
+                name: 'PasswordPage',
+                component: PasswordPage,
+                params: {
+                    type: 'setting'
+                }
+            })
+        }, 200);
+    };
 
     render() {
         const badge = this.state.hasUpdateNews
@@ -90,18 +111,10 @@ export default class SettingPage extends Component {
                         <Icon name="ios-arrow-forward" style={styles.arrow} size={18} color='#0076FF'/>
                     </TouchableOpacity>
                     <View style={styles.line} />
-                    <TouchableOpacity onPress={
-                        () => this.props.navigator.push({
-                            name: 'PasswordPage',
-                            component: PasswordPage,
-                            params: {
-                                type: 'setting'
-                            }
-                        })
-                    } style={styles.item}>
-                        <Text style={styles.title}>设置启动密码</Text>
-                        <Icon name="ios-arrow-forward" style={styles.arrow} size={18}/>
-                    </TouchableOpacity>
+                    <View style={styles.item}>
+                        <Text style={styles.title}>启动密码</Text>
+                        <Switch value={this.state.hasPassword} onValueChange={this.changePassword} />
+                    </View>
 
 
                 </View>

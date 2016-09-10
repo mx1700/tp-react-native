@@ -43,6 +43,7 @@ var moment = require('moment');
 var locale = require('moment/locale/zh-cn');
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
+const dismissKeyboard = require('dismissKeyboard');
 
 export default class WritePage extends Component {
 
@@ -84,7 +85,7 @@ export default class WritePage extends Component {
     async _loadDraft() {
         const draft = await Api.getDraft();
         if (draft && draft.length > 0) {
-            Alert.alert('提示', '有一篇日记草稿，是否加载？\n草稿加载后将会清空草稿箱', [
+            Alert.alert('提示', '有一篇日记草稿，是否加载？\n加载后将会清空草稿箱', [
                 {text: '取消'},
                 {
                     text: '加载草稿',
@@ -219,9 +220,7 @@ export default class WritePage extends Component {
     }
 
     _cancelPress() {
-        if (this.refs.contentInput) {
-            this.refs.contentInput.setNativeProps({'editable': false});
-        }
+        dismissKeyboard();
 
         if (this.state.content.length == 0 || this.props.diary) {
             this.backPage();
@@ -239,27 +238,18 @@ export default class WritePage extends Component {
                     }
                 },
                 {
-                    text: '取消', onPress: () => {
-                        if (this.refs.contentInput) {
-                            this.refs.contentInput.setNativeProps({'editable': true});
-                            this.refs.contentInput.focus();
-                        }
-                    }
+                    text: '取消'
                 },
             ]);
         });
     }
 
     backPage() {
-        // if (this.refs.contentInput) {
-        //     this.refs.contentInput.setNativeProps({'editable': false});
-        // }
         setTimeout(() => {
             InteractionManager.runAfterInteractions(() => {
                 this.props.navigator.pop();
             });
         }, 350);
-
     }
 
     openModal() {
@@ -440,9 +430,6 @@ export default class WritePage extends Component {
                 animationType="none"
                 transparent={true}
                 visible={this.state.modalVisible}
-                onRequestClose={() => {
-                    alert(1)
-                }}
                 onShow={() => {
                     Animated.parallel([
                         Animated.timing(
