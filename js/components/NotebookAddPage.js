@@ -14,15 +14,18 @@ import {
     TouchableOpacity,
     Alert,
     Switch,
+    InteractionManager,
 } from 'react-native';
 import * as Api from '../Api'
-import NavigationBar from '../common/NavigationBar'
-import NotificationCenter from '../common/NotificationCenter'
-import TPColors from '../common/TPColors'
+import {
+    NotificationCenter,
+    NavigationBar,
+    TPColors,
+    LoadingModal,
+    TimeHelper,
+} from '../common'
 import ImagePicker from 'react-native-image-picker'
-import LoadingModal from '../common/LoadingModal'
 import ImageResizer from 'react-native-image-resizer'
-import TimeHelper from '../common/TimeHelper'
 const dismissKeyboard = require('dismissKeyboard');
 
 export default class NotebookAddPage extends Component {
@@ -49,6 +52,14 @@ export default class NotebookAddPage extends Component {
             fadeAnimOpacity: new Animated.Value(0),
             fadeAnimHeight: new Animated.Value(0),
         }
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            if (!this.props.notebook && this.refs.subjectInput) {
+                this.refs.subjectInput.focus();
+            }
+        });
     }
 
     createPress() {
@@ -188,6 +199,19 @@ export default class NotebookAddPage extends Component {
         return 'file://' + newUri;
     }
 
+    _deleteBook() {
+        Api.deleteNotebook(this.props.notebook.id)
+            .then(() => {
+                NotificationCenter.trigger('onAddNotebook');
+                Alert.alert('提示', '日记本已删除', [{text: '好', onPress: () =>  {
+                    this.props.navigator.popToTop();
+                }}]);
+            })
+            .catch((err) => {
+                Alert.alert('错误', '删除失败')
+            });
+    }
+
     render() {
         const date = this.state.date;
         const dateString = `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`;
@@ -212,6 +236,17 @@ export default class NotebookAddPage extends Component {
                 <TouchableOpacity style={styles.item} onPress={this._editCover.bind(this)}>
                     <Text style={{flex: 1, textAlign: 'center', color: TPColors.light, fontSize: 16}}>设置封面</Text>
                 </TouchableOpacity>
+            </View>
+        );
+
+        const deleteView = !this.props.notebook ? null : (
+            <View>
+                <View style={styles.group}>
+                    <TouchableOpacity style={styles.item} onPress={this._deleteBook.bind(this)}>
+                        <Text style={{flex: 1, textAlign: 'center', color: '#d9534f', fontSize: 16}}>删除</Text>
+                    </TouchableOpacity>
+                </View>
+                <Text style={{fontSize: 12, padding: 10, paddingTop: 8, color: TPColors.inactiveText}}>提示：有日记的日记本不能被删除</Text>
             </View>
         );
 
@@ -269,12 +304,12 @@ export default class NotebookAddPage extends Component {
                 <View style={styles.group}>
                     <View style={styles.item}>
                         <TextInput
+                            ref="subjectInput"
                             style={{flex: 1, fontSize: 16}}
                             placeholder="主题"
                             value={this.state.subject}
                             onChangeText={(text) => this.setState({subject: text})}
                             autoCorrect={false}
-                            autoFocus={true}
                         />
                     </View>
                     <View style={styles.line} />
@@ -288,6 +323,7 @@ export default class NotebookAddPage extends Component {
                     </View>
                 </View>
                 {setCoverView}
+                {deleteView}
             </View>
         );
     }

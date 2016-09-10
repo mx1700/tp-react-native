@@ -253,10 +253,11 @@ export default class WritePage extends Component {
     }
 
     openModal() {
+        dismissKeyboard();
         this.setState({modalVisible: true});
     }
 
-    closeModal() {
+    closeModal(showKeyboard = true) {
         Animated.parallel([
             Animated.timing(
                 this.state.fadeAnimOpacity,
@@ -268,6 +269,9 @@ export default class WritePage extends Component {
             )
         ]).start(() => {
             this.setState({modalVisible: false});
+            if (showKeyboard) {
+                this.refs.contentInput.focus();
+            }
         });
     }
 
@@ -277,14 +281,16 @@ export default class WritePage extends Component {
     }
 
     _createBook() {
-        this.closeModal();
-        this.props.navigator.push({
-            name: 'NotebookAddPage',
-            component: NotebookAddPage,
-            params: {
-                onCreated: this._setCreatedBook.bind(this)
-            }
-        })
+        this.closeModal(false);
+        InteractionManager.runAfterInteractions(() => {
+            this.props.navigator.push({
+                name: 'NotebookAddPage',
+                component: NotebookAddPage,
+                params: {
+                    onCreated: this._setCreatedBook.bind(this)
+                }
+            });
+        });
     }
 
     _setCreatedBook(book) {
@@ -455,7 +461,7 @@ export default class WritePage extends Component {
                                 <Text style={styles.closeButtonText}>取消</Text>
                             </TouchableOpacity>
                         </View>
-                        <ScrollView horizontal={true} centerContent={true}
+                        <ScrollView horizontal={true}
                                     contentContainerStyle={{padding: 10, paddingRight: 0}}
                                     keyboardDismissMode="on-drag"
                                     keyboardShouldPersistTaps={true}
