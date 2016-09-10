@@ -19,6 +19,7 @@ import TPColors from 'TPColors'
 import UserPage from './UserPage'
 import WritePage from './WritePage'
 import ErrorView from '../common/ErrorListView'
+import Toast from 'react-native-root-toast';
 
 export default class DiaryList extends Component {
 
@@ -173,6 +174,12 @@ export default class DiaryList extends Component {
   async deleteDiary(diary) {
     try {
       await Api.deleteDiary(diary.id);
+        Toast.show("日记已删除", {
+            duration: 2000,
+            position: -80,
+            shadow: false,
+            hideOnPress: true,
+        });
       this.refresh()
     } catch (err) {
       console.log(err);  //TODO:友好提示
