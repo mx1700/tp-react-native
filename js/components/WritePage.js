@@ -19,6 +19,7 @@ import {
     TouchableOpacity,
     Image,
     Alert,
+    ScrollView
 } from 'react-native';
 
 import {
@@ -36,6 +37,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import ImageResizer from 'react-native-image-resizer'
 import Toast from 'react-native-root-toast';
 import NotebookAddPage from './NotebookAddPage'
+import Notebook from './Notebook'
 
 var moment = require('moment');
 var locale = require('moment/locale/zh-cn');
@@ -77,7 +79,7 @@ export default class WritePage extends Component {
             if (this.refs.contentInput) {
                 this.refs.contentInput.focus();
             }
-        }, 500);
+        }, 400);
     }
 
     async _loadDraft() {
@@ -180,7 +182,7 @@ export default class WritePage extends Component {
         if (r) {
             Toast.show("日记保存完成", {
                 duration: 2000,
-                position: -120,
+                position: -80,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -215,7 +217,7 @@ export default class WritePage extends Component {
     }
 
     _cancelPress() {
-        if (this.state.content.length == 0) {
+        if (this.state.content.length == 0 || this.props.diary) {
             this.backPage();
             return;
         }
@@ -429,7 +431,7 @@ export default class WritePage extends Component {
                         ),
                         Animated.timing(
                             this.state.fadeAnimHeight,
-                            {toValue: 250, duration: 350, easing: Easing.out(Easing.cubic)}
+                            {toValue: 245, duration: 350, easing: Easing.out(Easing.cubic)}
                         )
                     ]).start();
                 }}
@@ -439,20 +441,34 @@ export default class WritePage extends Component {
                     <Animated.View style={{height: this.state.fadeAnimHeight, backgroundColor: '#fff'}}>
                         <View style={styles.closeButtonContainer}>
                             <TouchableOpacity onPress={ this._createBook.bind(this) } style={styles.closeButton}>
-                                <Text style={styles.closeButtonText}>新添日记本</Text>
+                                <Text style={styles.closeButtonText}>新添</Text>
                             </TouchableOpacity>
+                            <Text style={{padding: 10, color: TPColors.contentText}}>选择日记本</Text>
                             <TouchableOpacity onPress={ this.closeModal.bind(this) } style={styles.closeButton}>
-                                <Text style={styles.closeButtonText}>确定</Text>
+                                <Text style={styles.closeButtonText}>取消</Text>
                             </TouchableOpacity>
                         </View>
-                        <Picker
-                            style={{ flex: 1}}
-                            selectedValue={this.state.selectBookId}
-                            onValueChange={(id) => this.setState({selectBookId: id})}>
+                        <ScrollView horizontal={true} centerContent={true}
+                                    contentContainerStyle={{padding: 10, paddingRight: 0}}
+                                    keyboardDismissMode="on-drag"
+                                    keyboardShouldPersistTaps={true}
+                                    automaticallyAdjustInsets={false}
+                                    decelerationRate={0}
+                                    snapToAlignment="start"
+                                    snapToInterval={300}
+                                    showsHorizontalScrollIndicator={true}
+                        >
                             {this.state.books.map((book) => (
-                                <Picker.Item key={book.id} label={book.subject} value={book.id} />
+                                <Notebook
+                                    key={book.id}
+                                    book={book}
+                                    style={{paddingRight: 10}}
+                                    onPress={() => {
+                                        this.setState({selectBookId: book.id});
+                                        this.closeModal();
+                                    }} />
                             ))}
-                        </Picker>
+                        </ScrollView>
                     </Animated.View>
                 </View>
             </Modal>

@@ -130,6 +130,6 @@ export default class NotebookList extends Component {
     }
 
     _renderBook(book) {
-        return <Notebook book={book} onPress={() => this._bookPress(book)} />
+        return <Notebook book={book} style={{flex: 1, alignItems:'center', paddingBottom: 15, paddingTop: 15, backgroundColor:'white'}} onPress={() => this._bookPress(book)} />
     }
 }
