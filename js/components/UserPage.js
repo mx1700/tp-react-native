@@ -7,6 +7,7 @@ import {
     RefreshControl,
     ActivityIndicator,
     SegmentedControlIOS,
+    Alert
 } from 'react-native';
 import * as Api from '../Api'
 import UserDiaryList from './UserDiaryList'
@@ -109,20 +110,35 @@ export default class UserPage extends Component {
 
     async updateRelation() {
         const rel = this.state.followed;
-        try {
+        if (rel) {
+            Alert.alert('提示', '确认不再关注？',[
+                {text: '确认', onPress: () => {
+                    this.setState({
+                        followed: !rel
+                    });
+                    try {
+                        Api.deleteFollow(this.getId())
+                    } catch (err) {
+                        console.log(err); //TODO:友好提示
+                        this.setState({
+                            followed: rel
+                        })
+                    }
+                }},
+                {text: '取消', onPress: () => console.log('OK Pressed!')},
+            ]);
+        } else {
             this.setState({
                 followed: !rel
             });
-            if (rel) {
-                await Api.deleteFollow(this.getId())
-            } else {
+            try {
                 await Api.addFollow(this.getId())
+            } catch (err) {
+                console.log(err); //TODO:友好提示
+                this.setState({
+                    followed: rel
+                })
             }
-        } catch (err) {
-            console.log(err); //TODO:友好提示
-            this.setState({
-                followed: rel
-            })
         }
     }
 
