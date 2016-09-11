@@ -61,7 +61,7 @@ export default class FollowUsersPage extends Component {
         try {
             data = await Api.getRelationUsers(page, this.state.page_size)
         } catch (err) {
-            Alert.alert('加载失败', err.message);
+            //Alert.alert('加载失败', err.message);
         }
 
         //console.log(data);
@@ -87,6 +87,28 @@ export default class FollowUsersPage extends Component {
                 errorPage: false,
                 loadMoreError: false,
             });
+        }else {
+            if (page == 1) {
+                const users = [];
+                const ids = [];
+                this.setState({
+                    users: users,
+                    usersDateSource: this.state.usersDateSource.cloneWithRows(this.arrayToMap(users, it => it.id), ids),
+                    page: 1,
+                    more: false,
+                    refreshing: false,
+                    loading_more: false,
+                    emptyList: false,
+                    errorPage: true,
+                    loadMoreError: false,
+                });
+            } else {
+                this.setState({
+                    refreshing: false,
+                    loading_more: false,
+                    loadMoreError: true,
+                });
+            }
         }
     }
 
@@ -96,8 +118,11 @@ export default class FollowUsersPage extends Component {
         return ret;
     }
 
-    _onEndReached() {
+    _onEndReached(ignoreError = false) {
         if(this.state.refreshing || this.state.loading_more || !this.state.more) {
+            return;
+        }
+        if (!ignoreError && this.state.loadMoreError) {
             return;
         }
         this._loadUsers(this.state.page + 1)
@@ -181,6 +206,7 @@ export default class FollowUsersPage extends Component {
     }
 
     renderFooter() {
+        //todo:按照日记列表更改
         if (this.state.errorPage) {
             return <ErrorView text="加载失败了 :(" />
         }
@@ -191,8 +217,8 @@ export default class FollowUsersPage extends Component {
 
         if(!this.state.loading_more && this.state.loadMoreError) {
             return (
-                <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                    <TouchableOpacity style={{marginTop: 15}} onPress={this._onEndReached.bind(this)}>
+                <View style={{ height: 60, justifyContent: "center", alignItems: "center", paddingBottom: 15}}>
+                    <TouchableOpacity style={{marginTop: 15}} onPress={this._onEndReached.bind(this, true)}>
                         <Text style={{color: TPColors.light}}>加载失败,请重试</Text>
                     </TouchableOpacity>
                 </View>
@@ -202,14 +228,19 @@ export default class FollowUsersPage extends Component {
         if (this.state.refreshing || this.state.users.length == 0) {
             return null;
         }
-        var content = this.state.more ?
-            (<ActivityIndicator animating={true} color={TPColors.light} size="small" />) :
-            (<Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>);
 
-        return (
-            <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                {content}
-            </View>
-        );
+        if (this.state.more) {
+            return (
+                <View style={{ height: 60, justifyContent: "center", alignItems: "center"}}>
+                    <ActivityIndicator animating={true} color={TPColors.light} size="small" />
+                </View>
+            )
+        } else {
+            return (
+                <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+                    <Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>
+                </View>
+            )
+        }
     }
 }

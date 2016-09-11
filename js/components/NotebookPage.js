@@ -135,8 +135,11 @@ export default class NotebookPage extends Component {
         }
     }
 
-    _onEndReached() {
+    _onEndReached(ignoreError = false) {
         if(this.state.refreshing || this.state.loading_more || !this.state.more) {
+            return;
+        }
+        if (!ignoreError && this.state.loadMoreError) {
             return;
         }
         this._loadDiaries(this.state.page + 1);
@@ -245,8 +248,8 @@ export default class NotebookPage extends Component {
 
         if (!this.state.loading_more && this.state.loadMoreError) {
             return (
-                <View style={{height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                    <TouchableOpacity style={{marginTop: 15}} onPress={this._onEndReached.bind(this)}>
+                <View style={{height: 60, justifyContent: "center", alignItems: "center", paddingBottom: 15}}>
+                    <TouchableOpacity style={{marginTop: 15}} onPress={this._onEndReached.bind(this, true)}>
                         <Text style={{color: TPColors.light}}>加载失败,请重试</Text>
                     </TouchableOpacity>
                 </View>
@@ -256,14 +259,19 @@ export default class NotebookPage extends Component {
         if (this.state.refreshing || Object.getOwnPropertyNames(this.state.diaries).length == 0) {
             return null;
         }
-        var content = this.state.more ?
-            (<ActivityIndicator animating={true} color={TPColors.light} size="small"/>) :
-            (<Text style={{color: TPColors.inactiveText, fontSize: 12}}>—— THE END ——</Text>);
 
-        return (
-            <View style={{height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                {content}
-            </View>
-        );
+        if (this.state.more) {
+            return (
+                <View style={{ height: 60, justifyContent: "center", alignItems: "center"}}>
+                    <ActivityIndicator animating={true} color={TPColors.light} size="small" />
+                </View>
+            )
+        } else {
+            return (
+                <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+                    <Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>
+                </View>
+            )
+        }
     }
 }
