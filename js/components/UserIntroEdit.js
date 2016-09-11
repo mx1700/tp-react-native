@@ -337,8 +337,7 @@ class UserIntroEditIntro extends Component {
         try {
             user = await Api.updateUserInfo(this.props.user.name, this.state.intro)
         } catch (err) {
-            console.log(err);
-            Alert.alert('错误', '保存失败');
+            Alert.alert('保存失败', err.message);
         } finally {
             this.setState({loading: false});
         }

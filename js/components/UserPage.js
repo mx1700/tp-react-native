@@ -116,14 +116,13 @@ export default class UserPage extends Component {
                     this.setState({
                         followed: !rel
                     });
-                    try {
-                        Api.deleteFollow(this.getId())
-                    } catch (err) {
-                        Alert.alert('取消关注失败', err.message);
-                        this.setState({
-                            followed: rel
+                    Api.deleteFollow(this.getId())
+                        .catch((err) => {
+                            Alert.alert('取消关注失败', err.message);
+                            this.setState({
+                                followed: rel
+                            })
                         })
-                    }
                 }},
                 {text: '取消', onPress: () => console.log('OK Pressed!')},
             ]);
