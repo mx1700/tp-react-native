@@ -140,11 +140,15 @@ export default class DiaryList extends Component {
     this._loadTodayDiaries(1);
   }
 
-  _onEndReached() {
-    if(this.state.refreshing || this.state.loading_more || !this.state.more) {
-      return;
-    }
-    this._loadTodayDiaries(this.state.page + 1);
+  _onEndReached(ignoreError = false) {
+      console.log(this.state);
+      if (this.state.refreshing || this.state.loading_more || !this.state.more) {
+          return;
+      }
+      if (!ignoreError && this.state.loadMoreError) {
+          return;
+      }
+      this._loadTodayDiaries(this.state.page + 1);
   }
 
   _onActionPress(diary) {
@@ -245,9 +249,13 @@ export default class DiaryList extends Component {
 
       if(!this.state.loading_more && this.state.loadMoreError) {
           return (
-              <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-                  <TouchableOpacity style={{marginTop: 15}} onPress={this._onEndReached.bind(this)}>
-                      <Text style={{color: TPColors.light}}>加载失败,请重试</Text>
+              <View style={{ height: 60, justifyContent: "center", alignItems: "center", paddingBottom: 15}}>
+                  <TouchableOpacity style={{marginTop: 15}}
+                                    onPress={() => {
+                                        this._onEndReached(true);
+                                    }}
+                  >
+                      <Text style={{color: TPColors.light}}>加载失败,点击重试</Text>
                   </TouchableOpacity>
               </View>
           );
@@ -256,15 +264,20 @@ export default class DiaryList extends Component {
     if (this.state.refreshing || this.state.diaries.length == 0) {
       return null;
     }
-    var content = this.state.more ?
-                    (<ActivityIndicator animating={true} color={TPColors.light} size="small" />) :
-                    (<Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>);
 
-    return (
-      <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
-        {content}
-      </View>
-    );
+    if (this.state.more) {
+        return (
+            <View style={{ height: 60, justifyContent: "center", alignItems: "center"}}>
+                <ActivityIndicator animating={true} color={TPColors.light} size="small" />
+            </View>
+        )
+    } else {
+        return (
+            <View style={{ height: 100, justifyContent: "center", alignItems: "center", paddingBottom: 5}}>
+                <Text style={{color: TPColors.inactiveText, fontSize: 12}}>——  THE END  ——</Text>
+            </View>
+        )
+    }
   }
 }
 
