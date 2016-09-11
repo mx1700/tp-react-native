@@ -111,7 +111,7 @@ export default class TPNavigator extends Component {
             return BottomSceneConfigs;
           }
           if (route.name == 'PhotoPage') {
-            return Navigator.SceneConfigs.FadeAndroid;
+            return PhotoSceneConfig;
           }
           if (route.name == 'LoginPage') {
             return {...BottomSceneConfigs, gestures: false}
@@ -143,6 +143,9 @@ const SceneConfigs = Platform.OS === 'android'
 const BottomSceneConfigs = Platform.OS === 'android'
     ? Navigator.SceneConfigs.FloatFromBottomAndroid
     : Navigator.SceneConfigs.FloatFromBottomAndroid;
+
+const PhotoSceneConfig = {...Navigator.SceneConfigs.FadeAndroid, defaultTransitionVelocity: 3,
+  springFriction: 20,};
 
 TPNavigator.childContextTypes = {
   addBackButtonListener: React.PropTypes.func,
