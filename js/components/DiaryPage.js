@@ -173,7 +173,7 @@ export default class DiaryPage extends Component {
         this._scrollToBottom();
       });
     } else {
-      Alert.alert('错误','回复失败 -_-!');
+      //Alert.alert('错误','回复失败 -_-!');
       this.setState({
         comment_sending: false,
       });

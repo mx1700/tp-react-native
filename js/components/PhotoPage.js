@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     View,
     ToolbarAndroid,
     Platform,
@@ -44,7 +43,7 @@ export default class PhotoPage extends Component {
     }
 
     handleError() {
-        alert('图片加载失败')
+        Alert.alert('加载失败')
     }
 
     handleLoad(e) {

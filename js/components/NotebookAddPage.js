@@ -89,7 +89,7 @@ export default class NotebookAddPage extends Component {
             //console.log(book);
         } catch (err) {
             console.log(err);
-            Alert.alert('错误', !this.props.notebook ? '创建日记本失败' : '修改日记本失败');
+            Alert.alert(!this.props.notebook ? '创建日记本失败' : '修改日记本失败', err.message);
         } finally {
             this.setState({loading: false});
         }
@@ -164,13 +164,13 @@ export default class NotebookAddPage extends Component {
             book = await Api.updateNotebookCover(this.props.notebook.id, newUri);
         } catch (err) {
             console.log(err);
-            alert('更新失败');
+            Alert.alert('保存失败', err.message);
         } finally {
             this.setState({loading: false})
         }
         //console.log(book);
         if (book) {
-            Alert.alert('提示', '封面设置成功');
+            Alert.alert('提示', '封面设置成功');    //TODO：改为 toast
             if (this.props.onCreated) {
                 this.props.onCreated(book);
             }

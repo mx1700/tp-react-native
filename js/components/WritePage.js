@@ -134,7 +134,7 @@ export default class WritePage extends Component {
 
     _writePress() {
         if (this.state.loadBookError) {
-            Alert.alert('失败','日记本列表加载失败');
+            Alert.alert('失败','日记本列表加载失败');  //TODO:提供重新加载功能
             return;
         }
 

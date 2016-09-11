@@ -8,8 +8,8 @@ import {
     InteractionManager,
     View,
     Image,
-    TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Alert,
 } from 'react-native';
 import * as Api from '../Api'
 import TPColors from '../common/TPColors'
@@ -69,7 +69,7 @@ export default class UserIntro extends Component {
                 user = await Api.getUserInfo(this.getId())
             }
         } catch(err) {
-            alert('简介加载失败');
+            Alert.alert('加载失败', err);
             return;
         }
         this.setState({
