@@ -74,6 +74,7 @@ var GridView = React.createClass({
       return self.props.renderItem(item);
     });
 
+      console.log(group, sectionID, rowID);
     return (
             <View style={styles.row}>
               {items}
@@ -113,6 +114,7 @@ var GridView = React.createClass({
               automaticallyAdjustContentInsets={this.props.automaticallyAdjustContentInsets}
               refreshControl={this.props.refreshControl}
               removeClippedSubviews={this.props.removeClippedSubviews}
+              contentContainerStyle={{paddingTop: 15}}
             />
            );
   },
@@ -123,9 +125,10 @@ var GridView = React.createClass({
 
 var styles = StyleSheet.create({
   row: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
+      backgroundColor: 'white'
   }
 });
 
