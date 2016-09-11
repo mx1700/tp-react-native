@@ -91,7 +91,8 @@ export default class DiaryPage extends Component {
     try {
       diary = await Api.getDiary(this.getDiaryId());
     } catch (err) {
-      console.log(err);
+      //Alert.alert('日记加载失败', err.message);
+      //有错误试图，不需处理
     }
 
     if (diary) {
@@ -118,7 +119,8 @@ export default class DiaryPage extends Component {
     try {
       comments = await Api.getDiaryComments(this.getDiaryId());
     } catch (e) {
-      console.log(e);
+      //console.log(e);
+      //有错误试图，不需处理
     }
 
     if (comments) {
@@ -155,7 +157,7 @@ export default class DiaryPage extends Component {
 
       ret = await Api.addComment(this.state.diary.id, content, this.state.reply_user_id)
     } catch (err) {
-      console.log(err);
+      Alert.alert('回复失败', err.message);
     }
 
     if (ret) {
@@ -300,7 +302,7 @@ export default class DiaryPage extends Component {
     try {
       await Api.deleteComment(comment.id);
     } catch(err) {
-      alert('删除回复失败');
+      Alert.alert('删除失败', err.message);
     }
   }
 
@@ -355,10 +357,8 @@ export default class DiaryPage extends Component {
     let r;
     try {
       r = await Api.deleteDiary(diary.id);
-      //r = true;
     } catch (err) {
-      console.log(err);  //TODO:友好提示
-      alert('删除失败');
+      Alert.alert('删除失败', err.message);
       return;
     }
     Alert.alert('提示', '日记已删除', [{text: '好', onPress: () =>  this.props.navigator.pop()}]);

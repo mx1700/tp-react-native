@@ -4,17 +4,12 @@ import {
     Platform,
     RefreshControl,
     ActivityIndicator,
-    Text,
     InteractionManager,
-    View,
-    Image,
-    TouchableOpacity,
+    Alert,
 } from 'react-native';
 import * as Api from '../Api'
+import { TPColors, GridView, NotificationCenter } from '../common'
 import NotebookPage from './NotebookPage'
-import TPColors from '../common/TPColors'
-var GridView = require('../common/GridView');
-import NotificationCenter from '../common/NotificationCenter'
 import Notebook from './Notebook'
 
 export default class NotebookList extends Component {
@@ -79,7 +74,7 @@ export default class NotebookList extends Component {
                 ? await Api.getSelfNotebooks()
                 : await Api.getUserNotebooks(this.props.userId);
         } catch(err) {
-            console.log(err);   //TODO:友好提示
+            Alert.alert('加载失败', err.message);
             this.setState({
                 refreshing: false,
             });

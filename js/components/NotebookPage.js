@@ -75,6 +75,7 @@ export default class NotebookPage extends Component {
             data = await Api.getNotebookTodayDiaries(this.state.notebook.id, page, this.state.page_size);
         } catch(e) {
             console.log(e);
+            //TODO:处理错误
         }
 
         if (data) {

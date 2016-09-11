@@ -260,16 +260,18 @@ async function call(method, api, body) {
   //   }
   // }
   return timeout(fetch(baseUrl + api, {
-    method: method,
-    headers: {
-        'Authorization': token,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
-  .then(checkStatus)
-  .then(parseJSON),
+        method: method,
+        headers: {
+          'Authorization': token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      })
+          .then(checkStatus)
+          .then(parseJSON)
+          .catch(handleCatch)
+      ,
       10000);
 }
 
@@ -277,21 +279,25 @@ async function upload(method, api, body) {
   console.log('request upload:', baseUrl + api)
   var token = await TokenManager.getToken();
   let formData = new FormData();
-  for(let prop of Object.keys(body)) {
+  for (let prop of Object.keys(body)) {
     formData.append(prop, body[prop]);
   }
   console.log(formData);
-  return timeout(fetch(baseUrl + api, {
-    method: method,
-    headers: {
-      'Authorization': token,
-      'Accept': 'application/json',
-      'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
-    },
-    body: formData
-  })
-      .then(checkStatus)
-      .then(parseJSON),
+  return timeout(
+      fetch(baseUrl + api, {
+        method: method,
+        headers: {
+          'Authorization': token,
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
+        },
+        body: formData
+      })
+          .then(checkStatus)
+          .then(parseJSON)
+          .catch(handleCatch)
+
+      ,
       60000)
 }
 
@@ -300,10 +306,17 @@ async function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
   } else {
-    console.log('http error: ' + response.status + ' ' + response.body)
-    console.log(await response.json());
-    var error = new Error(response.statusText)
-    error.response = response
+    console.log('http error: ' + response.status + ' ' + response.body);
+    let errInfo;
+    try {
+      errInfo = await response.json()
+    } catch (err) {
+      errInfo = {
+        code: 0,
+        message: '服务器开小差了'
+      }
+    }
+    var error = new Error(errInfo.message, errInfo.code);
     throw error
   }
 }
@@ -324,4 +337,13 @@ function timeout(promise, time) {
       setTimeout(() => reject(new Error('request timeout')), time)
     })
   ]);
+}
+
+function handleCatch(err) {
+  //console.log(err, err.id, err.message);
+  if (err.message == 'Network request failed') {
+    throw new Error('网络连接失败', err.id)
+  } else {
+    throw err;
+  }
 }

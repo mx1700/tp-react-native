@@ -182,7 +182,7 @@ export default class DiaryList extends Component {
         });
       this.refresh()
     } catch (err) {
-      console.log(err);  //TODO:友好提示
+      Alert.alert('删除失败', err.message)
     }
   }
 

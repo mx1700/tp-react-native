@@ -208,7 +208,7 @@ export default class NotebookAddPage extends Component {
                 }}]);
             })
             .catch((err) => {
-                Alert.alert('错误', '删除失败')
+                Alert.alert('删除失败', err.message)
             });
     }
 

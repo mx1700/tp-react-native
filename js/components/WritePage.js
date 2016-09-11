@@ -106,7 +106,7 @@ export default class WritePage extends Component {
             books = await Api.getSelfNotebooks();
         } catch(err) {
             console.log(err);
-            Alert.alert('错误', '日记本加载失败');
+            Alert.alert('日记本加载失败', err.message);
             this.state.loadBookError = true;
             return;
         }
@@ -171,8 +171,7 @@ export default class WritePage extends Component {
                 this.state.content);
             //console.log('write:', r);
         } catch (err) {
-            console.log(err);
-            Alert.alert('错误', '日记保存失败');
+            Alert.alert('日记保存失败', err.message);
             return;
         } finally {
             this.setState({loading: false});

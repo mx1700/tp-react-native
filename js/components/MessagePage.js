@@ -8,8 +8,9 @@ import {
     ActivityIndicator,
     Modal,
     InteractionManager,
-ListView,
+    ListView,
     RefreshControl,
+    Alert
 } from 'react-native';
 import * as Api from '../Api'
 import TPColors from '../common/TPColors'
@@ -123,7 +124,7 @@ export default class MessagePage extends Component {
         try {
             list = await Api.getMessages(0);
         } catch (err) {
-            console.log(err);
+            //Alert.alert('提醒加载失败', err.message);
         }
         //console.log(list);
         this._setMsgList(list);

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    StyleSheet,
     View,
     Platform,
     ListView,
@@ -10,7 +8,8 @@ import {
     Text,
     Image,
     ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import NavigationBar from 'NavigationBar'
 import * as Api from '../Api'
@@ -62,7 +61,7 @@ export default class FollowUsersPage extends Component {
         try {
             data = await Api.getRelationUsers(page, this.state.page_size)
         } catch (err) {
-            console.log(err);
+            Alert.alert('加载失败', err.message);
         }
 
         //console.log(data);

@@ -104,7 +104,7 @@ export default class UserIntroEdit extends Component {
             user = await Api.updateUserIcon(newUri);
         } catch (err) {
             console.log(err);
-            alert('更新失败');
+             Alert.alert('更新失败', err.message);
         } finally {
             this.setState({loading: false})
         }
@@ -273,8 +273,7 @@ class UserIntroEditName extends Component {
         try {
             user = await Api.updateUserInfo(this.state.name, this.props.user.intro)
         } catch (err) {
-            console.log(err);
-            Alert.alert('错误', '保存失败');
+            Alert.alert('保存失败', err.message);
         } finally {
             this.setState({loading: false});
         }

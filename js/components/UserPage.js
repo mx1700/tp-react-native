@@ -119,7 +119,7 @@ export default class UserPage extends Component {
                     try {
                         Api.deleteFollow(this.getId())
                     } catch (err) {
-                        console.log(err); //TODO:友好提示
+                        Alert.alert('取消关注失败', err.message);
                         this.setState({
                             followed: rel
                         })
@@ -134,7 +134,7 @@ export default class UserPage extends Component {
             try {
                 await Api.addFollow(this.getId())
             } catch (err) {
-                console.log(err); //TODO:友好提示
+                Alert.alert('关注失败', err.message);
                 this.setState({
                     followed: rel
                 })
