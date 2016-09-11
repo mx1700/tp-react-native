@@ -22,6 +22,7 @@ export default class PhotoPage extends Component {
         this.state = {
             loading: false,
             progress: 0,
+            hiddenStatusBar: true,
         };
     }
 
@@ -107,10 +108,16 @@ export default class PhotoPage extends Component {
                 style={{flex: 1, backgroundColor: '#000'}}
                 onPress={() => this.props.navigator.pop()}
             >
-                <StatusBar hidden={true} animated={true} showHideTransition="fade" />
+                <StatusBar
+                    hidden={this.state.hiddenStatusBar}
+                    animated={!this.state.hiddenStatusBar}
+                    showHideTransition="fade" />
                 <ZoomImage
                     style={{flex: 1}}
-                    onPress={() => this.props.navigator.pop()}
+                    onPress={() => {
+                        this.setState({hiddenStatusBar: false});
+                        this.props.navigator.pop()}
+                    }
                     onLongPress={this.onLongPress.bind(this)}
                     source={this.props.source}
                     onLoadStart={this.handleLoadStart.bind(this)}
