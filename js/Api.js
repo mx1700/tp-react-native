@@ -185,6 +185,10 @@ export async function getRelationUsers(page, page_size) {
   return call('GET', `/relation?page=${page}&page_size=${page_size}`);
 }
 
+export async function getRelationReverseUsers(page, page_size) {
+  return call('GET', `/relation/reverse?page=${page}&page_size=${page_size}`);
+}
+
 export async function getRelation(user_id) {
   return call('GET', '/relation/' + user_id);
 }
@@ -195,6 +199,10 @@ export async function addFollow(user_id) {
 
 export async function deleteFollow(user_id) {
   return call('DELETE', '/relation/' + user_id);
+}
+
+export async function deleteFollowBy(user_id) {
+  return call('DELETE', '/relation/reverse/' + user_id);
 }
 
 export async function getMessages(last_id = 0) {
@@ -249,7 +257,8 @@ export async function clearDraft() {
 
 //==========================================================================
 
-var baseUrl = 'http://openbeta.timepill.net/api';
+var baseUrl = 'https://open.timepill.net/api';
+//var baseUrl = 'http://openbeta.timepill.net/api';
 async function call(method, api, body) {
   console.log('request:', baseUrl + api);
   var token = await TokenManager.getToken();

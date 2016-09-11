@@ -74,7 +74,6 @@ var GridView = React.createClass({
       return self.props.renderItem(item);
     });
 
-      console.log(group, sectionID, rowID);
     return (
             <View style={styles.row}>
               {items}

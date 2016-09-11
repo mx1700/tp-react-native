@@ -9,7 +9,8 @@ import {
     Image,
     ActivityIndicator,
     TouchableOpacity,
-    Alert
+    Alert,
+    SegmentedControlIOS
 } from 'react-native';
 import NavigationBar from 'NavigationBar'
 import * as Api from '../Api'
@@ -20,6 +21,76 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import TPTouchable from 'TPTouchable'
 
 export default class FollowUsersPage extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedIndex: 0,
+            loadedFollow: true,
+            loadedFollowReverse: false,
+        };
+    }
+
+    render() {
+
+        const followViewStyle = this.state.selectedIndex == 0 ? null : {height: 0, flex: null};
+        const followViewReverseStyle = this.state.selectedIndex == 1 ? null : {height: 0, flex: null};
+
+        const followView = this.state.loadedFollow
+            ? (
+            <FollowList
+                style={followViewStyle}
+                navigator={this.props.navigator}
+                onLoadDate={(page, pageSize) => {
+                    return Api.getRelationUsers(page, pageSize);
+                }}
+                onDeletePress={(user) => Api.deleteFollow(user.id)}
+            />
+        ) : null;
+
+        const followViewReverse = this.state.loadedFollowReverse
+            ? (
+            <FollowList
+                style={followViewReverseStyle}
+                navigator={this.props.navigator}
+                onLoadDate={(page, pageSize) => {
+                    return Api.getRelationReverseUsers(page, pageSize);
+                }}
+                onDeletePress={(user) => Api.deleteFollowBy(user.id)}
+            />
+        ) : null;
+
+        return (
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <NavigationBar
+                    title1="我关注的人"
+                    title={(
+                        <SegmentedControlIOS
+                            style={{width: 220}}
+                            selectedIndex={this.state.selectedIndex}
+                            values={['我关注的人', '关注我的人']}
+                            onValueChange={(v) => {
+                                this.setState({
+                                    selectedIndex: v == '我关注的人' ? 0 : 1,
+                                    loadedFollow: this.state.loadedFollow || v == '我关注的人',
+                                    loadedFollowReverse: this.state.loadedFollowReverse || v == '关注我的人',
+                                })
+                            }}
+                        />
+                    )}
+                    backPress={() => this.props.navigator.pop() }
+                />
+                {followView}
+                {followViewReverse}
+            </View>
+        )
+    }
+
+
+}
+
+class FollowList extends Component {
 
     constructor(props) {
         super(props);
@@ -46,7 +117,7 @@ export default class FollowUsersPage extends Component {
     }
 
     _onRefresh() {
-
+        this._loadUsers(1);
     }
 
     async _loadUsers(page) {
@@ -59,7 +130,7 @@ export default class FollowUsersPage extends Component {
 
         let data;
         try {
-            data = await Api.getRelationUsers(page, this.state.page_size)
+            data = await this.props.onLoadDate(page, this.state.page_size)
         } catch (err) {
             //Alert.alert('加载失败', err.message);
         }
@@ -79,8 +150,8 @@ export default class FollowUsersPage extends Component {
                 users: users,
                 usersDateSource: this.state.usersDateSource.cloneWithRows(this.arrayToMap(users, it => it.id), ids),
                 page: page,
-                page_size: 20,
-                more: data.users.length == 20,
+                page_size: this.state.page_size,
+                more: data.users.length == this.state.page_size,
                 loading_more: false,
                 refreshing: false,
                 emptyList: false,
@@ -138,45 +209,39 @@ export default class FollowUsersPage extends Component {
         })
     }
 
-    _deleteUser(user) {
+    _onDeletePress(user) {
         const users = this.state.users.filter((it) => it.id != user.id);
         const ids = users.map(it => it.id);
         this.setState({
             users: users,
             usersDateSource: this.state.usersDateSource.cloneWithRows(this.arrayToMap(users, it => it.id), ids),
         });
-        Api.deleteFollow(user.id)
+        this.props.onDeletePress(user);
     }
 
     render() {
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
-                <NavigationBar
-                    title="我关注的人"
-                    backPress={() => this.props.navigator.pop() }
-                />
-                <SwipeListView
-                    ref="list"
-                    dataSource={this.state.usersDateSource}
-                    renderRow={this.renderUser.bind(this)}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh.bind(this)}
-                            colors={[TPColors.light]}
-                            tintColor={TPColors.light} />
-                    }
-                    onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={50}
-                    renderFooter={this.renderFooter.bind(this)}
-                    enableEmptySections={true}
-                    automaticallyAdjustContentInsets={false}
-                    style={this.props.style}
-                    rightOpenValue={-60}
-                    disableRightSwipe={true}
-                    renderHiddenRow={this.renderAction.bind(this)}
-                />
-            </View>
+            <SwipeListView
+                ref="list"
+                dataSource={this.state.usersDateSource}
+                renderRow={this.renderUser.bind(this)}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                        colors={[TPColors.light]}
+                        tintColor={TPColors.light} />
+                }
+                onEndReached={this._onEndReached.bind(this)}
+                onEndReachedThreshold={50}
+                renderFooter={this.renderFooter.bind(this)}
+                enableEmptySections={true}
+                automaticallyAdjustContentInsets={false}
+                style={this.props.style}
+                rightOpenValue={-60}
+                disableRightSwipe={true}
+                renderHiddenRow={this.renderAction.bind(this)}
+            />
         )
     }
 
@@ -197,7 +262,8 @@ export default class FollowUsersPage extends Component {
 
     renderAction(user) {
         return (
-            <TouchableOpacity style={{flex: 1, flexDirection:'row',backgroundColor:'#f9f9f9', justifyContent: 'flex-end'}} onPress={() => this._deleteUser(user)}>
+            <TouchableOpacity style={{flex: 1, flexDirection:'row',backgroundColor:'#f9f9f9', justifyContent: 'flex-end'}}
+                              onPress={this._onDeletePress.bind(this, user)}>
                 <View style={{width: 60, backgroundColor: '#d9534f', alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{color: 'white'}}>删除</Text>
                 </View>
