@@ -141,7 +141,7 @@ export default class DiaryList extends Component {
   }
 
   _onEndReached(ignoreError = false) {
-      console.log(this.state);
+      //console.log(this.state);
       if (this.state.refreshing || this.state.loading_more || !this.state.more) {
           return;
       }
