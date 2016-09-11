@@ -13,6 +13,7 @@ import {
     StatusBar
 } from 'react-native';
 import ZoomImage from '../common/react-native-transformable-image/TransformableImage';
+import Toast from 'react-native-root-toast';
 
 export default class PhotoPage extends Component {
 
@@ -60,7 +61,7 @@ export default class PhotoPage extends Component {
             cancelButtonIndex:1,
         }, (index) => {
             if(index == 0) {
-                this.saveImage().done();
+                this.saveImage();
             }
         });
 
@@ -68,8 +69,22 @@ export default class PhotoPage extends Component {
 
     async saveImage() {
         //TODO: android 不支持
-        await CameraRoll.saveToCameraRoll(this.props.source.uri);
-        Alert.alert('提示','保存成功');
+        try {
+            await CameraRoll.saveToCameraRoll(this.props.source.uri);
+            Toast.show('照片已保存', {
+                duration: 2000,
+                position: Toast.positions.CENTER,
+                shadow: false,
+                hideOnPress: true,
+            })
+        } catch (err) {
+            Toast.show('照片保存失败', {
+                duration: 2000,
+                position: Toast.positions.CENTER,
+                shadow: false,
+                hideOnPress: true,
+            })
+        }
     }
 
     render() {
