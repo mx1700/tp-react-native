@@ -162,6 +162,7 @@ export default class Diary extends Component {
           return (
               <View style={styles.action_bar}>
                   {comment}
+                  <View style={{flex: 1}} />
                   {action}
               </View>
           )
@@ -285,7 +286,9 @@ const styles = StyleSheet.create({
         color: TPColors.inactiveText
     },
     more_icon: {
-        paddingVertical: 4, paddingHorizontal: 15, marginRight: 5
+        paddingVertical: 4,
+        paddingHorizontal: 15,
+        marginRight: 5,
     },
     action_bar: {
         flexDirection: 'row',
