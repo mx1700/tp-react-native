@@ -394,7 +394,6 @@ export default class WritePage extends Component {
         if(!this.tempDraft) {
             this.tempDraft = text;
         } else if(Math.abs(text.length - this.tempDraft.length) > 10) {
-            console.log('自动保存草稿');
             Api.saveTempDraft(text);
             this.tempDraft = text;
         }
@@ -407,7 +406,6 @@ export default class WritePage extends Component {
         }
         this.timer = setTimeout(() => {
             if (this.state.content.length > 0) {
-                console.log('自动保存草稿');
                 Api.saveTempDraft(this.state.content).then(this._autoSaveTempDraft);
             } else {
                 this._autoSaveTempDraft()
