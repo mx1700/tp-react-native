@@ -3,7 +3,6 @@ import {
     View,
     ToolbarAndroid,
     Platform,
-    RefreshControl,
     ActivityIndicator,
     TouchableOpacity,
     Text,

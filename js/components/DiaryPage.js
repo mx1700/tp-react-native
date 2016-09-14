@@ -6,7 +6,6 @@ import {
     Image,
     Platform,
     ListView,
-    RefreshControl,
     ActivityIndicator,
     TextInput,
     InteractionManager,

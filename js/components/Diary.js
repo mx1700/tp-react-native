@@ -6,7 +6,6 @@ import {
   Image,
   ToolbarAndroid,
   Platform,
-  RefreshControl,
   ActivityIndicator,
     TouchableOpacity,
     ActionSheetIOS,

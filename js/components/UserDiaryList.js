@@ -3,7 +3,6 @@ import {
     StyleSheet,
     ToolbarAndroid,
     Platform,
-    RefreshControl,
     ActivityIndicator,
 } from 'react-native';
 import * as Api from '../Api'

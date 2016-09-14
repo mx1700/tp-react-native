@@ -210,8 +210,8 @@ export default class DiaryList extends Component {
           <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
-            colors={[TPColors.light]}
-            tintColor={TPColors.light} />
+            colors={[TPColors.refreshColor]}
+            tintColor={TPColors.refreshColor} />
         }
         onEndReached={this._onEndReached.bind(this)}
         onEndReachedThreshold={200}

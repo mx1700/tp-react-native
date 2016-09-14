@@ -117,8 +117,8 @@ export default class NotebookList extends Component {
                     <RefreshControl
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)}
-                        colors={[TPColors.light]}
-                        tintColor={TPColors.light} />
+                        colors={[TPColors.refreshColor]}
+                        tintColor={TPColors.refreshColor} />
                 }
             />
         );

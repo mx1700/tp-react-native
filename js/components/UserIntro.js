@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Platform,
-    RefreshControl,
     ActivityIndicator,
     Text,
     InteractionManager,

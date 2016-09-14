@@ -4,7 +4,6 @@ import {
     View,
     ToolbarAndroid,
     Platform,
-    RefreshControl,
     ActivityIndicator,
     SegmentedControlIOS,
     Alert,
