@@ -10,9 +10,8 @@ import {
   ActivityIndicator,
     TouchableOpacity,
     ActionSheetIOS,
-    Clipboard
+    Clipboard,
 } from 'react-native';
-import TPTouchable from 'TPTouchable'
 import RadiusTouchable from 'RadiusTouchable'
 import TPColors from 'TPColors'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -45,22 +44,29 @@ export default class Diary extends Component {
             || diary.content != newDiary.content
             || diary.comment_count != newDiary.comment_count
     }
+
+    photoPress = () => {
+        const diary = this.props.data;
+        this.props.navigator.push({
+            name: 'PhotoPage',
+            component: PhotoPage,
+            params: {
+                source: {uri: diary.photoUrl.replace('w640', 'w640-q75')}
+            }
+        });
+    };
+
   render() {
-      console.log('render diary');
     var diary = this.props.data;
     const photoView = this.renderPhoto(diary);
 
     const icon = diary.user ? (
           <RadiusTouchable style={styles.user_icon_box} onPress={() => this.props.onIconPress && this.props.onIconPress(diary)}>
-              <View style={styles.user_icon_bg}>
-                  <View>
-                    <Image key={diary.id} style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
-                  </View>
-              </View>
+            <Image key={diary.id} style={styles.user_icon} source={{uri: diary.user.iconUrl}} />
           </RadiusTouchable>
       ) : null;
 
-    //
+
     let title;
     if (diary.user) {
       title = <View style={styles.title}>
@@ -86,9 +92,9 @@ export default class Diary extends Component {
             </TouchableOpacity>
         )
         : <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>;
+
     const view = (
-        <View style={{backgroundColor: 'white', overflow: "hidden"}}>
-          <View style={styles.box}>
+        <View style={styles.box}>
             {icon}
             <View style={styles.body}>
               {title}
@@ -96,78 +102,94 @@ export default class Diary extends Component {
               {photoView}
               {this.renderActionBar(diary)}
             </View>
-          </View>
-          <View style={styles.line} />
         </View>
     );
 
     if (this.props.onPress) {
       return (
-        <TPTouchable onPress={() => this.props.onPress && this.props.onPress(diary)} style={{overflow: "hidden"}} underlayColor="#efefef">
-          {view}
-        </TPTouchable>
+        <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => this.props.onPress && this.props.onPress(diary)}
+            style={styles.box}>
+            {icon}
+            <View style={styles.body}>
+                {title}
+                {content}
+                {photoView}
+                {this.renderActionBar(diary)}
+            </View>
+        </TouchableOpacity>
       );
     } else {
-      return view;
+      return (
+          <View style={styles.box}>
+              {icon}
+              <View style={styles.body}>
+                  {title}
+                  {content}
+                  {photoView}
+                  {this.renderActionBar(diary)}
+              </View>
+          </View>
+      );
     }
   }
 
   renderActionBar(diary) {
-    const comment = diary.comment_count > 0 && this.props.showComment
-        ? (<View style={{flexDirection: "row"}}>
-            <Icon name="ios-text-outline" size={18} color={TPColors.inactiveText} style={styles.button_icon} />
-            <Text style={{fontSize: 15, color: TPColors.inactiveText}}>{diary.comment_count}</Text>
-          </View>)
-        : null;
-
-    const action = (this.props.editable || this.props.deletable)
-        ? (
-            <TouchableOpacity onPress={() => this.props.onActionPress(diary)}>
-              <Icon name="ios-more"
+      const hasComment = diary.comment_count > 0 && this.props.showComment;
+      const hasMoreAction = this.props.editable || this.props.deletable;
+      if (hasComment || hasMoreAction) {
+          const comment = hasComment
+              ? (<View style={styles.comment_icon_box}>
+              <Icon name="ios-text-outline"
                     size={18}
                     color={TPColors.inactiveText}
-                    style={{paddingVertical: 4, paddingHorizontal: 15, marginRight: 5}} />
-            </TouchableOpacity>
-          )
-        : null;
+                    style={styles.button_icon} />
+              <Text style={styles.comment_icon_text}>{diary.comment_count}</Text>
+          </View>)
+              : null;
 
-    return comment != null || action != null
-        ? (
-            <View style={{flexDirection: 'row', alignItems: "center", height: 45, marginRight: -15}}>
-              {comment}
-              <View style={{flex: 1}} />
-              {action}
-            </View>
+          const action = hasMoreAction
+              ? (
+              <TouchableOpacity onPress={() => this.props.onActionPress(diary)}>
+                  <Icon name="ios-more"
+                        size={18}
+                        color={TPColors.inactiveText}
+                        style={styles.more_icon} />
+              </TouchableOpacity>
           )
-        : (<View style={{height: 24}} />);
+              : null;
+
+          return (
+              <View style={styles.action_bar}>
+                  {comment}
+                  {action}
+              </View>
+          )
+      } else {
+          return <View style={{height: 24}} />
+      }
   }
 
   renderPhoto(diary) {
-    const img = diary.photoUrl ?
-      (
-        <TouchableOpacity
-            onPress={() => {
-              this.props.navigator.push({
-                name: 'PhotoPage',
-                component: PhotoPage,
-                params: {
-                  source: {uri: diary.photoUrl.replace('w640', 'w640-q75')}
-                }
-              });
-            }}
-          style={{ width: 160, marginTop: 15, backgroundColor: "#f8f8f8", padding: 0 }}
-          >
-          <Image style={styles.photo}
-                 key={diary.id}
-            resizeMode="cover"
-            source={{uri: diary.photoThumbUrl.replace('w240-h320', 'w320-h320-c320:320-q75')}} />
-        </TouchableOpacity>
-      )
-      : null;
-
-      return img;
+      return diary.photoUrl ?
+          (
+              <TouchableOpacity
+                  onPress={this.photoPress}
+                  style={styles.photo_box}
+              >
+                  <Image style={styles.photo}
+                         key={diary.id}
+                         source={{uri: diary.photoThumbUrl.replace('w240-h320', 'w320-h320-c320:320-q75')}}/>
+              </TouchableOpacity>
+          )
+          : null;
   }
 }
+
+// const pix = PixelRatio.get();
+// var thumbSize = 'w320-h320-c320:320-q75';
+// if ()
 
 Diary.propTypes = {
   showComment: React.PropTypes.bool,
@@ -189,9 +211,12 @@ Diary.defaultProps = {
 
 const styles = StyleSheet.create({
     box: {
-        paddingVertical: 20,
+        backgroundColor: 'white',
+        overflow: "hidden",
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: TPColors.line,
         marginHorizontal: 15,
-        paddingBottom: 0,
+        paddingTop: 20,
         flexDirection: "row"
     },
     body: {
@@ -221,19 +246,14 @@ const styles = StyleSheet.create({
     user_icon_box: {
         padding: 10,
         marginLeft: -10,
-        marginTop: -10
-    },
-    user_icon_bg: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        marginRight: 2,
-        backgroundColor: TPColors.spaceBackground,
+        marginTop: -10,
     },
     user_icon: {
         width: 32,
         height: 32,
         borderRadius: 16,
+        backgroundColor: TPColors.spaceBackground,
+        marginRight: 2,
     },
     content: {
         flex: 1,
@@ -242,17 +262,37 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlignVertical: 'bottom',
     },
+    photo_box: {
+        width: 160,
+        height: 160,
+        marginTop: 15,
+        backgroundColor: "#f8f8f8",
+        padding: 0,
+    },
     photo: {
         flex: 1,
-        height: 160
+        width: 160,
+        height: 160,
     },
     button_icon: {
         marginRight: 8,
         marginLeft: 2
     },
-    line: {
-        height: StyleSheet.hairlineWidth,
-        backgroundColor: TPColors.line,
-        marginHorizontal: 16
+    comment_icon_box: {
+        flexDirection: "row"
+    },
+    comment_icon_text: {
+        fontSize: 15,
+        color: TPColors.inactiveText
+    },
+    more_icon: {
+        paddingVertical: 4, paddingHorizontal: 15, marginRight: 5
+    },
+    action_bar: {
+        flexDirection: 'row',
+        alignItems: "center",
+        height: 50,
+        marginRight: -15,
+        justifyContent: 'space-between'
     }
 });

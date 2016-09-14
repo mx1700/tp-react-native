@@ -44,7 +44,7 @@ module.exports = {
   colorForTopic,
 
   contentText: '#484848',
-  spaceBackground: 'rgba(211, 214, 219, 0.5)',
+  spaceBackground: '#f8f8f8',
   line: '#ddd',
   //light: '#455ede',
   light: '#0076FF',
