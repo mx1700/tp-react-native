@@ -74,12 +74,44 @@ export default class WritePage extends Component {
         InteractionManager.runAfterInteractions(() => {
             this._loadBooks();
             if (!this.props.diary) {
-                this._loadDraft();
+                this._loadTempDraftAndDraft();
             }
             if (this.refs.contentInput) {
                 this.refs.contentInput.focus();
             }
+            this._autoSaveTempDraft();
         });
+    }
+
+    componentWillUnmount() {
+        if (this.timer) {
+            clearTimeout(this.timer);
+        }
+    }
+
+    goBack = () => {
+        Api.clearTempDraft();
+        this.props.navigator.pop();
+    };
+
+    async _loadTempDraftAndDraft() {
+        const tempDraft = await Api.getTempDraft();
+        if (tempDraft && tempDraft.length > 0) {
+            Alert.alert('恢复日记', '之前写的日记未发布成功，是否恢复？\n 取消将丢失日记内容', [
+                {text: '取消', onPress:() => { Api.clearTempDraft(); this._loadDraft(); }},
+                {
+                    text: '恢复',
+                    onPress: () => {
+                        this.setState({
+                            content: tempDraft,
+                        });
+                        Api.clearTempDraft();
+                    }
+                }
+            ]);
+        } else {
+            this._loadDraft();
+        }
     }
 
     async _loadDraft() {
@@ -114,7 +146,7 @@ export default class WritePage extends Component {
         //const abooks = [];
         if (abooks.length == 0) {
             Alert.alert('提示','没有可用日记本,无法写日记',[
-                {text: '取消', onPress: () =>  this.props.navigator.pop()},
+                {text: '取消', onPress: () =>  this.goBack()},
                 {text: '创建一个', onPress: () => this._createBook()}
             ]);
             this.state.bookEmptyError = true;
@@ -169,7 +201,6 @@ export default class WritePage extends Component {
                 : await Api.updateDiary(this.props.diary.id,
                 this.state.selectBookId,
                 this.state.content);
-            //console.log('write:', r);
         } catch (err) {
             Alert.alert('日记保存失败', err.message);
             return;
@@ -185,7 +216,7 @@ export default class WritePage extends Component {
                 shadow: false,
                 hideOnPress: true,
             });
-            this.props.navigator.pop();
+            this.goBack();
 
             InteractionManager.runAfterInteractions(() => {
                 NotificationCenter.trigger('onWriteDiary');
@@ -246,7 +277,7 @@ export default class WritePage extends Component {
     backPage() {
         setTimeout(() => {
             InteractionManager.runAfterInteractions(() => {
-                this.props.navigator.pop();
+                this.goBack()
             });
         }, 350);
     }
@@ -359,6 +390,31 @@ export default class WritePage extends Component {
         });
     }
 
+    _onChangeText = (text) => {
+        if(!this.tempDraft) {
+            this.tempDraft = text;
+        } else if(Math.abs(text.length - this.tempDraft.length) > 10) {
+            console.log('自动保存草稿');
+            Api.saveTempDraft(text);
+            this.tempDraft = text;
+        }
+        this.setState({ content: text });
+    };
+
+    _autoSaveTempDraft = () => {
+        if (this.timer) {
+            clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(() => {
+            if (this.state.content.length > 0) {
+                console.log('自动保存草稿');
+                Api.saveTempDraft(this.state.content).then(this._autoSaveTempDraft);
+            } else {
+                this._autoSaveTempDraft()
+            }
+        }, 10 * 1000)
+    };
+
     render() {
         //console.log(this.state);
 
@@ -399,7 +455,7 @@ export default class WritePage extends Component {
                     multiline={true}
                     placeholder="记录点滴生活"
                     value={this.state.content}
-                    onChangeText={(text) => this.setState({ content: text })}
+                    onChangeText={this._onChangeText}
                 />
                 <View style={styles.comment_box}>
                     {bookButton}

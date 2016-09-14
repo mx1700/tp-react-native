@@ -60,6 +60,14 @@ class TokenManager {
   async getDraft() {
     return JSON.parse(await AsyncStorage.getItem('draft'));
   }
+
+  async setTempDraft(content) {
+    return AsyncStorage.setItem('temp_draft', JSON.stringify(content));
+  }
+
+  async getTempDraft() {
+    return JSON.parse(await AsyncStorage.getItem('temp_draft'));
+  }
 }
 
 export default new TokenManager()
