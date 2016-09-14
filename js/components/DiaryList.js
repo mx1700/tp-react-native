@@ -222,6 +222,7 @@ export default class DiaryList extends Component {
         // onScroll={(event) => console.log(event.nativeEvent)}
         style={this.props.style}
           removeClippedSubviews={this.props.removeClippedSubviews}
+          initialListSize={1}
       />
     );
   }

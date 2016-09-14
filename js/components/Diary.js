@@ -34,7 +34,19 @@ export default class Diary extends Component {
         });
     };
 
+    shouldComponentUpdate(nextProps, nextState) {
+        const diary = this.props.data;
+        const newDiary = nextProps.data;
+        if (diary.id != newDiary.id) {
+            return true;
+        }
+        return diary.notebook_id != newDiary.notebook_id
+            || diary.notebook_subject != newDiary.notebook_subject
+            || diary.content != newDiary.content
+            || diary.comment_count != newDiary.comment_count
+    }
   render() {
+      console.log('render diary');
     var diary = this.props.data;
     const photoView = this.renderPhoto(diary);
 
@@ -75,7 +87,7 @@ export default class Diary extends Component {
         )
         : <Text style={styles.content} numberOfLines={5}>{diary.content}</Text>;
     const view = (
-        <View style={{backgroundColor: 'white'}}>
+        <View style={{backgroundColor: 'white', overflow: "hidden"}}>
           <View style={styles.box}>
             {icon}
             <View style={styles.body}>
@@ -91,7 +103,7 @@ export default class Diary extends Component {
 
     if (this.props.onPress) {
       return (
-        <TPTouchable onPress={() => this.props.onPress && this.props.onPress(diary)} underlayColor="#efefef">
+        <TPTouchable onPress={() => this.props.onPress && this.props.onPress(diary)} style={{overflow: "hidden"}} underlayColor="#efefef">
           {view}
         </TPTouchable>
       );
