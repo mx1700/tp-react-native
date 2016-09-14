@@ -154,10 +154,10 @@ export async function getUserTodayDiaries(id) {
 }
 
 export async function getNotebookTodayDiaries(id, page, page_size) {
-  return call('GET', '/notebooks/' + id + '/diaries?page=' + page + '&page_size=' + page_size)
+  return call('GET', '/notebooks/' + id + '/diaries?page=' + page + '&page_size=' + page_size, null, 30000)
       .then((json) => {
-        json.page = Number(json.page)
-        json.page_size = Number(json.page_size)
+        json.page = Number(json.page);
+        json.page_size = Number(json.page_size);
         return json;
       });
 }
@@ -273,7 +273,7 @@ export async function clearTempDraft() {
 
 var baseUrl = 'https://open.timepill.net/api';
 //var baseUrl = 'http://openbeta.timepill.net/api';
-async function call(method, api, body) {
+async function call(method, api, body, _timeout = 10000) {
   console.log('request:', baseUrl + api);
   var token = await TokenManager.getToken();
   // if (body) {
@@ -289,13 +289,13 @@ async function call(method, api, body) {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body)
+        body: body ? JSON.stringify(body) : null
       })
           .then(checkStatus)
           .then(parseJSON)
           .catch(handleCatch)
       ,
-      10000);
+      _timeout);
 }
 
 async function upload(method, api, body) {

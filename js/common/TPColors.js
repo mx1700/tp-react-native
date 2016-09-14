@@ -52,5 +52,5 @@ module.exports = {
   inactive: "#aaa",
   dark: '#2a36b1',
 
-  refreshColor: '#00a9ff'
+  refreshColor: '#0098ff'
 };
