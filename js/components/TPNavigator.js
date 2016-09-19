@@ -16,40 +16,47 @@ var { Answers } = Fabric;
 
 class DefaultPage extends Component {
   state = {
-    hasPassword: null
+    init: false,
   };
 
   componentWillMount() {
-    Api.getLoginPassword()
-        .then((pwd) => {
-          if(pwd) {
-            this.props.navigator.resetTo({
-              name: 'PasswordPage',
-              component: PasswordPage,
-              params: {
-                type: 'login'
-              }
-            })
-          } else {
-            this.setState({
-              hasPassword: false,
-            })
-          }
-        })
-        .catch(() => {
-          alert('启动失败')
-        })
+    this.init()
+  }
+
+  async init() {
+    const password = await Api.getLoginPassword();
+    if (password) {
+      this.props.navigator.resetTo({
+        name: 'PasswordPage',
+        component: PasswordPage,
+        params: {
+          type: 'login'
+        }
+      });
+      return;
+    }
+    const token = await Token.getToken();
+    if (!token) {
+      this.props.navigator.resetTo({
+        name: 'LoginPage',
+        component: LoginPage
+      });
+      return;
+    }
+    this.setState({
+      init: true,
+    });
   }
 
   render() {
-    if (this.state.hasPassword === false) {
-      return <HomePage navigator={this.props.navigator} />
+    if (this.state.init) {
+      return <HomePage navigator={this.props.navigator}/>
     } else {
       return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
-              <StatusBar barStyle="default" />
-            </View>
-            )
+          <View style={{flex: 1, backgroundColor: 'white'}}>
+            <StatusBar barStyle="default"/>
+          </View>
+      )
     }
   }
 }
