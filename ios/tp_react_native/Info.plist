@@ -19,9 +19,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 	<key>CodePushDeploymentKey</key>
-	<string>7V2eamXFlmjR26B3GgP2u_bYtZNxEJXGcF0d-</string>
+	<string>Db6Lo1A8ksUtmHSAp2uyyJGC6Ah1EJXGcF0d-XXXX</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -66,7 +66,7 @@
 		<string>armv7</string>
 	</array>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
