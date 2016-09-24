@@ -30,11 +30,11 @@ function NavigationBarIOS(props) {
 
   let attr = {};
   if (props.backPress) {
-    const icon = <Icon name="ios-arrow-back" size={24} color='#0076FF'/>;
+    const icon = <Icon name="ios-arrow-back" size={26} color='#0076FF'/>;
     attr.leftButton = (
         <TouchableOpacity
             onPress={props.backPress}
-            style={{flex: 1, padding: 10, paddingHorizontal: 15}}
+            style={{flex: 1, padding: 9, paddingHorizontal: 15}}
         >
           {icon}
         </TouchableOpacity>
@@ -95,14 +95,14 @@ const NavigationBar = Platform.OS === 'android'
 
 NavigationBar.Icon = function(props) {
   const color = props.color ? props.color : '#0076FF';
-  const icon = <Icon name={props.name} size={24} color={color}/>
+  const icon = <Icon name={props.name} size={26} color={color}/>
   const badge = props.badge == true
       ? <View style={styles.badge}/>
       : null;
   return (
       <TouchableOpacity
           onPress={props.onPress}
-          style={{flex: 1, padding: 10}}
+          style={{flex: 1, padding: 9}}
       >
         {icon}
         {badge}

@@ -10,15 +10,12 @@ import {
 import HomePage from './HomePage'
 import LoginPage from './LoginPage'
 import * as Api from '../Api'
+import Token from '../TokenManager'
 import PasswordPage from '../components/PasswordPage'
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
 class DefaultPage extends Component {
-  state = {
-    init: false,
-  };
-
   componentWillMount() {
     this.init()
   }
@@ -43,21 +40,18 @@ class DefaultPage extends Component {
       });
       return;
     }
-    this.setState({
-      init: true,
+    this.props.navigator.resetTo({
+      name: 'HomePage',
+      component: HomePage
     });
   }
 
   render() {
-    if (this.state.init) {
-      return <HomePage navigator={this.props.navigator}/>
-    } else {
-      return (
-          <View style={{flex: 1, backgroundColor: 'white'}}>
-            <StatusBar barStyle="default"/>
-          </View>
-      )
-    }
+    return (
+        <View style={{flex: 1, backgroundColor: 'white'}}>
+          <StatusBar barStyle="default"/>
+        </View>
+    )
   }
 }
 
@@ -162,6 +156,5 @@ TPNavigator.childContextTypes = {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
   },
 });

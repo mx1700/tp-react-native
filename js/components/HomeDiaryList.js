@@ -48,11 +48,10 @@ export default class HomeDiaryList extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
+      <View style={{flex: 1, marginBottom: 49}}>
         <NavigationBar title="胶囊日记" />
         <DiaryList
             ref="list"
-        style={{}}
           navigator={this.props.navigator}
           getDiariesPage={this._loadTodayDiaries.bind(this)}
           onDiaryPress={this._toDiaryPage.bind(this)}/>

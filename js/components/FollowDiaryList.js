@@ -57,7 +57,7 @@ export default class FollowDiaryList extends Component {
       const rightButton = <NavigationBar.Icon name="ios-contacts" onPress={this._openFollowUsersPage.bind(this)} />;
 
     return (
-      <View style={{flex: 1, backgroundColor: 'white', marginBottom: 49}}>
+      <View style={{flex: 1, marginBottom: 49}}>
         <NavigationBar
             title="关注日记"
             rightButton={rightButton}
