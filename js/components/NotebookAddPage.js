@@ -24,8 +24,8 @@ import {
     LoadingModal,
     TimeHelper,
 } from '../common'
-import ImagePicker from 'react-native-image-picker'
-import ImageResizer from 'react-native-image-resizer'
+//import ImagePicker from 'react-native-image-picker'
+//import ImageResizer from 'react-native-image-resizer'
 const dismissKeyboard = require('dismissKeyboard');
 
 export default class NotebookAddPage extends Component {

@@ -18,9 +18,9 @@ import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from '../common/TPColors'
 import NotificationCenter from '../common/NotificationCenter'
-import ImagePicker from 'react-native-image-picker'
+//import ImagePicker from 'react-native-image-picker'
 import LoadingModal from '../common/LoadingModal'
-import ImageResizer from 'react-native-image-resizer'
+//import ImageResizer from 'react-native-image-resizer'
 
 export default class UserIntroEdit extends Component {
 

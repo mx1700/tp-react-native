@@ -8,12 +8,14 @@
  */
 
 #import "AppDelegate.h"
+#import "CodePush.h"
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
-#import "CodePush.h"
+
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+
 
 @implementation AppDelegate
 
@@ -21,13 +23,13 @@
 {
   NSURL *jsCodeLocation;
 
-#ifdef DEBUG
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  //jsCodeLocation = [NSURL URLWithString:@"http://192.168.138.198:8081/index.ios.bundle?platform=ios&dev=true"];
-#else
-  jsCodeLocation = [CodePush bundleURL];
-#endif
   
+#ifdef DEBUG
+    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+#else
+    jsCodeLocation = [CodePush bundleURL];
+#endif
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"tp_react_native"
                                                initialProperties:nil
@@ -40,7 +42,6 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [Fabric with:@[[Crashlytics class]]];
-
   return YES;
 }
 

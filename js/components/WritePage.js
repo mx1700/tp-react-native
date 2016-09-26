@@ -32,9 +32,9 @@ import {
 
 import * as Api from '../Api'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
-import ImagePicker from 'react-native-image-picker'
+//import ImagePicker from 'react-native-image-picker'
 import Icon from 'react-native-vector-icons/Ionicons'
-import ImageResizer from 'react-native-image-resizer'
+//import ImageResizer from 'react-native-image-resizer'
 import Toast from 'react-native-root-toast';
 import NotebookAddPage from './NotebookAddPage'
 import Notebook from './Notebook'
