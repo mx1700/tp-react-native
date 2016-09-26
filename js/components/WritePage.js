@@ -19,7 +19,8 @@ import {
     TouchableOpacity,
     Image,
     Alert,
-    ScrollView
+    ScrollView,
+    ActionSheetIOS,
 } from 'react-native';
 
 import {
@@ -32,12 +33,13 @@ import {
 
 import * as Api from '../Api'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
-//import ImagePicker from 'react-native-image-picker'
 import Icon from 'react-native-vector-icons/Ionicons'
-//import ImageResizer from 'react-native-image-resizer'
+import ImagePicker from 'react-native-image-crop-picker';
+import ImageResizer from 'react-native-image-resizer'
 import Toast from 'react-native-root-toast';
 import NotebookAddPage from './NotebookAddPage'
 import Notebook from './Notebook'
+
 
 var moment = require('moment');
 var locale = require('moment/locale/zh-cn');
@@ -336,58 +338,48 @@ export default class WritePage extends Component {
     async selectPhoto() {
         // const photoUri = CameraRoll.getPhotos({first: 1})
         // console.log(photoUri);
-        const customButtons = this.state.photoUri !== null
-            ?{
-                '取消照片选择': 'delete',
-            }
-            : null;
-        var options = {
-            title: '添加照片',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '从相册选择',
-            customButtons: customButtons,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images'
-            }
-        };
+        let options, deleteIndex, cancelIndex;
+        if (this.state.photoUri !== null) {
+            options = ['拍照','从相册选择', '删除照片', '取消'];
+            deleteIndex = 2;
+            cancelIndex = 3
+        } else {
+            options = ['拍照','从相册选择', '取消'];
+            deleteIndex = -1;
+            cancelIndex = 2;
+        }
+        ActionSheetIOS.showActionSheetWithOptions({
+            options: options,
+            cancelButtonIndex: cancelIndex,
+            destructiveButtonIndex: deleteIndex,
+            title: '添加照片'
+        }, (index) => {
+                if (index == deleteIndex) {
+                    this.setState({
+                        photoSource: null,
+                        photoUri: null,
+                    });
+                } else if (index == cancelIndex) {
+                    console.log('cancel');
+                } else {
+                    let imageSelect = index == 0
+                        ? ImagePicker.openCamera({}) : ImagePicker.openPicker({});
+                    imageSelect.then(image => {
+                        //console.log(image);
+                        const source = {uri: image.path, isStatic: true};
 
-        ImagePicker.showImagePicker(options, (response) => {
-            //console.log('Response = ', response);
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                this.setState({
-                    photoSource: null,
-                    photoUri: null,
-                });
-            }
-            else {
-                // You can display the image using either data...
-                //const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-                // or a reference to the platform specific asset location
-                const source = Platform.OS === 'ios'
-                    ? {uri: response.uri.replace('file://', ''), isStatic: true}
-                    : {uri: response.uri, isStatic: true};
-
-                this.setState({
-                    photoSource: source,
-                    photoUri: response.uri,
-                    photoInfo: {
-                        fileSize: response.fileSize,
-                        width: response.width,
-                        height: response.height,
-                        isVertical: response.isVertical
-                    }
-                });
-            }
-        });
+                        this.setState({
+                            photoSource: source,
+                            photoUri: image.path,
+                            photoInfo: {
+                                fileSize: image.size,
+                                width: image.width,
+                                height: image.height,
+                            }
+                        });
+                    });
+                }
+            });
     }
 
     _onChangeText = (text) => {

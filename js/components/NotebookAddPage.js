@@ -15,6 +15,7 @@ import {
     Alert,
     Switch,
     InteractionManager,
+    ActionSheetIOS
 } from 'react-native';
 import * as Api from '../Api'
 import {
@@ -24,9 +25,10 @@ import {
     LoadingModal,
     TimeHelper,
 } from '../common'
-//import ImagePicker from 'react-native-image-picker'
-//import ImageResizer from 'react-native-image-resizer'
+import ImagePicker from 'react-native-image-crop-picker';
+import ImageResizer from 'react-native-image-resizer'
 const dismissKeyboard = require('dismissKeyboard');
+import Toast from 'react-native-root-toast';
 
 export default class NotebookAddPage extends Component {
 
@@ -127,38 +129,31 @@ export default class NotebookAddPage extends Component {
     }
 
     _editCover() {
-        var options = {
-            title: '设置封面',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '从相册选择',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images'
-            }
-        };
-
-        ImagePicker.showImagePicker(options, (response) => {
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else {
-                const source = Platform.OS === 'ios'
-                    ? {uri: response.uri.replace('file://', ''), isStatic: true}
-                    : {uri: response.uri, isStatic: true};
-
-                this._uploadIcon(response.uri, response.width, response.height)
+        ActionSheetIOS.showActionSheetWithOptions({
+            options: ['拍照', '从相册选择', '取消'],
+            cancelButtonIndex: 2,
+            title: '设置封面'
+        }, (index) => {
+            if (index == 2) {
+                console.log('cancel')
+            } else {
+                let imageOption = {
+                    width: 640,
+                    height: 480,
+                    cropping: true
+                };
+                let imageSelect = index == 0
+                    ? ImagePicker.openCamera(imageOption) : ImagePicker.openPicker(imageOption);
+                imageSelect.then(image => {
+                    this._uploadIcon(image.path, image.width, image.height)
+                })
             }
         });
     }
 
     async _uploadIcon(uri, width, height) {
-        const newUri = await this.resizePhoto(uri, width, height);
         this.setState({loading: true});
+        const newUri = await this.resizePhoto(uri, width, height);
         let book;
         try {
             book = await Api.updateNotebookCover(this.props.notebook.id, newUri);
@@ -166,11 +161,17 @@ export default class NotebookAddPage extends Component {
             console.log(err);
             Alert.alert('保存失败', err.message);
         } finally {
+            console.log('this.setState({loading: false})')
             this.setState({loading: false})
         }
         //console.log(book);
         if (book) {
-            Alert.alert('提示', '封面设置成功');    //TODO：改为 toast
+            Toast.show("封面保存成功", {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
             if (this.props.onCreated) {
                 this.props.onCreated(book);
             }

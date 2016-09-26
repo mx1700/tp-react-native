@@ -56,6 +56,7 @@ vector-icons:
 2. react-native link react-native-vector-icons
 
 
+
 xcode 配置
 General 里
 Display Name 胶囊日记
@@ -69,9 +70,14 @@ react-native link react-native-fabric
 启动页
 
 增加相册与相机访问权限
+
 修改语言
+
 应用图标
+
 增加 http 权限
+在NSAppTransportSecurity下添加NSAllowsArbitraryLoads类型Boolean,值设为YES
+
 编译失败解决：
 http://blog.it985.com/13723.html
 进到项目目录，把DerivedData文件夹删了，重新编译

@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Image,
     TextInput,
-    Modal
+    Modal,
+    ActionSheetIOS
 } from 'react-native';
 import Page from './Page'
 import NavigationBar from 'NavigationBar'
@@ -18,9 +19,10 @@ import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
 import TPColors from '../common/TPColors'
 import NotificationCenter from '../common/NotificationCenter'
-//import ImagePicker from 'react-native-image-picker'
 import LoadingModal from '../common/LoadingModal'
-//import ImageResizer from 'react-native-image-resizer'
+import ImagePicker from 'react-native-image-crop-picker';
+import ImageResizer from 'react-native-image-resizer'
+import Toast from 'react-native-root-toast';
 
 export default class UserIntroEdit extends Component {
 
@@ -55,49 +57,31 @@ export default class UserIntroEdit extends Component {
     }
 
     _editIcon() {
-        var options = {
-            title: '修改头像',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '从相册选择',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images'
-            }
-        };
-
-        ImagePicker.showImagePicker(options, (response) => {
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else {
-                const source = Platform.OS === 'ios'
-                    ? {uri: response.uri.replace('file://', ''), isStatic: true}
-                    : {uri: response.uri, isStatic: true};
-                //
-                // this.setState({
-                //     photoSource: source,
-                //     photoUri: response.uri,
-                //     photoInfo: {
-                //         fileSize: response.fileSize,
-                //         width: response.width,
-                //         height: response.height,
-                //         isVertical: response.isVertical
-                //     }
-                // });
-
-                this._uploadIcon(response.uri, response.width, response.height)
+        ActionSheetIOS.showActionSheetWithOptions({
+            options: ['拍照', '从相册选择', '取消'],
+            cancelButtonIndex: 2,
+            title: '修改头像'
+        }, (index) => {
+            if (index == 2) {
+                console.log('cancel')
+            } else {
+                let imageOption = {
+                    width: 640,
+                    height: 640,
+                    cropping: true
+                };
+                let imageSelect = index == 0
+                    ? ImagePicker.openCamera(imageOption) : ImagePicker.openPicker(imageOption);
+                imageSelect.then(image => {
+                    this._uploadIcon(image.path, image.width, image.height)
+                })
             }
         });
     }
 
     async _uploadIcon(uri, width, height) {
-        const newUri = await this.resizePhoto(uri, width, height);
         this.setState({loading: true});
+        const newUri = await this.resizePhoto(uri, width, height);
         let user;
         try {
             user = await Api.updateUserIcon(newUri);
@@ -112,7 +96,12 @@ export default class UserIntroEdit extends Component {
             await Api.updateUserInfoStore(user);
             await this._loadUser();
             NotificationCenter.trigger('updateUserInfo');
-            Alert.alert('提示', '头像修改成功')
+            Toast.show("头像保存成功", {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
         }
     }
 
