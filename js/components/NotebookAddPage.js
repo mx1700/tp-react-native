@@ -69,8 +69,8 @@ export default class NotebookAddPage extends Component {
             Alert.alert('提示', '请填写主题');
             return;
         }
-        if (this.state.subject.length > 10) {
-            Alert.alert('提示', '主题不能超过10个字');
+        if (this.state.subject.length > 20) {
+            Alert.alert('提示', '主题不能超过20个字');
             return;
         }
         this.createBook();

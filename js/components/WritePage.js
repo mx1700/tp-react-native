@@ -363,7 +363,7 @@ export default class WritePage extends Component {
                     console.log('cancel');
                 } else {
                     let imageSelect = index == 0
-                        ? ImagePicker.openCamera({}) : ImagePicker.openPicker({});
+                        ? ImagePicker.openCamera({cropping: false}) : ImagePicker.openPicker({cropping: false});
                     imageSelect.then(image => {
                         //console.log(image);
                         const source = {uri: image.path, isStatic: true};
