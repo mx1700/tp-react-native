@@ -15,7 +15,8 @@ import {
     Alert,
     Switch,
     InteractionManager,
-    ActionSheetIOS
+    ActionSheetIOS,
+    TouchableWithoutFeedback
 } from 'react-native';
 import * as Api from '../Api'
 import {
@@ -277,7 +278,9 @@ export default class NotebookAddPage extends Component {
                     }}
                 >
                     <View style={{ flex: 1}}>
-                        <Animated.View style={{ flex: 1, backgroundColor: "black", opacity: this.state.fadeAnimOpacity }} />
+                        <TouchableWithoutFeedback onPress={this.closeModal.bind(this)} style={{flex: 1}}>
+                            <Animated.View style={{ flex: 1, backgroundColor: "black", opacity: this.state.fadeAnimOpacity }} />
+                        </TouchableWithoutFeedback>
                         <Animated.View style={{height: this.state.fadeAnimHeight, backgroundColor: '#fff'}}>
                             <View style={styles.closeButtonContainer}>
                                 <TouchableOpacity onPress={ this.closeModal.bind(this) } style={styles.closeButton}>

@@ -21,6 +21,7 @@ import {
     Alert,
     ScrollView,
     ActionSheetIOS,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import {
@@ -495,14 +496,16 @@ export default class WritePage extends Component {
                 }}
             >
                 <View style={{ flex: 1}}>
-                    <Animated.View style={{ flex: 1, backgroundColor: "black", opacity: this.state.fadeAnimOpacity }} />
+                    <TouchableWithoutFeedback onPress={this.closeModal.bind(this)} style={{flex: 1}}>
+                        <Animated.View style={{ flex: 1, backgroundColor: "black", opacity: this.state.fadeAnimOpacity }} />
+                    </TouchableWithoutFeedback>
                     <Animated.View style={{height: this.state.fadeAnimHeight, backgroundColor: '#fff'}}>
                         <View style={styles.closeButtonContainer}>
-                            <TouchableOpacity onPress={ this._createBook.bind(this) } style={styles.closeButton}>
+                            <TouchableOpacity onPress={this._createBook.bind(this)} style={styles.closeButton}>
                                 <Text style={styles.closeButtonText}>新添</Text>
                             </TouchableOpacity>
                             <Text style={{padding: 10, color: TPColors.contentText}}>选择日记本</Text>
-                            <TouchableOpacity onPress={ this.closeModal.bind(this) } style={styles.closeButton}>
+                            <TouchableOpacity onPress={this.closeModal.bind(this)} style={styles.closeButton}>
                                 <Text style={styles.closeButtonText}>取消</Text>
                             </TouchableOpacity>
                         </View>
@@ -568,8 +571,9 @@ const styles = StyleSheet.create({
         elevation: 3,
         borderColor: '#bbb',
         borderTopWidth: StyleSheet.hairlineWidth,
-        padding: 10,
-        flexDirection: 'row'
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     closeButtonContainer: {
         flexDirection: 'row',

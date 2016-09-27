@@ -30,15 +30,15 @@ module.exports = Button;
 const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderColor: TPColors.light,
-    borderRadius: 3,
-    paddingHorizontal: 12,
+    borderRadius: 14,
+    paddingHorizontal: 10,
     height: 28,
     alignItems: 'center',
     justifyContent: 'center'
   },
   button_icon: {
-    marginTop: 2, marginRight: 6
+    marginTop: 1, marginRight: 6
   }
 });
