@@ -161,17 +161,19 @@ export default class NotebookAddPage extends Component {
             console.log(err);
             Alert.alert('保存失败', err.message);
         } finally {
-            console.log('this.setState({loading: false})')
+            console.log('this.setState({loading: false})');
             this.setState({loading: false})
         }
         //console.log(book);
         if (book) {
+            console.log('封面保存成功');
             Toast.show("封面保存成功", {
                 duration: 2000,
                 position: -80,
                 shadow: false,
                 hideOnPress: true,
             });
+            this.setState({loading: false});    // finally 里的有时候不起作用，不知道为什么
             if (this.props.onCreated) {
                 this.props.onCreated(book);
             }

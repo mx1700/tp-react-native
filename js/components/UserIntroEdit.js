@@ -13,7 +13,6 @@ import {
     Modal,
     ActionSheetIOS
 } from 'react-native';
-import Page from './Page'
 import NavigationBar from 'NavigationBar'
 import * as Api from '../Api'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -102,6 +101,7 @@ export default class UserIntroEdit extends Component {
                 shadow: false,
                 hideOnPress: true,
             });
+            this.setState({loading: false});    // finally 里的有时候不起作用，不知道为什么
         }
     }
 
