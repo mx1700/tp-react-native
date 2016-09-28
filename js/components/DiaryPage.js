@@ -483,6 +483,7 @@ export default class DiaryPage extends Component {
             maxLength={500}
             selectionColor={TPColors.light}
             multiline={true}
+            showsVerticalScrollIndicator={false}
             onChangeText={(text) => this._onCommentContentChange(text)}
             onChange={(event) => {
              //console.log(event.nativeEvent.contentSize.height);
@@ -496,19 +497,26 @@ export default class DiaryPage extends Component {
             }}
           />
           <TouchableOpacity style={{
-            width: 30,
-            height: 30,
-            backgroundColor: TPColors.light,
             position: 'absolute',
-            bottom: 12,
-            right: 12,
-            borderRadius: 15,
-            alignItems: 'center',
-            justifyContent: 'center'
+            bottom: 0,
+            right: 0,
+            paddingBottom: 12,
+            paddingRight:12,
+            paddingTop: 12,
           }} onPress={this._addCommentPress.bind(this)}>
-            <Icon name="md-arrow-round-up"
-                  size={22}
-                  color="#fff"/>
+            <View style={{
+              width: 31,
+              height: 31,
+              backgroundColor: TPColors.light,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 16,
+            }}>
+              <Icon name="md-arrow-round-up"
+                    size={22}
+                    color="#fff"
+                    />
+              </View>
             </TouchableOpacity>
           {comment_sending_box}
         </View>
@@ -677,13 +685,14 @@ const styles = StyleSheet.create({
   comment_input: {
     flex: 1,
     borderColor: '#bbb',
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 19,
     paddingHorizontal: 15,
     fontSize: 15,
     margin: 8,
     paddingTop: 5,
     paddingBottom: 10,
+    paddingRight: 30,
   },
   comment_sending: {
     flex: 1,
