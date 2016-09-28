@@ -211,7 +211,7 @@ export default class NotebookPage extends Component {
                 }
                 renderSectionHeader={(s, id) =>
                     <View style={{
-                        backgroundColor: '#f3f3f3',
+                        backgroundColor: '#F9F9F9',
                         paddingHorizontal: 15,
                         paddingVertical: 8,
                     }}>
@@ -230,6 +230,9 @@ export default class NotebookPage extends Component {
                 renderFooter={this.renderFooter.bind(this)}
                 enableEmptySections={true}
                 automaticallyAdjustContentInsets={false}
+                renderSeparator={(sectionID, rowID, adjacentRowHighlighted) =>
+                    <View style={{borderBottomWidth: StyleSheet.hairlineWidth,
+                        borderColor: TPColors.line, marginHorizontal: 15}} />}
                 //renderHeader={() => <View style={{height: 4}}></View>}
                 // onScroll={(event) => console.log(event.nativeEvent)}
                 style={this.props.style}

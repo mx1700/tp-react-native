@@ -213,9 +213,7 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: 'white',
         overflow: "hidden",
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: TPColors.line,
-        marginHorizontal: 15,
+        paddingHorizontal: 15,
         paddingTop: 20,
         flexDirection: "row"
     },

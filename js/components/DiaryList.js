@@ -12,6 +12,7 @@ import {
     ActionSheetIOS,
     Alert,
     TouchableOpacity,
+    StyleSheet,
 } from 'react-native';
 import * as Api from '../Api'
 import Diary from './Diary'
@@ -223,6 +224,9 @@ export default class DiaryList extends Component {
         style={this.props.style}
           removeClippedSubviews={this.props.removeClippedSubviews}
           initialListSize={1}
+          renderSeparator={(sectionID, rowID, adjacentRowHighlighted) =>
+              <View key={`${sectionID}-${rowID}`} style={{borderBottomWidth: StyleSheet.hairlineWidth,
+                  borderColor: TPColors.line, marginHorizontal: 15}} />}
       />
     );
   }
