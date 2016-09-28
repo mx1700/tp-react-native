@@ -29,6 +29,7 @@ import NotificationCenter from '../common/NotificationCenter'
 import TimeHelper from '../common/TimeHelper'
 
 var moment = require('moment');
+const DefaultInputHeight = 55;
 
 export default class DiaryPage extends Component {
 
@@ -50,6 +51,7 @@ export default class DiaryPage extends Component {
       commentsLoadingError: false,
       diaryLoadingError: false,
       isMy: null,
+      inputHeight: DefaultInputHeight,
     }
   }
 
@@ -147,13 +149,16 @@ export default class DiaryPage extends Component {
   }
 
   async addComment() {
+    content = this.state.reply_user_name
+        ? this.state.comment_content.substr(this.state.reply_user_name.length + 2)
+        : this.state.comment_content;
+
+    if (content.length == 0) {
+      return;
+    }
     this.setState({comment_sending: true});
     let ret = null;
     try {
-      content = this.state.reply_user_name
-          ? this.state.comment_content.substr(this.state.reply_user_name.length + 2)
-          : this.state.comment_content;
-
       ret = await Api.addComment(this.state.diary.id, content, this.state.reply_user_id)
     } catch (err) {
       Alert.alert('回复失败', err.message);
@@ -167,7 +172,8 @@ export default class DiaryPage extends Component {
         comment_content: '',
         reply_user_id: 0,
         reply_user_name: '',
-        comment_count: this.state.comment_count + 1
+        comment_count: this.state.comment_count + 1,
+        inputHeight: DefaultInputHeight,
       }, () => {
         this._scrollToBottom();
       });
@@ -468,18 +474,42 @@ export default class DiaryPage extends Component {
         : null;
 
     return (
-        <View style={styles.comment_box}>
+        <View style={[styles.comment_box, { height: this.state.inputHeight }]}>
           <TextInput style={styles.comment_input}
-                     ref="commentInput"
-                     value={this.state.comment_content}
-                     placeholder="回复日记"
-                     autoCorrect={false}
-                     maxLength={500}
-                     onSubmitEditing={this._addCommentPress.bind(this)}
-                     selectionColor={TPColors.light}
-                     enablesReturnKeyAutomatically={true}
-                     returnKeyType="send"
-                     onChangeText={(text) => this._onCommentContentChange(text)}/>
+            ref="commentInput"
+            value={this.state.comment_content}
+            placeholder="回复日记"
+            autoCorrect={false}
+            maxLength={500}
+            selectionColor={TPColors.light}
+            multiline={true}
+            onChangeText={(text) => this._onCommentContentChange(text)}
+            onChange={(event) => {
+             //console.log(event.nativeEvent.contentSize.height);
+              const h = event.nativeEvent.contentSize.height + 17;
+              const max = 74 + 17;
+             if (this.state.inputHeight !== h) {
+               this.setState({
+                 inputHeight: h > max ? max : h,
+               });
+             }
+            }}
+          />
+          <TouchableOpacity style={{
+            width: 30,
+            height: 30,
+            backgroundColor: TPColors.light,
+            position: 'absolute',
+            bottom: 12,
+            right: 12,
+            borderRadius: 15,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }} onPress={this._addCommentPress.bind(this)}>
+            <Icon name="md-arrow-round-up"
+                  size={22}
+                  color="#fff"/>
+            </TouchableOpacity>
           {comment_sending_box}
         </View>
     );
@@ -638,7 +668,7 @@ const styles = StyleSheet.create({
     marginLeft: 56,
   },
   comment_box: {
-    height: 50,
+    height: 55,
     backgroundColor: '#fff',
     elevation: 3,
     borderColor: '#bbb',
@@ -648,19 +678,23 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: '#bbb',
     borderWidth: 1,
-    borderRadius: 17,
+    borderRadius: 19,
     paddingHorizontal: 15,
     fontSize: 15,
-    height: 34,
     margin: 8,
-    paddingVertical: 10,
+    paddingTop: 5,
+    paddingBottom: 10,
   },
   comment_sending: {
-    height: 50,
+    flex: 1,
     opacity: 0.8,
     backgroundColor: "#fff",
-    top: -50,
+    top: 0,
+    left: 0,
+    bottom:0,
+    right:0,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
   }
 });
