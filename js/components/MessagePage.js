@@ -10,7 +10,9 @@ import {
     InteractionManager,
     ListView,
     RefreshControl,
-    Alert
+    Alert,
+    NativeAppEventEmitter,
+    DeviceEventEmitter,
 } from 'react-native';
 import * as Api from '../Api'
 import TPColors from '../common/TPColors'
@@ -21,7 +23,7 @@ import UserPage from './UserPage'
 import DiaryPage from './DiaryPage'
 import NotificationCenter from '../common/NotificationCenter'
 import ErrorView from '../common/ErrorListView'
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import JPushModule from 'jpush-react-native';
 
 export default class MessagePage extends Component {
     constructor(props) {
@@ -36,12 +38,51 @@ export default class MessagePage extends Component {
         });
     }
 
+    loading = false;
+
     componentWillMount(){
-        InteractionManager.runAfterInteractions(() => this._loadMessages());
+        InteractionManager.runAfterInteractions(() => {
+            this._loadMessages();
+        });
+
+        NativeAppEventEmitter.addListener(
+            'ReceiveNotification',
+            (notification) => {
+                this._loadMessages();
+                console.log(notification);
+            }
+        );
+
+        NativeAppEventEmitter.addListener(
+            'networkDidReceiveMessage',
+            (message) => {
+                this._loadMessages();
+                console.log(message);
+            }
+        );
     }
 
     componentDidMount() {
         this._startTipTimer();
+        this.initPush();
+
+    }
+
+    async initPush() {
+        JPushModule.setupPush((a) => { console.log(a) });
+        const user = await Api.getSelfInfoByStore();
+        if (user) {
+            try {
+                // JPushModule.getRegistrationID((registrationid) => {
+                //     console.log('registrationid:' + registrationid);
+                // });
+                JPushModule.setAlias(user.id.toString(), (resultCode) => {
+                    console.log('[jpush] setAlias:' + resultCode);
+                })
+            } catch(err) {
+
+            }
+        }
     }
 
     _startTipTimer() {
@@ -51,13 +92,15 @@ export default class MessagePage extends Component {
         this.tipTimer = setTimeout(async () => {
             await this._loadMessages();
             this._startTipTimer();
-        }, 60 * 1000)
+        }, 120 * 1000)
     }
 
     componentWillUnmount() {
         if (this.tipTimer) {
             clearTimeout(this.tipTimer);
         }
+        DeviceEventEmitter.removeAllListeners();
+        NativeAppEventEmitter.removeAllListeners();
     }
 
     _onRefresh() {
@@ -114,18 +157,20 @@ export default class MessagePage extends Component {
 
     async _loadMessages() {
         let user = await Api.getSelfInfoByStore();
-        if (!user) {
+        if (!user || this.loading) {
             this.setState({
                 refreshing: false,
             });
             return;
         }
+        this.loading = true;
         let list = [];
         try {
             list = await Api.getMessages(0);
         } catch (err) {
             //Alert.alert('提醒加载失败', err.message);
         }
+        this.loading = false;
         //console.log(list);
         this._setMsgList(list);
     }
@@ -161,6 +206,9 @@ export default class MessagePage extends Component {
             refreshing: false,
         });
         NotificationCenter.trigger('tipCount', list.length);
+        // JPushModule.setBadge(list.length, (err) => {
+        //     console.log('setBadge: ' + err);
+        // });
     }
 
     render() {

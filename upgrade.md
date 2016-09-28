@@ -81,3 +81,26 @@ react-native link react-native-fabric
 编译失败解决：
 http://blog.it985.com/13723.html
 进到项目目录，把DerivedData文件夹删了，重新编译
+
+
+---------
+
+---------
+
+npm i react-native-image-crop-picker@master --save
+react-native link react-native-image-crop-picker
+
+有个 bug，在有键盘的时候调用摄像头会报错，0.9.5还未修复，master 已经修复，可以从 master 复制代码到 node_mudule 文件夹里
+
+Drag and drop the ios/ImageCropPickerSDK folder to your xcode project. (Make sure Copy items if needed IS ticked)
+上边一部可以不用做
+Click on project General tab
+Under Deployment Info set Deployment Target to 8.0
+Under Embedded Binaries click + and add RSKImageCropper.framework and QBImagePicker.framework
+
+
+-----------
+jpush
+
+自动安装有问题，最后两个 objc 的方法没有复制进去，需要手动复制
+PushNotificationIOS 需要手动安装

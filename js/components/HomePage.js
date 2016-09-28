@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   View,
   TabBarIOS,
+    PushNotificationIOS,
 } from 'react-native';
 import Page from './Page'
 import HomeDiaryList from './HomeDiaryList'
@@ -44,6 +45,7 @@ export default class HomePage extends Component {
         this.setState({
             tipCount: count > 0 ? count : null
         });
+        PushNotificationIOS.setApplicationIconBadgeNumber(count);
     }
 
     _onWriteDiary() {
