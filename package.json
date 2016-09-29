@@ -12,7 +12,7 @@
     "moment": "^2.15.1",
     "react": "15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
-    "react-native": "0.34.0",
+    "react-native": "^0.34.1",
     "react-native-code-push": "^1.14.6-beta",
     "react-native-device-info": "^0.9.5",
     "react-native-fabric": "^0.3.0",

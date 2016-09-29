@@ -104,3 +104,9 @@ jpush
 
 自动安装有问题，最后两个 objc 的方法没有复制进去，需要手动复制
 PushNotificationIOS 需要手动安装
+
+
+------------
+0.33 & 0.34 有一个 图片 的崩溃 bug
+https://github.com/facebook/react-native/pull/10147
+解决办法是手动改代码
