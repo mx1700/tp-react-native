@@ -52,8 +52,12 @@ export default class DiaryList extends Component {
       if (this.state.refreshing) {
           return;
       }
-      this.refs.list.scrollTo({x: 0, y:0, animated: false})
-      this._onRefresh();
+      this.setState({refreshing: true}, () => {
+          this.refs.list.scrollTo({x: 0, y: -56, animated: false});
+          InteractionManager.runAfterInteractions(() => {
+              this._onRefresh();
+          });
+      });
   }
 
   async _loadTodayDiaries(page) {
