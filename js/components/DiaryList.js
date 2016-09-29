@@ -35,14 +35,14 @@ export default class DiaryList extends Component {
       page_size: 20,
       more: false,
       loading_more: false,
-      refreshing: false,
+      refreshing: true,
       emptyList: false,
         errorPage: false,
         loadMoreError: false,
     };
   }
 
-  componentWillMount(){
+  componentDidMount(){
     InteractionManager.runAfterInteractions(() => {
       this._loadTodayDiaries(this.state.page);
     });
@@ -79,6 +79,17 @@ export default class DiaryList extends Component {
         let diaries;
         if (page == 1) {
             diaries = data.diaries;
+            const old = this.state.diaries;
+            if (diaries.length > 0 && old.length > 0) {
+                if (diaries[0].id == old[0].id) {
+                    Toast.show("没有新内容", {
+                        duration: 2000,
+                        position: -80,
+                        shadow: false,
+                        hideOnPress: true,
+                    });
+                }
+            }
         } else {
             const last = this.state.diaries[this.state.diaries.length-1];
             const news = data.diaries.filter(d => d.id < last.id);
