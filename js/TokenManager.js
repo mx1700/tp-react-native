@@ -68,6 +68,29 @@ class TokenManager {
   async getTempDraft() {
     return JSON.parse(await AsyncStorage.getItem('temp_draft'));
   }
+
+  async setSetting(name, val) {
+    let settings = await this.getSettings();
+    if (!settings) {
+      settings = {}
+    }
+    settings[name] = val;
+    return AsyncStorage.setItem('setting', JSON.stringify(settings));
+  }
+
+  async getSetting(name) {
+    const settings = await this.getSettings();
+    return settings ? (settings[name]) : null;
+  }
+
+  async getSettings() {
+    const str = await AsyncStorage.getItem('setting');
+    const settings = str && str.length > 0 ? JSON.parse(str) : { };
+    if (settings['pushMessage'] === undefined) {
+      settings['pushMessage'] = true;
+    }
+    return settings;
+  }
 }
 
 export default new TokenManager()

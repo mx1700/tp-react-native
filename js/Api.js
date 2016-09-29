@@ -270,6 +270,18 @@ export async function clearTempDraft() {
   return TokenManager.setTempDraft('')
 }
 
+export async function setSetting(name, val) {
+  return TokenManager.setSetting(name, val)
+}
+
+export async function getSetting(name) {
+  return TokenManager.getSetting(name)
+}
+
+export async function getSettings() {
+  return TokenManager.getSettings()
+}
+
 //==========================================================================
 
 var baseUrl = 'https://open.timepill.net/api';

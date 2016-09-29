@@ -25,6 +25,9 @@ import NotificationCenter from '../common/NotificationCenter'
 import ErrorView from '../common/ErrorListView'
 import JPushModule from 'jpush-react-native';
 
+const LOOP_TIME_SHORT = 60 * 1000;
+const LOOP_TIME_LONG = 150 * 1000;
+
 export default class MessagePage extends Component {
     constructor(props) {
         super(props);
@@ -39,16 +42,18 @@ export default class MessagePage extends Component {
     }
 
     loading = false;
+    loopTime = LOOP_TIME_LONG;
 
-    componentWillMount(){
+    componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            this._loadMessages();
+            this.initPush();
+            this._startTipTimer();
         });
 
         NativeAppEventEmitter.addListener(
             'ReceiveNotification',
             (notification) => {
-                this._loadMessages();
+                this._startTipTimer();
                 console.log(notification);
             }
         );
@@ -56,43 +61,50 @@ export default class MessagePage extends Component {
         NativeAppEventEmitter.addListener(
             'networkDidReceiveMessage',
             (message) => {
-                this._loadMessages();
+                this._startTipTimer();
                 console.log(message);
             }
         );
     }
 
-    componentDidMount() {
-        this._startTipTimer();
-        this.initPush();
-
-    }
-
     async initPush() {
         JPushModule.setupPush((a) => { console.log(a) });
         const user = await Api.getSelfInfoByStore();
+        const settings = await Api.getSettings();
         if (user) {
             try {
                 // JPushModule.getRegistrationID((registrationid) => {
                 //     console.log('registrationid:' + registrationid);
                 // });
-                JPushModule.setAlias(user.id.toString(), (resultCode) => {
-                    console.log('[jpush] setAlias:' + resultCode);
+                const alias = settings['pushMessage'] ? user.id.toString() : user.id.toString() + '_close';
+                JPushModule.setAlias(alias , () => {
+                    console.log('[jpush] setAlias:ok');
+                    this.loopTime = settings['pushMessage'] ? LOOP_TIME_LONG : LOOP_TIME_SHORT
+                }, () => {
+                    console.log('[jpush] setAlias:err');
+                    this.loopTime = LOOP_TIME_SHORT;
                 })
             } catch(err) {
-
+                console.log('[jpush] setAlias:err');
+                this.loopTime = LOOP_TIME_SHORT;
             }
         }
     }
 
-    _startTipTimer() {
+    async _startTipTimer() {
         if (this.tipTimer) {
             clearTimeout(this.tipTimer);
         }
-        this.tipTimer = setTimeout(async () => {
+
+        try {
             await this._loadMessages();
+        } catch(err) {
+            console.log(err);
+        }
+        console.log('[message] loop time:' + this.loopTime);
+        this.tipTimer = setTimeout(() => {
             this._startTipTimer();
-        }, 120 * 1000)
+        }, this.loopTime)
     }
 
     componentWillUnmount() {
@@ -108,7 +120,6 @@ export default class MessagePage extends Component {
             refreshing: true,
         });
         this._startTipTimer();
-        this._loadMessages();
     }
 
     _onCommentPress(msg) {

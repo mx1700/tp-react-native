@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import UserIntroEdit from './UserIntroEdit'
 import AboutPage from './AboutPage'
 import PasswordPage from './PasswordPage'
+import JPushModule from 'jpush-react-native'
 
 export default class SettingPage extends Component {
 
@@ -26,6 +27,7 @@ export default class SettingPage extends Component {
         this.state = {
             hasUpdateNews: false,
             hasPassword: false,
+            settings: {}
         };
     }
 
@@ -45,6 +47,7 @@ export default class SettingPage extends Component {
         this.onUpdateStartupPassword();
         NotificationCenter.addLister('onReadUpdateNews', this.onReadUpdateNews);
         NotificationCenter.addLister('onUpdateStartupPassword', this.onUpdateStartupPassword);
+        this._loadSettings();
     }
 
     componentWillUnmount() {
@@ -61,6 +64,13 @@ export default class SettingPage extends Component {
             {text: '取消', onPress: () => console.log('OK Pressed!')},
         ]);
 
+    }
+
+    async _loadSettings() {
+        const settings = await Api.getSettings();
+        this.setState({
+            settings: settings
+        })
     }
 
     async _loadUpdateState() {
@@ -82,6 +92,36 @@ export default class SettingPage extends Component {
                 }
             })
         }, 200);
+    };
+
+    changePush = (val) => {
+        let settings = this.state.settings;
+        settings['pushMessage'] = val;
+        this.setState({
+            settings: settings
+        });
+        Api.getSelfInfoByStore()
+            .then(user => {
+                const alias = val ? user.id.toString() : user.id.toString() + '_close';
+                console.log(alias);
+                JPushModule.setAlias(alias, (resultCode) => {
+                    Api.setSetting('pushMessage', val);
+                    console.log('setAlias ok ')
+                }, (f) => {
+                    console.log(f);   //Toast 提示
+                    settings['pushMessage'] = !val;
+                    this.setState({
+                        settings: settings
+                    });
+                })
+            })
+            .catch(err => {
+                console.log(err);   //Toast 提示
+                settings['pushMessage'] = !val;
+                this.setState({
+                    settings: settings
+                });
+            })
     };
 
     render() {
@@ -114,7 +154,11 @@ export default class SettingPage extends Component {
                         <Text style={styles.title}>启动密码</Text>
                         <Switch value={this.state.hasPassword} onValueChange={this.changePassword} />
                     </View>
-
+                    <View style={styles.line} />
+                    <View style={styles.item}>
+                        <Text style={styles.title}>提醒推送</Text>
+                        <Switch value={this.state.settings['pushMessage']} onValueChange={this.changePush} />
+                    </View>
 
                 </View>
 
