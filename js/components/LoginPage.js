@@ -10,6 +10,7 @@ import {
     TextInput,
     Modal,
     Alert,
+    InteractionManager,
 } from 'react-native';
 import Page from './Page'
 import * as Api from '../Api'
@@ -54,17 +55,23 @@ export default class LoginPage extends Component {
             return;
         }
         this.setState({loading: true});
-        const result = await Api.login(this.state.username, this.state.password);
-        this.setState({loading: false});
-        if (result) {
-            Answers.logLogin('Email', true);
-            this.props.navigator.resetTo({
-                name: 'HomePage',
-                component: HomePage
-            });
-        } else {
+        try {
+            const result = await Api.login(this.state.username, this.state.password);
+            if (result) {
+                Answers.logLogin('Email', true);
+                this.props.navigator.resetTo({
+                    name: 'HomePage',
+                    component: HomePage
+                });
+            } else {
+                Answers.logLogin('Email', false);
+                Alert.alert('登录失败', '用户名或密码不正确',
+                    [{text: '确定', onPress: () => this.setState({loading: false})}]);
+            }
+        } catch(err) {
             Answers.logLogin('Email', false);
-            Alert.alert('提示','用户名或密码不正确');
+            Alert.alert('登录失败', err.message,
+                [{text: '确定', onPress: () => this.setState({loading: false})}]);
         }
     }
 

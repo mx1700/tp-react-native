@@ -22,9 +22,11 @@ export async function login(username, password) {
     await TokenManager.setUser(user_info);
     return user_info;
   } catch(err) {
-    //TODO:判断状态码，401是登陆失败，其他错误继续抛出
     await TokenManager.setToken('');
-    return false;
+      if (err.code && err.code == 401) {
+          return false;
+      }
+      throw err;
   }
 }
 
@@ -345,14 +347,16 @@ async function checkStatus(response) {
     console.log('http error: ' + response.status + ' ' + response.body);
     let errInfo;
     try {
-      errInfo = await response.json()
+      errInfo = await response.json();
+        console.log(errInfo);
     } catch (err) {
       errInfo = {
         code: 0,
         message: '服务器开小差了'
       }
     }
-    var error = new Error(errInfo.message, errInfo.code);
+    var error = new Error(errInfo.message, errInfo.code ? errInfo.code : errInfo.status_code);
+      error.code = errInfo.code ? errInfo.code : errInfo.status_code;
     throw error
   }
 }

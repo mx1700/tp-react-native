@@ -71,7 +71,7 @@ export default class DiaryList extends Component {
     try {
       data = await this.props.getDiariesPage(page, this.state.page_size);
     } catch(e) {
-      if(e.response && e.response.status == 401) {
+      if(e.code && e.code == 401) {
         this.props.navigator.toLogin();
         return;
       } else {
