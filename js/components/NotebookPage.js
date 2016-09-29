@@ -231,10 +231,8 @@ export default class NotebookPage extends Component {
                 enableEmptySections={true}
                 automaticallyAdjustContentInsets={false}
                 renderSeparator={(sectionID, rowID, adjacentRowHighlighted) =>
-                    <View style={{borderBottomWidth: StyleSheet.hairlineWidth,
+                    <View key={`${sectionID}-${rowID}`} style={{borderBottomWidth: StyleSheet.hairlineWidth,
                         borderColor: TPColors.line, marginHorizontal: 15}} />}
-                //renderHeader={() => <View style={{height: 4}}></View>}
-                // onScroll={(event) => console.log(event.nativeEvent)}
                 style={this.props.style}
             />
         );
