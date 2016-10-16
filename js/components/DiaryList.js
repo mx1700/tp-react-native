@@ -53,7 +53,7 @@ export default class DiaryList extends Component {
           return;
       }
       this.setState({refreshing: true}, () => {
-          this.refs.list.scrollTo({x: 0, y: -56, animated: false});
+          this.refs.list.scrollTo({x: 0, y: -60, animated: false});
           InteractionManager.runAfterInteractions(() => {
               this._onRefresh();
           });
