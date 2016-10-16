@@ -10,7 +10,6 @@ import {
     InteractionManager,
     ListView,
     RefreshControl,
-    Alert,
     NativeAppEventEmitter,
     DeviceEventEmitter,
 } from 'react-native';

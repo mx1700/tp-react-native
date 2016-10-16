@@ -9,7 +9,6 @@ import {
     Image,
     ActivityIndicator,
     TouchableOpacity,
-    Alert,
     SegmentedControlIOS
 } from 'react-native';
 import NavigationBar from 'NavigationBar'

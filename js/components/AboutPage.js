@@ -10,7 +10,6 @@ import {
     Image,
     CameraRoll,
     ActionSheetIOS,
-    Alert
 } from 'react-native';
 import NavigationBar from '../common/NavigationBar'
 var DeviceInfo = require('react-native-device-info');

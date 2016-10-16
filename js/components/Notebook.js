@@ -6,7 +6,6 @@ import {
     Platform,
     ActivityIndicator,
     SegmentedControlIOS,
-    Alert,
     Text,
     TouchableOpacity,
     Image
