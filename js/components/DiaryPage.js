@@ -321,7 +321,7 @@ export default class DiaryPage extends Component {
   }
 
   _onDiaryMorePress() {
-    if (this.state.isMy) {
+    if (this.state.isMy === true) {
       ActionSheetIOS.showActionSheetWithOptions({
         options: ['修改', '删除', '取消'],
         cancelButtonIndex: 2,
@@ -343,7 +343,7 @@ export default class DiaryPage extends Component {
           ]);
         }
       });
-    } else {
+    } else if(this.state.isMy === false) {
       ActionSheetIOS.showActionSheetWithOptions({
         options: ['举报', '取消'],
         cancelButtonIndex: 1,
@@ -428,7 +428,7 @@ export default class DiaryPage extends Component {
     const isToday = this._isTodayDiary();
     this.isToday = isToday;
     const commentInput = isToday ? this.renderCommentInputBox() : null;
-    const editButton = isToday && this.state.isMy !== null
+    const editButton = isToday
       ? (
         <NavigationBar.Icon name="ios-more" onPress={this._onDiaryMorePress.bind(this)}/>
     ) : null;
