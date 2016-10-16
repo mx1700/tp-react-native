@@ -96,11 +96,15 @@ export default class DiaryList extends Component {
               }
           } else {
               const last = this.state.diaries[this.state.diaries.length - 1];
-              const news = data.diaries.filter(d => d.id < last.id);
-              diaries = this.state.diaries.concat(news);
-              if (news.length == 0) {
-                  await this._loadTodayDiaries(page + 1);
-                  return;
+              if (data.diaries.length > 0) {
+                  const news = data.diaries.filter(d => d.id < last.id);
+                  diaries = this.state.diaries.concat(news);
+                  if (news.length == 0 && data.diaries.length == this.state.page_size) {
+                      this.refresh();
+                      return;
+                  }
+              } else {
+                  diaries = this.state.diaries;
               }
           }
           this.setState({
