@@ -102,7 +102,7 @@ NavigationBar.Icon = function(props) {
   return (
       <TouchableOpacity
           onPress={props.onPress}
-          style={{padding: 9}}
+          style={{padding: 9, paddingHorizontal: 12}}
       >
         {icon}
         {badge}
