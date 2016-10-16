@@ -64,7 +64,6 @@ export async function updateUserIcon(photoUri) {
   return upload('POST', '/users/icon', {
     icon: {uri: photoUri, name: 'image.jpg', type: 'image/jpg'}
   });
-  //TODO:更新本地缓存
 }
 
 export async function updateUserInfo(name, intro) {
@@ -72,7 +71,6 @@ export async function updateUserInfo(name, intro) {
     name: name,
     intro: intro,
   });
-  //TODO:更新本地缓存
 }
 
 export async function getSelfNotebooks() {

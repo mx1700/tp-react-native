@@ -175,7 +175,9 @@ export default class NotebookAddPage extends Component {
                 let imageSelect = index == 0
                     ? ImagePicker.openCamera(imageOption) : ImagePicker.openPicker(imageOption);
                 imageSelect.then(image => {
-                    this._uploadIcon(image.path, image.width, image.height)
+                    setTimeout(() => {  //这个 sleep 没有实际意义，只为解决 modal 不消失的 bug
+                        this._uploadIcon(image.path, image.width, image.height)
+                    }, 500);
                 })
             }
         });
@@ -187,36 +189,34 @@ export default class NotebookAddPage extends Component {
         try {
             this.setState({loading: true});
             book = await Api.updateNotebookCover(this.props.notebook.id, newUri);
-            this.setState({loading: false});
         } catch (err) {
             console.log(err);
             error = err;
-            this.setState({loading: false});
         }
-        InteractionManager.runAfterInteractions(() => {
-            if (book) {
-                Toast.show("封面保存成功", {
-                    duration: 2000,
-                    position: -80,
-                    shadow: false,
-                    hideOnPress: true,
-                });
-                if (this.props.onCreated) {
-                    this.props.onCreated(book);
-                }
-                if (this.props.onSaved) {
-                    this.props.onSaved(book);
-                }
-                NotificationCenter.trigger('onAddNotebook');
-            } else {
-                Toast.show("封面保存失败\n" + error.message, {
-                    duration: 2000,
-                    position: 250,
-                    shadow: false,
-                    hideOnPress: true,
-                });
+        this.setState({loading: false});
+
+        if (book) {
+            Toast.show("封面保存成功", {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
+            if (this.props.onCreated) {
+                this.props.onCreated(book);
             }
-        });
+            if (this.props.onSaved) {
+                this.props.onSaved(book);
+            }
+            NotificationCenter.trigger('onAddNotebook');
+        } else {
+            Toast.show("封面保存失败\n" + error.message, {
+                duration: 2000,
+                position: 250,
+                shadow: false,
+                hideOnPress: true,
+            });
+        }
     }
 
     async resizePhoto(uri, oWidth, oHeight) {

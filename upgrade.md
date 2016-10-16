@@ -110,3 +110,10 @@ PushNotificationIOS 需要手动安装
 0.33 & 0.34 有一个 图片 的崩溃 bug
 https://github.com/facebook/react-native/pull/10147
 解决办法是手动改代码
+
+
+
+------------
+modal bug
+1.modal 关闭和 alert 打开同时调用时，alert 自动消失，切 modal 不会关闭（目前是吧 alert 换成 toast 解决）
+2.照片选择模块，在选择完照片后，打开 modal，小延时（小于500ms）后关闭 modal，可能无法关闭（目前是 选择照片后，延时 500 ms 再执行之后操作）

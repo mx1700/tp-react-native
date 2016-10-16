@@ -73,7 +73,7 @@ export default class UserIntroEdit extends Component {
                 let imageSelect = index == 0
                     ? ImagePicker.openCamera(imageOption) : ImagePicker.openPicker(imageOption);
                 imageSelect.then(image => {
-                    setTimeout(() => {
+                    setTimeout(() => {  //这个 sleep 没有实际意义，只为解决 modal 不消失的 bug
                         this._uploadIcon(image.path, image.width, image.height)
                     }, 500);
                 })
@@ -89,7 +89,12 @@ export default class UserIntroEdit extends Component {
             user = await Api.updateUserIcon(newUri);
         } catch (err) {
             console.log(err);
-             Alert.alert('更新失败', err.message);
+            Toast.show("头像更新失败\n" + err.message, {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
         } finally {
             this.setState({loading: false})
         }
@@ -271,12 +276,24 @@ class UserIntroEditName extends Component {
         try {
             user = await Api.updateUserInfo(this.state.name, this.props.user.intro)
         } catch (err) {
-            Alert.alert('保存失败', err.message);
+            Toast.show("修改失败\n" + err.message, {
+                duration: 2000,
+                position: 200,
+                shadow: false,
+                hideOnPress: true,
+            });
+            //Alert.alert('保存失败', err.message);
         } finally {
             this.setState({loading: false});
         }
 
         if (user) {
+            Toast.show("修改成功", {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
             this.props.navigator.pop();
             await Api.updateUserInfoStore(user);
             NotificationCenter.trigger('updateUserInfo');
@@ -335,12 +352,23 @@ class UserIntroEditIntro extends Component {
         try {
             user = await Api.updateUserInfo(this.props.user.name, this.state.intro)
         } catch (err) {
-            Alert.alert('保存失败', err.message);
+            Toast.show("修改失败\n" + err.message, {
+                duration: 2000,
+                position: 200,
+                shadow: false,
+                hideOnPress: true,
+            });
         } finally {
             this.setState({loading: false});
         }
 
         if (user) {
+            Toast.show("修改成功", {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
             this.props.navigator.pop();
             await Api.updateUserInfoStore(user);
             NotificationCenter.trigger('updateUserInfo');
