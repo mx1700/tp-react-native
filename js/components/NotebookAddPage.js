@@ -26,10 +26,11 @@ import {
     LoadingModal,
     TimeHelper,
 } from '../common'
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker'
 import ImageResizer from 'react-native-image-resizer'
-const dismissKeyboard = require('dismissKeyboard');
 import Toast from 'react-native-root-toast';
+
+const dismissKeyboard = require('dismissKeyboard');
 
 export default class NotebookAddPage extends Component {
 
@@ -67,11 +68,21 @@ export default class NotebookAddPage extends Component {
 
     createPress() {
         if (this.state.subject.length == 0) {
-            Alert.alert('提示', '请填写主题');
+            Toast.show("请填写主题", {
+                duration: 2000,
+                position: 250,
+                shadow: false,
+                hideOnPress: true,
+            });
             return;
         }
         if (this.state.subject.length > 20) {
-            Alert.alert('提示', '主题不能超过20个字');
+            Toast.show("主题不能超过20个字", {
+                duration: 2000,
+                position: 250,
+                shadow: false,
+                hideOnPress: true,
+            });
             return;
         }
         this.createBook();
@@ -92,7 +103,14 @@ export default class NotebookAddPage extends Component {
             //console.log(book);
         } catch (err) {
             console.log(err);
-            Alert.alert(!this.props.notebook ? '创建日记本失败' : '修改日记本失败', err.message);
+            let msg = (!this.props.notebook ? '创建日记本失败' : '修改日记本失败') + "\n" + err.message;
+            Toast.show(msg, {
+                duration: 2000,
+                position: 250,
+                shadow: false,
+                hideOnPress: true,
+            });
+            //Alert.alert(!this.props.notebook ? '创建日记本失败' : '修改日记本失败', err.message);
         } finally {
             this.setState({loading: false});
         }
@@ -160,7 +178,13 @@ export default class NotebookAddPage extends Component {
             book = await Api.updateNotebookCover(this.props.notebook.id, newUri);
         } catch (err) {
             console.log(err);
-            Alert.alert('保存失败', err.message);
+            //Alert.alert('保存失败', err.message);
+            Toast.show("封面保存失败\n" + err.message, {
+                duration: 2000,
+                position: 250,
+                shadow: false,
+                hideOnPress: true,
+            });
         } finally {
             console.log('this.setState({loading: false})');
             this.setState({loading: false})
