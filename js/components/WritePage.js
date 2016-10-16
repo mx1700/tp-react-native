@@ -21,7 +21,8 @@ import {
     Alert,
     ScrollView,
     ActionSheetIOS,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    CameraRoll
 } from 'react-native';
 
 import {
@@ -378,6 +379,10 @@ export default class WritePage extends Component {
                                 height: image.height,
                             }
                         });
+
+                        if (index == 0) {
+                            CameraRoll.saveToCameraRoll(image.path);
+                        }
                     });
                 }
             });
