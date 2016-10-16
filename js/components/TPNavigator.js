@@ -12,11 +12,14 @@ import LoginPage from './LoginPage'
 import * as Api from '../Api'
 import Token from '../TokenManager'
 import PasswordPage from '../components/PasswordPage'
+import SplashScreen from 'react-native-splash-screen'
+
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
 class DefaultPage extends Component {
   componentWillMount() {
+    SplashScreen.hide();
     this.init()
   }
 

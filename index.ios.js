@@ -12,7 +12,6 @@ import {
 import TPNavigator from './js/components/TPNavigator'
 import CodePush from "react-native-code-push";
 import * as Api from './js/Api'
-import Token from './js/TokenManager'
 import fc from 'react-native-fabric-crashlytics';
 var Fabric = require('react-native-fabric');
 var { Crashlytics } = Fabric;

@@ -26,6 +26,7 @@
 		1D1C39B564C649178762E651 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E761F720D6DC421B808DE5FE /* libz.tbd */; };
 		40E392FFC5044A0CB7342CEF /* libSMXCrashlytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADF8885E17B6481DA8B6E124 /* libSMXCrashlytics.a */; };
 		441039569AA0434580C4067B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A189B13E1FE4EAE8C014191 /* FontAwesome.ttf */; };
+		44718CE7A6AC46BEB193A62F /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4F37B7656C40BDA06D3517 /* libSplashScreen.a */; };
 		5A5345891E06413192145D0E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E1D2E8AC97D4D7796E80E53 /* Foundation.ttf */; };
 		68DDB0D763484B39907D7EDD /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA29E1129AA2450C8F0DA91B /* libRNDeviceInfo.a */; };
 		690CDAF21D968C04006A1B20 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 690CDAF01D968C04006A1B20 /* Fabric.framework */; };
@@ -218,6 +219,13 @@
 			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
 			remoteInfo = RCTCameraRoll;
 		};
+		6977C58C1DB3B59100B87B4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 752E0722176E42B8A71514E5 /* SplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D7682761D8E76B80014119E;
+			remoteInfo = SplashScreen;
+		};
 		69E4A2F01D9BA50F00C3559C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 69E4A2E31D9BA50F00C3559C /* RCTPushNotification.xcodeproj */;
@@ -295,7 +303,9 @@
 		69DEAE811D9A163900553919 /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69DEAE841D9A163A00553919 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69E4A2E31D9BA50F00C3559C /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		752E0722176E42B8A71514E5 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7B4F37B7656C40BDA06D3517 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8E1D2E8AC97D4D7796E80E53 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		938F0622E8CA42DCB0E09773 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -349,6 +359,7 @@
 				A074F51529AB429CAD40C3CD /* libimageCropPicker.a in Frameworks */,
 				8A0DE7D1E14F4E5B8995806D /* libRCTImageResizer.a in Frameworks */,
 				F45A6C9703944941A3CDB057 /* libRCTJPushModule.a in Frameworks */,
+				44718CE7A6AC46BEB193A62F /* libSplashScreen.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +548,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6977C56F1DB3B59100B87B4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6977C58D1DB3B59100B87B4B /* libSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		69E4A2E41D9BA50F00C3559C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -576,6 +595,7 @@
 				D97FD66091EA4413A96267FF /* imageCropPicker.xcodeproj */,
 				A4801FEEBDE14EE8A9438038 /* RCTImageResizer.xcodeproj */,
 				20ABBD67546B4DACA0DE13A5 /* RCTJPushModule.xcodeproj */,
+				752E0722176E42B8A71514E5 /* SplashScreen.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -782,6 +802,10 @@
 					ProductGroup = 690CDB011D968E2C006A1B20 /* Products */;
 					ProjectRef = 38B279BFA2F14B33BA7D3D8A /* SMXCrashlytics.xcodeproj */;
 				},
+				{
+					ProductGroup = 6977C56F1DB3B59100B87B4B /* Products */;
+					ProjectRef = 752E0722176E42B8A71514E5 /* SplashScreen.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -953,6 +977,13 @@
 			remoteRef = 6977C5571DB3B21900B87B4B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6977C58D1DB3B59100B87B4B /* libSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSplashScreen.a;
+			remoteRef = 6977C58C1DB3B59100B87B4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		69E4A2F11D9BA50F00C3559C /* libRCTPushNotification.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1096,6 +1127,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tp_react_native.app/tp_react_native";
@@ -1114,6 +1146,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1153,6 +1186,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/jpush-react-native/ios/RCTJPushModule/RCTJPushModule",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = tp_react_native/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1213,6 +1247,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/jpush-react-native/ios/RCTJPushModule/RCTJPushModule",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = tp_react_native/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1294,6 +1329,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/jpush-react-native/ios/RCTJPushModule/RCTJPushModule",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1342,6 +1378,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/jpush-react-native/ios/RCTJPushModule/RCTJPushModule",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

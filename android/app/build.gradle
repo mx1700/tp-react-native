@@ -127,6 +127,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-splash-screen')
     compile project(':jpush-react-native')
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-crop-picker')
