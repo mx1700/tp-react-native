@@ -23,6 +23,7 @@ import LoadingModal from '../common/LoadingModal'
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer'
 import Toast from 'react-native-root-toast';
+const dismissKeyboard = require('dismissKeyboard');
 
 export default class UserIntroEdit extends Component {
 
@@ -257,6 +258,12 @@ class UserIntroEditName extends Component {
         }
     }
 
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.refs.input.focus();
+        });
+    }
+
     _savePress() {
         const len = this.state.name.length;
         if (len == 0) {
@@ -294,6 +301,7 @@ class UserIntroEditName extends Component {
                 shadow: false,
                 hideOnPress: true,
             });
+            dismissKeyboard();
             this.props.navigator.pop();
             await Api.updateUserInfoStore(user);
             NotificationCenter.trigger('updateUserInfo');
@@ -306,13 +314,14 @@ class UserIntroEditName extends Component {
                 <LoadingModal loading={this.state.loading} />
                 <NavigationBar
                     title="修改名字"
-                    backPress={() => { this.props.navigator.pop() }}
+                    backPress={() => { dismissKeyboard(); this.props.navigator.pop() }}
                     rightButton={{ title: "保存", handler: this._savePress.bind(this) }}
                 />
                 <View style={styles.group}>
                     <View style={styles.item}>
                         <Text style={styles.title}>名字</Text>
                         <TextInput
+                            ref="input"
                             value={this.state.name}
                             onChangeText={(text) => this.setState({name: text})}
                             style={{flex: 1, fontSize: 16, marginLeft: 15, paddingTop: 2, color: TPColors.contentText}}
@@ -331,6 +340,12 @@ class UserIntroEditIntro extends Component {
             intro: props.user.intro,
             loading: false,
         }
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.refs.input.focus();
+        });
     }
 
     _savePress() {
@@ -369,6 +384,7 @@ class UserIntroEditIntro extends Component {
                 shadow: false,
                 hideOnPress: true,
             });
+            dismissKeyboard();
             this.props.navigator.pop();
             await Api.updateUserInfoStore(user);
             NotificationCenter.trigger('updateUserInfo');
@@ -381,15 +397,16 @@ class UserIntroEditIntro extends Component {
                 <LoadingModal loading={this.state.loading} />
                 <NavigationBar
                     title="修改个人简介"
-                    backPress={() => { this.props.navigator.pop() }}
+                    backPress={() => { dismissKeyboard(); this.props.navigator.pop() }}
                     rightButton={{ title: "保存", handler: this._savePress.bind(this) }}
                 />
                 <View style={styles.group}>
                         <TextInput
                             value={this.state.intro}
+                            ref="input"
                             onChangeText={(text) => this.setState({intro: text})}
                             multiline={true}
-                            style={{flex: 1, fontSize: 16, margin: 15, color: TPColors.contentText, height: 320}}
+                            style={{flex: 1, fontSize: 16, margin: 15, color: TPColors.contentText, height: 200}}
                         />
                 </View>
             </View>
