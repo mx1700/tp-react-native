@@ -89,43 +89,54 @@ export default class NotebookAddPage extends Component {
     }
 
     async createBook() {
-        this.setState({loading: true});
         const date = this.state.date;
         const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-        let book = null;
+        let book, error;
         try {
+            this.setState({loading: true});
             if (!this.props.notebook) {
                 book = await Api.createNotebook(this.state.subject, '', dateString, this.state.pub ? 10 : 1);
             } else {
                 book = await Api.updateNotebook(this.props.notebook.id, this.state.subject,
                     this.props.notebook.description, this.state.pub ? 10 : 1)
             }
+            this.setState({loading: false});
             //console.log(book);
         } catch (err) {
-            console.log(err);
-            let msg = (!this.props.notebook ? '创建日记本失败' : '修改日记本失败') + "\n" + err.message;
-            Toast.show(msg, {
-                duration: 2000,
-                position: 250,
-                shadow: false,
-                hideOnPress: true,
-            });
-            //Alert.alert(!this.props.notebook ? '创建日记本失败' : '修改日记本失败', err.message);
-        } finally {
             this.setState({loading: false});
+            console.log(err);
+            error = err;
+        } finally {
+
         }
 
-        if (book) {
-            dismissKeyboard();
-            this.props.navigator.pop();
-            if (this.props.onCreated) {
-                this.props.onCreated(book);
+        InteractionManager.runAfterInteractions(() => {
+            if (book) {
+                dismissKeyboard();
+                this.props.navigator.pop();
+                if (this.props.onCreated) {
+                    this.props.onCreated(book);
+                }
+                if (this.props.onSaved) {
+                    this.props.onSaved(book);
+                }
+                NotificationCenter.trigger('onAddNotebook');
+                Toast.show(!this.props.notebook ? '创建完成' : '保存完成', {
+                    duration: 2000,
+                    position: -80,
+                    shadow: false,
+                    hideOnPress: true,
+                });
+            } else {
+                let msg = (!this.props.notebook ? '创建日记本失败' : '修改日记本失败') + "\n" + error.message;
+                Toast.show(msg, {
+                    duration: 2000,
+                    position: 250,
+                    shadow: false,
+                    hideOnPress: true,
+                });
             }
-            if (this.props.onSaved) {
-                this.props.onSaved(book);
-            }
-            NotificationCenter.trigger('onAddNotebook');
-        }
+        });
     }
 
     openModal() {
@@ -171,42 +182,41 @@ export default class NotebookAddPage extends Component {
     }
 
     async _uploadIcon(uri, width, height) {
-        this.setState({loading: true});
         const newUri = await this.resizePhoto(uri, width, height);
-        let book;
+        let book, error;
         try {
+            this.setState({loading: true});
             book = await Api.updateNotebookCover(this.props.notebook.id, newUri);
+            this.setState({loading: false});
         } catch (err) {
             console.log(err);
-            //Alert.alert('保存失败', err.message);
-            Toast.show("封面保存失败\n" + err.message, {
-                duration: 2000,
-                position: 250,
-                shadow: false,
-                hideOnPress: true,
-            });
-        } finally {
-            console.log('this.setState({loading: false})');
-            this.setState({loading: false})
+            error = err;
+            this.setState({loading: false});
         }
-        //console.log(book);
-        if (book) {
-            console.log('封面保存成功');
-            Toast.show("封面保存成功", {
-                duration: 2000,
-                position: -80,
-                shadow: false,
-                hideOnPress: true,
-            });
-            this.setState({loading: false});    // finally 里的有时候不起作用，不知道为什么
-            if (this.props.onCreated) {
-                this.props.onCreated(book);
+        InteractionManager.runAfterInteractions(() => {
+            if (book) {
+                Toast.show("封面保存成功", {
+                    duration: 2000,
+                    position: -80,
+                    shadow: false,
+                    hideOnPress: true,
+                });
+                if (this.props.onCreated) {
+                    this.props.onCreated(book);
+                }
+                if (this.props.onSaved) {
+                    this.props.onSaved(book);
+                }
+                NotificationCenter.trigger('onAddNotebook');
+            } else {
+                Toast.show("封面保存失败\n" + error.message, {
+                    duration: 2000,
+                    position: 250,
+                    shadow: false,
+                    hideOnPress: true,
+                });
             }
-            if (this.props.onSaved) {
-                this.props.onSaved(book);
-            }
-            NotificationCenter.trigger('onAddNotebook');
-        }
+        });
     }
 
     async resizePhoto(uri, oWidth, oHeight) {
@@ -279,10 +289,19 @@ export default class NotebookAddPage extends Component {
         );
 
         //console.log(dataSelect);
+//                <LoadingModal loading={this.state.loading} />
 
+        //console.log('this.state.loading',this.state.loading);
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
-                <LoadingModal loading={this.state.loading} />
+                <Modal
+                    visible={this.state.loading}
+                    transparent={true}
+                    onRequestClose={() => {}}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
+                        <ActivityIndicator animating={true} color={TPColors.light} />
+                    </View>
+                </Modal>
                 <Modal
                     animationType="none"
                     transparent={true}
