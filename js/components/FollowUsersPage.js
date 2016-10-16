@@ -33,8 +33,8 @@ export default class FollowUsersPage extends Component {
 
     render() {
 
-        const followViewStyle = this.state.selectedIndex == 0 ? null : {height: 0, flex: null};
-        const followViewReverseStyle = this.state.selectedIndex == 1 ? null : {height: 0, flex: null};
+        const followViewStyle = this.state.selectedIndex == 0 ? null : {position: 'absolute', height: 0};
+        const followViewReverseStyle = this.state.selectedIndex == 1 ? null : {position: 'absolute', height: 0};
 
         const followView = this.state.loadedFollow
             ? (

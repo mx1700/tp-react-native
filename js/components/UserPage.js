@@ -199,9 +199,9 @@ export default class UserPage extends Component {
             }
         }
 
-        const userStyle = this.state.selectedIndex == 0 ? null : {height: 0, flex: null};
-        const diaryStyle = this.state.selectedIndex == 1 ? null : {height: 0, flex: null};
-        const bookStyle = this.state.selectedIndex == 2 ? null : {height: 0, flex: null, paddingTop: 0};
+        const userStyle = this.state.selectedIndex == 0 ? null : {position: 'absolute', height: 0};
+        const diaryStyle = this.state.selectedIndex == 1 ? null : {position: 'absolute',height: 0};
+        const bookStyle = this.state.selectedIndex == 2 ? null : {position: 'absolute',height: 0, paddingTop: 0};
 
         const user = this.state.loaded[0]
             ? (

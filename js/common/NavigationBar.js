@@ -34,7 +34,7 @@ function NavigationBarIOS(props) {
     attr.leftButton = (
         <TouchableOpacity
             onPress={props.backPress}
-            style={{flex: 1, padding: 9, paddingHorizontal: 15}}
+            style={{padding: 9, paddingHorizontal: 15}}
         >
           {icon}
         </TouchableOpacity>
@@ -102,7 +102,7 @@ NavigationBar.Icon = function(props) {
   return (
       <TouchableOpacity
           onPress={props.onPress}
-          style={{flex: 1, padding: 9}}
+          style={{padding: 9}}
       >
         {icon}
         {badge}
