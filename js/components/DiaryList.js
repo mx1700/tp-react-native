@@ -42,7 +42,7 @@ export default class DiaryList extends Component {
     };
   }
 
-  componentDidMount(){
+  componentWillMount(){
     InteractionManager.runAfterInteractions(() => {
       this._loadTodayDiaries(this.state.page);
     });
@@ -61,81 +61,81 @@ export default class DiaryList extends Component {
   }
 
   async _loadTodayDiaries(page) {
-    if (page === 1 && this.state.refreshing === false) {
-      this.setState({refreshing: true});
-    }
-    if (page > 1) {
-      this.setState({ loading_more: true });
-    }
-    let data = null;
-    try {
-      data = await this.props.getDiariesPage(page, this.state.page_size);
-    } catch(e) {
-      if(e.code && e.code == 401) {
-        this.props.navigator.toLogin();
-        return;
-      } else {
-        //console.log(e.response);
+      if (page === 1 && this.state.refreshing === false) {
+          this.setState({refreshing: true});
       }
-    }
-    //console.log(data, page);
-    if (data) {
-        let diaries;
-        if (page == 1) {
-            diaries = data.diaries;
-            const old = this.state.diaries;
-            if (diaries.length > 0 && old.length > 0) {
-                if (diaries[0].id == old[0].id) {
-                    Toast.show("没有新内容", {
-                        duration: 2000,
-                        position: -80,
-                        shadow: false,
-                        hideOnPress: true,
-                    });
-                }
-            }
-        } else {
-            const last = this.state.diaries[this.state.diaries.length-1];
-            const news = data.diaries.filter(d => d.id < last.id);
-            diaries = this.state.diaries.concat(news);
-            if(news.length == 0) {
-                await this._loadTodayDiaries(page + 1);
-                return;
-            }
-        }
-      this.setState({
-        diaries: diaries,
-        diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
-        page: data.page,
-        more: data.more,
-        refreshing: false,
-        loading_more: false,
-          emptyList: diaries.length == 0,
-          errorPage: false,
-          loadMoreError: false,
-      });
-    } else {
-        if (page == 1) {
-            diaries = [];
-            this.setState({
-                diaries: diaries,
-                diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
-                page: 1,
-                more: false,
-                refreshing: false,
-                loading_more: false,
-                emptyList: false,
-                errorPage: true,
-                loadMoreError: false,
-            });
-        } else {
-            this.setState({
-                refreshing: false,
-                loading_more: false,
-                loadMoreError: true,
-            });
-        }
-    }
+      if (page > 1) {
+          this.setState({loading_more: true});
+      }
+      let data = null;
+      try {
+          data = await this.props.getDiariesPage(page, this.state.page_size);
+      } catch (e) {
+          if (e.code && e.code == 401) {
+              this.props.navigator.toLogin();
+              return;
+          } else {
+              //console.log(e.response);
+          }
+      }
+      //console.log(data, page);
+      if (data) {
+          let diaries;
+          if (page == 1) {
+              diaries = data.diaries;
+              const old = this.state.diaries;
+              if (diaries.length > 0 && old.length > 0) {
+                  if (diaries[0].id == old[0].id) {
+                      Toast.show("没有新内容", {
+                          duration: 2000,
+                          position: -80,
+                          shadow: false,
+                          hideOnPress: true,
+                      });
+                  }
+              }
+          } else {
+              const last = this.state.diaries[this.state.diaries.length - 1];
+              const news = data.diaries.filter(d => d.id < last.id);
+              diaries = this.state.diaries.concat(news);
+              if (news.length == 0) {
+                  await this._loadTodayDiaries(page + 1);
+                  return;
+              }
+          }
+          this.setState({
+              diaries: diaries,
+              diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
+              page: data.page,
+              more: data.more,
+              refreshing: false,
+              loading_more: false,
+              emptyList: diaries.length == 0,
+              errorPage: false,
+              loadMoreError: false,
+          });
+      } else {
+          if (page == 1) {
+              diaries = [];
+              this.setState({
+                  diaries: diaries,
+                  diariesDateSource: this.state.diariesDateSource.cloneWithRows(diaries),
+                  page: 1,
+                  more: false,
+                  refreshing: false,
+                  loading_more: false,
+                  emptyList: false,
+                  errorPage: true,
+                  loadMoreError: false,
+              });
+          } else {
+              this.setState({
+                  refreshing: false,
+                  loading_more: false,
+                  loadMoreError: true,
+              });
+          }
+      }
   }
 
   _onDiaryPress(diary) {
