@@ -9,15 +9,15 @@ import {
     ActivityIndicator,
     TextInput,
     Modal,
-    Alert,
-    InteractionManager,
+    AlertIOS,
 } from 'react-native';
-import Page from './Page'
 import * as Api from '../Api'
 import TPButton from 'TPButton'
 import TPColors from '../common/TPColors'
 import HomePage from './HomePage'
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-root-toast';
+
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
@@ -47,31 +47,40 @@ export default class LoginPage extends Component {
 
     async _login() {
         if (this.state.username.length == '') {
-            Alert.alert('提示','请输入登录邮箱');
+            Toast.show("请输入邮箱", {
+                duration: 2000,
+                position: 172,
+                shadow: false,
+                hideOnPress: true,
+            });
             return;
         }
         if (this.state.password.length == '') {
-            Alert.alert('提示','请输入密码');
+            Toast.show("请输入密码", {
+                duration: 2000,
+                position: 218,
+                shadow: false,
+                hideOnPress: true,
+            });
             return;
         }
         this.setState({loading: true});
-        try {
-            const result = await Api.login(this.state.username, this.state.password);
-            if (result) {
-                Answers.logLogin('Email', true);
-                this.props.navigator.resetTo({
-                    name: 'HomePage',
-                    component: HomePage
-                });
-            } else {
-                Answers.logLogin('Email', false);
-                Alert.alert('登录失败', '用户名或密码不正确',
-                    [{text: '确定', onPress: () => this.setState({loading: false})}]);
-            }
-        } catch(err) {
+        const result = await Api.login(this.state.username, this.state.password);
+        this.setState({loading: false});
+        if (result) {
+            Answers.logLogin('Email', true);
+            this.props.navigator.resetTo({
+                name: 'HomePage',
+                component: HomePage
+            });
+        } else {
             Answers.logLogin('Email', false);
-            Alert.alert('登录失败', err.message,
-                [{text: '确定', onPress: () => this.setState({loading: false})}]);
+            Toast.show("邮箱或密码不正确", {
+                duration: 2000,
+                position: 195,
+                shadow: false,
+                hideOnPress: true,
+            });
         }
     }
 
