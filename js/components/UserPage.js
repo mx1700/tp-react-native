@@ -111,7 +111,7 @@ export default class UserPage extends Component {
         const rel = this.state.followed;
         if (rel) {
             Alert.alert('提示', '确认不再关注？',[
-                {text: '确认', onPress: () => {
+                {text: '确认', style: 'destructive', onPress: () => {
                     this.setState({
                         followed: !rel
                     });

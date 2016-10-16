@@ -101,7 +101,7 @@ export default class WritePage extends Component {
         const tempDraft = await Api.getTempDraft();
         if (tempDraft && tempDraft.length > 0) {
             Alert.alert('恢复日记', '之前写的日记未发布成功，是否恢复？\n 取消将丢失日记内容', [
-                {text: '取消', onPress:() => { Api.clearTempDraft(); this._loadDraft(); }},
+                {text: '取消', style: 'destructive', onPress:() => { Api.clearTempDraft(); this._loadDraft(); }},
                 {
                     text: '恢复',
                     onPress: () => {
@@ -262,7 +262,7 @@ export default class WritePage extends Component {
         InteractionManager.runAfterInteractions(() => {
             Alert.alert('提示', '日记还未保存，确认删除并退出?\n保存草稿将会覆盖之前草稿', [
                 {
-                    text: '删除日记', onPress: () => this.backPage()
+                    text: '删除日记', style: 'destructive', onPress: () => this.backPage()
                 },
                 {
                     text: '保存草稿', onPress: () => {

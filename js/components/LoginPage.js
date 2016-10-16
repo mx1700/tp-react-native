@@ -9,7 +9,6 @@ import {
     ActivityIndicator,
     TextInput,
     Modal,
-    AlertIOS,
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'

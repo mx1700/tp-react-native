@@ -57,7 +57,7 @@ export default class SettingPage extends Component {
 
     logout() {
         Alert.alert('提示','确认退出登录?',[
-            {text: '退出', onPress: () => {
+            {text: '退出', style: 'destructive', onPress: () => {
                 Api.logout();
                 this.props.navigator.toLogin();
             }},
