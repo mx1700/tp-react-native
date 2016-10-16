@@ -132,11 +132,10 @@ export default class NotebookList extends Component {
     }
 
     _renderBook(book) {
-        console.log(book);
         if (EmptyBook != book) {
             return <Notebook key={book.id} book={book} style={{marginBottom: 15}} onPress={() => this._bookPress(book)} />
         } else {
-            return <View style={{width: 140}} />
+            return <View key="EmptyBook" style={{width: 140}} />
         }
     }
 }
