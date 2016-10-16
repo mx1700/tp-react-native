@@ -6,11 +6,14 @@ import {
     ActivityIndicator,
     InteractionManager,
     Alert,
+    View,
 } from 'react-native';
 import * as Api from '../Api'
 import { TPColors, GridView, NotificationCenter } from '../common'
 import NotebookPage from './NotebookPage'
 import Notebook from './Notebook'
+
+const EmptyBook = "EmptyBook";
 
 export default class NotebookList extends Component {
 
@@ -80,6 +83,10 @@ export default class NotebookList extends Component {
             });
         }
 
+        if (books.length % 2 == 1) {    //为了向左对齐，插入一个空日记本
+            books.push(EmptyBook);
+        }
+
         this.setState({
             books: books,
             refreshing: false,
@@ -125,6 +132,11 @@ export default class NotebookList extends Component {
     }
 
     _renderBook(book) {
-        return <Notebook key={book.id} book={book} style={{marginBottom: 15}} onPress={() => this._bookPress(book)} />
+        console.log(book);
+        if (EmptyBook != book) {
+            return <Notebook key={book.id} book={book} style={{marginBottom: 15}} onPress={() => this._bookPress(book)} />
+        } else {
+            return <View style={{width: 140}} />
+        }
     }
 }
