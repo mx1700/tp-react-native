@@ -63,8 +63,14 @@ export default class LoginPage extends Component {
             });
             return;
         }
+
+        let result;
         this.setState({loading: true});
-        const result = await Api.login(this.state.username, this.state.password);
+        try {
+            result = await Api.login(this.state.username, this.state.password);
+        } catch (err) {
+            Answers.logCustom('LoginError', {message: err.message});
+        }
         this.setState({loading: false});
         if (result) {
             Answers.logLogin('Email', true);
@@ -74,6 +80,7 @@ export default class LoginPage extends Component {
             });
         } else {
             Answers.logLogin('Email', false);
+            Answers.logCustom('LoginError', {message: 'Password error'});
             Toast.show("邮箱或密码不正确", {
                 duration: 2000,
                 position: 195,
