@@ -11,7 +11,8 @@ import {
     Image,
     TextInput,
     Modal,
-    ActionSheetIOS
+    ActionSheetIOS,
+    InteractionManager
 } from 'react-native';
 import NavigationBar from 'NavigationBar'
 import * as Api from '../Api'
@@ -72,7 +73,9 @@ export default class UserIntroEdit extends Component {
                 let imageSelect = index == 0
                     ? ImagePicker.openCamera(imageOption) : ImagePicker.openPicker(imageOption);
                 imageSelect.then(image => {
-                    this._uploadIcon(image.path, image.width, image.height)
+                    setTimeout(() => {
+                        this._uploadIcon(image.path, image.width, image.height)
+                    }, 500);
                 })
             }
         });
@@ -101,7 +104,6 @@ export default class UserIntroEdit extends Component {
                 shadow: false,
                 hideOnPress: true,
             });
-            this.setState({loading: false});    // finally 里的有时候不起作用，不知道为什么
         }
     }
 
@@ -174,9 +176,17 @@ export default class UserIntroEdit extends Component {
                 </View>
             );
         }
+        console.log('this.state.loading', this.state.loading);
         return (
             <View style={{flex: 1, backgroundColor: '#EFEFF4'}}>
-                <LoadingModal loading={this.state.loading} />
+                <Modal
+                    visible={this.state.loading}
+                    transparent={true}
+                    onRequestClose={() => {}}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
+                        <ActivityIndicator animating={true} color={TPColors.light} />
+                    </View>
+                </Modal>
                 <NavigationBar
                     title="修改个人信息"
                     backPress={() => { this.props.navigator.pop() }}
