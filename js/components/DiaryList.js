@@ -238,6 +238,7 @@ export default class DiaryList extends Component {
         renderFooter={this.renderFooter.bind(this)}
         enableEmptySections={true}
         automaticallyAdjustContentInsets={false}
+          renderHeader={this.props.renderHeader}
         //renderHeader={() => <View style={{height: 4}}></View>}
         // onScroll={(event) => console.log(event.nativeEvent)}
         style={this.props.style}

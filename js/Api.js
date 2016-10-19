@@ -229,6 +229,13 @@ export async function report(user_id, diary_id) {
   });
 }
 
+export async function getTodayTopic() {
+  return call('GET', '/topic/');
+}
+
+export async function getTodayTopicDiaries(page, page_size) {
+  return call('GET', `/topic/diaries?page=${page}&page_size=${page_size}`);
+}
 
 
 export async function hasUnreadUpdateNews() {
@@ -332,7 +339,6 @@ async function upload(method, api, body) {
           .then(checkStatus)
           .then(parseJSON)
           .catch(handleCatch)
-
       ,
       60000)
 }
