@@ -50,7 +50,7 @@ export default class AboutPage extends Component {
                     backPress={() => {this.props.navigator.pop()}}
                 />
                 <View style={{flex: 1, padding: 15, alignItems: 'center', justifyContent: 'center'}}>
-                    <Image source={require('./img/Icon.png')} style={{width: 200, height: 200, borderRadius: 50}} />
+                    <Image source={require('./img/Icon.png')} style={{width: 128, height: 128, borderRadius: 28}} />
                     <Text style={{paddingTop: 20, paddingBottom: 60}}>版本: {DeviceInfo.getReadableVersion()}{label}</Text>
                     <Text style={{color: TPColors.inactiveText}}>{this.state.news.date} 更新日志</Text>
                     <Text style={{lineHeight: 20}}>{this.state.news.info}</Text>
