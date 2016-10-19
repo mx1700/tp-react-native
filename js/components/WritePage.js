@@ -67,6 +67,7 @@ export default class WritePage extends Component {
             bookEmptyError: false,
             fadeAnimOpacity: new Animated.Value(0),
             fadeAnimHeight: new Animated.Value(0),
+            topic: props.topic,
         };
     }
 
@@ -198,10 +199,11 @@ export default class WritePage extends Component {
         }
         let r = null;
         try {
+            const  topic = this.props.topic ? 1 : null;
             r = this.props.diary == null
                 ? await Api.addDiary(this.state.selectBookId,
                 this.state.content,
-                photoUri)
+                photoUri, topic)
                 : await Api.updateDiary(this.props.diary.id,
                 this.state.selectBookId,
                 this.state.content);
@@ -224,6 +226,9 @@ export default class WritePage extends Component {
 
             InteractionManager.runAfterInteractions(() => {
                 NotificationCenter.trigger('onWriteDiary');
+                if (this.props.topic) {
+                    NotificationCenter.trigger('onWriteTopicDiary');
+                }
                 const type = photoUri == null ? 'text' : 'photo';
                 Answers.logCustom('WriteDiary', {type: type});
                 if (this.props.onSuccess) {
@@ -456,6 +461,7 @@ export default class WritePage extends Component {
                 <View style={styles.comment_box}>
                     {bookButton}
                     <View style={{flex: 1}} />
+                    {this.renderTopicButton()}
                     {this.renderPhotoButton()}
                 </View>
                 <KeyboardSpacer />
@@ -557,15 +563,29 @@ export default class WritePage extends Component {
             </TouchableOpacity>
         );
     }
+
+    renderTopicButton() {
+        if (!this.state.topic) {
+            return null;
+        }
+
+        return (
+            <TouchableOpacity>
+                <Text style={{color: TPColors.light, fontSize: 15, paddingRight: 15}}>#{this.state.topic.title}</Text>
+            </TouchableOpacity>
+        )
+    }
 }
 
 WritePage.propTypes = {
     diary: React.PropTypes.object,
     onSuccess: React.PropTypes.func,
+    topic: React.PropTypes.object,
 };
 
 WritePage.defaultProps = {
     diary: null,
+    topic: null,
 };
 
 

@@ -112,15 +112,17 @@ export async function deleteNotebook(id) {
   return call('DELETE', '/notebooks/' + id)
 }
 
-export async function addDiary(bookId, content, photoUri = null) {
+export async function addDiary(bookId, content, photoUri = null, join_topic = null) {
   if (photoUri == null) {
     return call('POST', '/notebooks/' + bookId + '/diaries', {
       content: content,
+      join_topic: join_topic,
     })
   } else {
     return upload('POST', '/notebooks/' + bookId + '/diaries', {
       content: content,
       photo: {uri: photoUri, name: 'image.jpg', type: 'image/jpg'},
+      join_topic: join_topic,
     })
   }
 
@@ -299,7 +301,7 @@ export async function getSettings() {
 var baseUrl = 'https://open.timepill.net/api';
 //var baseUrl = 'http://openbeta.timepill.net/api';
 async function call(method, api, body, _timeout = 10000) {
-  console.log('request:', baseUrl + api);
+  console.log('request:', baseUrl + api, body);
   var token = await TokenManager.getToken();
   // if (body) {
   //   let formData = new FormData();
