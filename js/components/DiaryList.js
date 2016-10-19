@@ -35,7 +35,7 @@ export default class DiaryList extends Component {
       page_size: 20,
       more: false,
       loading_more: false,
-      refreshing: true,
+      refreshing: false,
       emptyList: false,
         errorPage: false,
         loadMoreError: false,
@@ -75,7 +75,7 @@ export default class DiaryList extends Component {
               this.props.navigator.toLogin();
               return;
           } else {
-              //console.log(e.response);
+              console.log(e);
           }
       }
       //console.log(data, page);

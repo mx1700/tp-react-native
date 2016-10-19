@@ -234,7 +234,12 @@ export async function getTodayTopic() {
 }
 
 export async function getTodayTopicDiaries(page, page_size) {
-  return call('GET', `/topic/diaries?page=${page}&page_size=${page_size}`);
+  return call('GET', `/topic/diaries?page=${page}&page_size=${page_size}`)
+      .then((json) => {
+        json.page = Number(json.page);
+        json.page_size = Number(json.page_size);
+        return json;
+      });
 }
 
 

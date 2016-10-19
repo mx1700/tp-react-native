@@ -5,12 +5,14 @@ import {
   View,
   Platform,
   Text,
-  Image
+  Image,
+    TouchableOpacity,
 } from 'react-native';
 import * as Api from 'Api'
 import DiaryList from './DiaryList'
 import NavigationBar from 'NavigationBar'
 import DiaryPage from './DiaryPage'
+import TopicPage from './TopicPage'
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 
@@ -56,6 +58,16 @@ export default class HomeDiaryList extends Component {
     })
   }
 
+  _toTopicPage() {
+      this.props.navigator.push({
+          name: 'TopicPage',
+          component: TopicPage,
+          params: {
+              topic: this.state.topic
+          }
+      })
+  }
+
   render() {
     return (
       <View style={{flex: 1, marginBottom: 49}}>
@@ -78,7 +90,7 @@ export default class HomeDiaryList extends Component {
     //topic.intro = '有没有正义？';
     //topic.imageUrl = 'https://devimages.apple.com.edgekey.net/home/images/tile-wwdc_small_2x.jpg';
     return (
-        <View>
+        <TouchableOpacity onPress={this._toTopicPage.bind(this)}>
           <Image key={topic.id} source={{uri: topic.imageUrl}} style={{flex:1, height: 160}}>
             <Text style={{fontSize: 26, padding: 15, color: '#444', textShadowColor: '#fff', textShadowOffset: {width: 1.8, height: 1}, textShadowRadius: 1.5}}>{topic.title}</Text>
             <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
@@ -86,7 +98,7 @@ export default class HomeDiaryList extends Component {
               <Text style={{flex: 1, color: '#111', padding: 15, paddingVertical: 5, paddingBottom: 7,lineHeight: 17,}}>{topic.intro}</Text>
             </View>
           </Image>
-        </View>
+        </TouchableOpacity>
     );
   }
 }
