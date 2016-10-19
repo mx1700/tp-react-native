@@ -31,17 +31,26 @@ export default class HomeDiaryList extends Component {
   }
 
   async loadDiary(page, page_size) {
+    this.loadTopic();
     const data = await Api.getTodayDiaries(page, page_size);
-    const topic = await Api.getTodayTopic();
-    this.setState({
-      topic: topic,
-    });
-    console.log(topic);
     return {
       diaries: data.diaries,
       page: data.page,
       more: data.diaries.length === page_size
     }
+  }
+
+  async loadTopic() {
+    let topic;
+    try {
+      topic = await Api.getTodayTopic();
+    } catch(err) {
+      console.log(err);
+    }
+    this.setState({
+      topic: topic,
+    });
+    //console.log(topic);
   }
 
   refresh() {
