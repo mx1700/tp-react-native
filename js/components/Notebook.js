@@ -16,7 +16,7 @@ function bookView(props) {
     const book = props.book;
     const exp = book.isExpired ? '已过期' : '未过期';
     const label = book.isPublic ? null : (
-        <Text style={{height: 14, fontSize: 10, padding: 2, marginRight: 10, backgroundColor: 'red', color: 'white', opacity: 0.75}}>私密</Text>
+        <Text style={{position: 'absolute', fontSize: 11, top: 0, right: 7, padding: 3,backgroundColor: 'red', color: 'white', opacity: 0.75}}>私密</Text>
     );
     return (
         <TouchableOpacity key={book.id} onPress={props.onPress} style={props.style}>
