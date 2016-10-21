@@ -304,7 +304,7 @@ export default class WritePage extends Component {
             ),
             Animated.timing(
                 this.state.fadeAnimHeight,
-                {toValue: 0, duration: 350, easing: Easing.out(Easing.cubic)}
+                {toValue: 1, duration: 350, easing: Easing.out(Easing.cubic)}   //toValue: 1 为解决 RN 0.36-rc.1 奇怪的闪退 bug
             )
         ]).start(() => {
             this.setState({modalVisible: false});
