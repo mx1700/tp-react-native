@@ -569,7 +569,7 @@ export default class DiaryPage extends Component {
               <Icon name="ios-more"
                     size={16}
                     color={TPColors.inactiveText}
-                    style={{ paddingHorizontal: 12, paddingVertical: 8, marginBottom: -8 }} />
+                    style={{ position: 'absolute', bottom: 0, right: 10, paddingHorizontal: 12, paddingVertical: 5}} />
             </TouchableOpacity>
         ) : null;
 
@@ -588,12 +588,12 @@ export default class DiaryPage extends Component {
               <View style={styles.body}>
                 <View style={styles.title}>
                   <Text style={styles.title_name}>{comment.user.name}</Text>
-                  <Text style={[styles.title_text, {flex: 1}]}>{moment(comment.created).format('H:mm')}</Text>
-                  {action}
+                  <Text style={[styles.title_text]}>{moment(comment.created).format('H:mm')}</Text>
                 </View>
                 {content}
               </View>
             </View>
+            {action}
             <View style={styles.line}/>
           </View>
         </TPTouchable>
@@ -628,7 +628,7 @@ export default class DiaryPage extends Component {
 
 const styles = StyleSheet.create({
   box: {
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 15,
     flexDirection: "row"
   },
@@ -652,16 +652,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingBottom: 10,
     alignItems: "flex-end",
-      marginTop: -8,
   },
   title_name: {
+    flex: 1,
     fontWeight: 'bold',
     color: TPColors.contentText,
     fontSize: 14,
     marginRight: 5,
   },
   title_text: {
-    fontSize: 14,
+    fontSize: 12,
     color: TPColors.inactiveText
   },
   content: {
