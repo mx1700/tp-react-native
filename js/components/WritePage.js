@@ -199,7 +199,7 @@ export default class WritePage extends Component {
         }
         let r = null;
         try {
-            const  topic = this.props.topic ? 1 : null;
+            const  topic = this.props.topic ? 1 : 0;
             r = this.props.diary == null
                 ? await Api.addDiary(this.state.selectBookId,
                 this.state.content,
@@ -208,7 +208,13 @@ export default class WritePage extends Component {
                 this.state.selectBookId,
                 this.state.content);
         } catch (err) {
-            Alert.alert('日记保存失败', err.message);
+            //Alert.alert('日记保存失败', err.message);
+            Toast.show("保存失败\n" + err.message, {
+                duration: 2000,
+                position: -80,
+                shadow: false,
+                hideOnPress: true,
+            });
             return;
         } finally {
             this.setState({loading: false});
