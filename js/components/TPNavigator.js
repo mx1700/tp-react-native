@@ -115,7 +115,8 @@ export default class TPNavigator extends Component {
             return BottomSceneConfigs;
           }
           if (route.name == 'PhotoPage') {
-            return PhotoSceneConfig;
+            //return PhotoSceneConfig;
+            return BottomSceneConfigs;
           }
           if (route.name == 'LoginPage') {
             return {...BottomSceneConfigs, gestures: false}

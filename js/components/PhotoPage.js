@@ -104,12 +104,12 @@ export default class PhotoPage extends Component {
         return (
             <TouchableOpacity
                 activeOpacity={1}
-                style={{flex: 1, backgroundColor: '#000'}}
+                style={{flex: 1, backgroundColor: '#222'}}
                 onPress={() => this.props.navigator.pop()}
             >
                 <StatusBar
                     hidden={this.state.hiddenStatusBar}
-                    animated={!this.state.hiddenStatusBar}
+                    animated={true}
                     showHideTransition="fade" />
                 <ZoomImage
                     style={{flex: 1}}
