@@ -563,7 +563,7 @@ export default class WritePage extends Component {
             : (<Icon name="ios-image-outline" size={30} style={{paddingTop: 4}} color={TPColors.light} />);
         return (
             <TouchableOpacity
-                style={{width: 30, height: 30, alignItems: "center", justifyContent: 'center'}}
+                style={{width: 45, height: 40, alignItems: "center", justifyContent: 'center'}}
                 onPress={this._imagePress.bind(this)}>
                 {content}
             </TouchableOpacity>
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
         elevation: 3,
         borderColor: '#bbb',
         borderTopWidth: StyleSheet.hairlineWidth,
-        paddingHorizontal: 10,
+        paddingLeft: 10,
         flexDirection: 'row',
         alignItems: 'center'
     },
