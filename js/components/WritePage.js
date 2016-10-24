@@ -62,7 +62,6 @@ export default class WritePage extends Component {
             loading: false,
             photoUri: null,
             photoSource: null,
-            photoInfo: null,
             loadBookError: false,
             bookEmptyError: false,
             fadeAnimOpacity: new Animated.Value(0),
@@ -192,11 +191,6 @@ export default class WritePage extends Component {
         this.setState({loading: true});
 
         let photoUri = this.state.photoUri;
-        if (photoUri) {
-            if (this.state.photoInfo.fileSize > 1024 * 1024) {
-                photoUri = await this.resizePhoto(photoUri);
-            }
-        }
         let r = null;
         try {
             const  topic = this.props.topic ? 1 : 0;
@@ -244,23 +238,18 @@ export default class WritePage extends Component {
         }
     }
 
-    async resizePhoto(uri) {
+    async resizePhoto(uri, width, height) {
         //图片最大 1440 * 900 像素
-        let width = 0;
-        let height = 0;
-        let oWidth = this.state.photoInfo.width;
-        let oHeight = this.state.photoInfo.height;
+        let oWidth = width;
+        let oHeight = height;
         let maxPixel = 1440 * 900;
         let oPixel = oWidth * oHeight;
         if (oPixel > maxPixel) {
             width = Math.sqrt(oWidth * maxPixel / oHeight);
             height = Math.sqrt(oHeight * maxPixel / oWidth);
-        } else {
-            width = this.state.photoInfo.width;
-            height = this.state.photoInfo.height;
         }
         console.log('resize to :', width, height);
-        const newUri = await ImageResizer.createResizedImage(uri, width, height, 'JPEG', 75)
+        const newUri = await ImageResizer.createResizedImage(uri, width, height, 'JPEG', 75);
         return 'file://' + newUri;
     }
 
@@ -378,21 +367,24 @@ export default class WritePage extends Component {
                     let imageSelect = index == 0
                         ? ImagePicker.openCamera({cropping: false}) : ImagePicker.openPicker({cropping: false});
                     imageSelect.then(image => {
-                        //console.log(image);
-                        const source = {uri: image.path, isStatic: true};
-
-                        this.setState({
-                            photoSource: source,
-                            photoUri: image.path,
-                            photoInfo: {
-                                fileSize: image.size,
-                                width: image.width,
-                                height: image.height,
-                            }
-                        });
+                        console.log(image);
 
                         if (index == 0) {
                             CameraRoll.saveToCameraRoll(image.path);
+                        }
+
+                        if (image.size > 1024 * 1024 * 2) {
+                            this.resizePhoto(image.path, image.width, image.height).then(newUri => {
+                                this.setState({
+                                    photoSource: {uri: newUri, isStatic: true},
+                                    photoUri: newUri,
+                                });
+                            });
+                        } else {
+                            this.setState({
+                                photoSource: {uri: image.path, isStatic: true},
+                                photoUri: image.path,
+                            });
                         }
                     });
                 }
