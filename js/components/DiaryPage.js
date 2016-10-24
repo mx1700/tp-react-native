@@ -52,7 +52,8 @@ export default class DiaryPage extends Component {
       diaryLoadingError: false,
       isMy: null,
       inputHeight: DefaultInputHeight,
-    }
+    };
+    this.selfInfo = null;
   }
 
   componentWillMount() {
@@ -70,6 +71,9 @@ export default class DiaryPage extends Component {
             }
           });
     });
+    Api.getSelfInfoByStore().then(info => {
+      this.selfInfo = info;
+    })
   }
 
   getDiaryId() {
@@ -203,6 +207,10 @@ export default class DiaryPage extends Component {
   }
 
   _onCommentPress(comment) {
+    if (this.selfInfo && comment.user.id == this.selfInfo.id) {
+      //自己不能回复自己
+      return;
+    }
     let content = this.state.comment_content;
     if (this.state.reply_user_name) {
       content = content.replace('@' + this.state.reply_user_name, '@' + comment.user.name)
