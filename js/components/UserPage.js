@@ -6,6 +6,7 @@ import {
     Platform,
     ActivityIndicator,
     SegmentedControlIOS,
+    InteractionManager,
     Alert
 } from 'react-native';
 import * as Api from '../Api'
@@ -27,6 +28,8 @@ export default class UserPage extends Component {
         selectedIndex: 0,
     };
 
+    selfInfo = null;
+
     constructor(props) {
         super(props);
         if (this.props.myself) {
@@ -44,15 +47,20 @@ export default class UserPage extends Component {
     }
 
     componentDidMount() {
-        if (this.props.myself) {
-            NotificationCenter.addLister('onWriteDiary', this._onWriteDiary);
-            NotificationCenter.addLister('onDeleteDiary', this._onWriteDiary);
-            NotificationCenter.addLister('onReadUpdateNews', this.onReadUpdateNews);
+        //InteractionManager.runAfterInteractions(() => {
+            if (this.props.myself) {
+                NotificationCenter.addLister('onWriteDiary', this._onWriteDiary);
+                NotificationCenter.addLister('onDeleteDiary', this._onWriteDiary);
+                NotificationCenter.addLister('onReadUpdateNews', this.onReadUpdateNews);
 
-            this._loadUpdateState();
-        } else {
-            this._loadRelation();
-        }
+                this._loadUpdateState();
+            } else {
+                this._loadRelation();
+            }
+            Api.getSelfInfoByStore().then(info => {
+                this.selfInfo = info;
+            });
+        //});
     }
 
     componentWillUnmount() {
@@ -192,7 +200,7 @@ export default class UserPage extends Component {
                     this.props.navigator.pop()
                 }
             };
-            if (this.state.followed !== null) {
+            if (this.state.followed !== null && this.selfInfo && this.selfInfo.id != this.props.user.id) {
                 navAttrs.rightButton = this.state.followed
                     ? <NavigationBar.Icon name="ios-heart" color="#d9534f" onPress={this._followPress.bind(this)}/>
                     : <NavigationBar.Icon name="ios-heart-outline" onPress={this._followPress.bind(this)}/>;
