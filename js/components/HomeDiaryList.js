@@ -97,7 +97,7 @@ export default class HomeDiaryList extends Component {
     const topic = this.state.topic;
     //TODO:高度按照设备宽度计算，固定 16：9
     //topic.intro = '有没有正义？';
-    topic.imageUrl = 'https://devimages.apple.com.edgekey.net/home/images/t1ile-wwdc_small_2x.jpg';
+    //topic.imageUrl = 'https://devimages.apple.com.edgekey.net/home/images/t1ile-wwdc_small_2x.jpg';
     return (
         <TouchableOpacity onPress={this._toTopicPage.bind(this)}>
           <Image key={topic.id} source={{uri: topic.imageUrl}} style={{flex:1, height: 160, backgroundColor:'#f1f7ff'}}>
