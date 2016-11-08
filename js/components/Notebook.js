@@ -40,10 +40,10 @@ function bookView(props) {
                     paddingBottom: 5,
                 }}>
                     <View style={{alignItems: 'center', justifyContent: 'center', padding: 5, height: 55}}>
-                        <Text style={{textAlign: 'center', fontWeight: 'bold', color: TPColors.contentText}}>{book.subject}</Text>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold', color: TPColors.contentText}} allowFontScaling={false}>{book.subject}</Text>
                     </View>
-                    <Text style={{ fontSize: 10, color: TPColors.inactiveText}}>{exp}</Text>
-                    <Text style={{ fontSize: 10, color: TPColors.inactiveText}}>{book.created}至{book.expired}</Text>
+                    <Text style={{ fontSize: 10, color: TPColors.inactiveText}} allowFontScaling={false}>{exp}</Text>
+                    <Text style={{ fontSize: 10, color: TPColors.inactiveText}} allowFontScaling={false}>{book.created}至{book.expired}</Text>
                 </View>
             </View>
         </TouchableOpacity>

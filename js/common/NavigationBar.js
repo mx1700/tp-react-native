@@ -54,17 +54,25 @@ function NavigationBarIOS(props) {
     style = {};
   }
 
-  const title = (!!props.title.props) ? props.title : {title: props.title};
+  const title = (!!props.title.props) ? props.title
+      :
+      <View style={styles.navBarTitleContainer}>
+        <Text
+          style={[styles.navBarTitleText]}
+          numberOfLines={1}>
+          {props.title}
+        </Text>
+      </View>;
 
   return (
-    <NavBar
-      style={{...style, backgroundColor: '#F9F9F9'}}
-      title={title}
-      {...attr}
-      statusBar={{
-        tintColor: '#F9F9F9'
-      }}
-    />
+      <NavBar
+          style={{...style, backgroundColor: '#F9F9F9'}}
+          title={title}
+          {...attr}
+          statusBar={{
+            tintColor: '#F9F9F9'
+          }}
+      />
   );
 }
 
@@ -130,7 +138,20 @@ const styles = StyleSheet.create({
     top: 11,
     right: 9,
     borderRadius: 5,
-  }
+  },
+  navBarTitleContainer: {
+    height: 44,
+    marginBottom: -7,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navBarTitleText: {
+    fontSize: 17,
+    letterSpacing: 0.5,
+    color: '#333',
+    fontWeight: '500',
+    paddingHorizontal: 34,
+  },
 });
 
 module.exports = NavigationBar;
