@@ -95,11 +95,20 @@ export default class PasswordPage extends Component {
     }
 
     _setting(password) {
+        setTimeout(() => {
+            this.refs.input.clear();
+        }, 200);
         if(this.state.oldPassword === false) {
             Alert.alert('错误', '密码加载失败');
             return;
         }
-        this.refs.input.clear();
+        if (!password.match(/^\d+$/)) {
+            Alert.alert('错误', '密码只能是数字');
+            this.setState({
+                password: null,
+            });
+            return;
+        }
 
         if (this.state.step == 0) { //取消密码
             if (this.state.oldPassword === password) {
