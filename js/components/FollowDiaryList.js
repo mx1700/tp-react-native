@@ -17,6 +17,7 @@ export default class FollowDiaryList extends Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+    this.first_id = '';
   }
 
   _loadTodayDiaries(page, page_size) {
@@ -24,7 +25,13 @@ export default class FollowDiaryList extends Component {
   }
 
   async loadDiary(page, page_size) {
-    const data = await Api.getFollowDiaries(page, page_size);
+    if (page == 1) {
+      this.first_id = ''
+    }
+    const data = await Api.getFollowDiaries(page, page_size, this.first_id);
+    if (page == 1 && data && data.diaries && data.diaries.length > 0) {
+      this.first_id = data.diaries[0].id
+    }
     return {
       diaries: data.diaries,
       page: data.page,

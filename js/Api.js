@@ -5,8 +5,8 @@
 import TokenManager from './TokenManager'
 import UpdateInfo from './UpdateInfo';
 
-export async function getTodayDiaries(page = 1, page_size = 20) {
-  return call('GET', '/diaries/today?page=' + page + '&page_size=' + page_size)
+export async function getTodayDiaries(page = 1, page_size = 20, first_id = '') {
+  return call('GET', '/diaries/today?page=' + page + '&page_size=' + page_size + `&first_id=${first_id}`)
   .then((json) => {
     json.page = Number(json.page)
     json.page_size = Number(json.page_size)
@@ -128,8 +128,8 @@ export async function addDiary(bookId, content, photoUri = null, join_topic = nu
 
 }
 
-export async function getFollowDiaries(page, page_size) {
-  return call('GET', '/diaries/follow?page=' + page + '&page_size=' + page_size)
+export async function getFollowDiaries(page, page_size, first_id) {
+  return call('GET', '/diaries/follow?page=' + page + '&page_size=' + page_size + `&first_id=${first_id}`)
     .then((json) => {
       json.page = Number(json.page)
       json.page_size = Number(json.page_size)
@@ -298,7 +298,7 @@ export async function getSettings() {
 
 //==========================================================================
 
-var baseUrl = 'https://open.timepill.net/api';
+var baseUrl = 'https://openbeta.timepill.net/api';
 //var baseUrl = 'http://openbeta.timepill.net/api';
 async function call(method, api, body, _timeout = 10000) {
   console.log('request:', baseUrl + api, body);
