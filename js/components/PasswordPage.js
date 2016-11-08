@@ -102,13 +102,6 @@ export default class PasswordPage extends Component {
             Alert.alert('错误', '密码加载失败');
             return;
         }
-        if (!password.match(/^\d+$/)) {
-            Alert.alert('错误', '密码只能是数字');
-            this.setState({
-                password: null,
-            });
-            return;
-        }
 
         if (this.state.step == 0) { //取消密码
             if (this.state.oldPassword === password) {
@@ -129,6 +122,15 @@ export default class PasswordPage extends Component {
                 step: 2
             });
         } else if (this.state.step == 2) {
+            if (!password.match(/^\d+$/)) {
+                Alert.alert('错误', '只能设置数字密码');
+                this.setState({
+                    title: '请输入新密码',
+                    password: null,
+                    step: 1
+                });
+                return;
+            }
             if (this.state.password !== password) {
                 Alert.alert('设置失败', '两次输入的密码不相同,请重新输入');
                 this.setState({
