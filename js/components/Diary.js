@@ -69,13 +69,13 @@ export default class Diary extends Component {
     let title;
     if (diary.user) {
       title = <View style={styles.title}>
-                <Text style={styles.title_name}>{diary.user.name}</Text>
+                <Text style={styles.title_name} numberOfLines={1}>{diary.user.name}</Text>
                 <Text style={[styles.title_text, {flex: 1}]} numberOfLines={1}>《{diary.notebook_subject}》</Text>
                 <Text style={styles.title_text}>{moment(diary.created).format('H:mm')}</Text>
               </View>
     } else {
       const book = this.props.showBookSubject
-              ? (<Text style={styles.title_h}>《{diary.notebook_subject}》</Text>)
+              ? (<Text style={styles.title_h} numberOfLines={1}>《{diary.notebook_subject}》</Text>)
               : null;
 
       title = <View style={styles.title}>
@@ -233,6 +233,7 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     title_h: {
+        flex: 1,
         fontWeight: 'bold',
         color: '#222222',
         fontSize: 14

@@ -38,6 +38,15 @@ export default class AboutPage extends Component {
 
         Api.readUpdateNews();
         NotificationCenter.trigger('onReadUpdateNews');
+        // CodePush.checkForUpdate()
+        //     .then((update) => {
+        //         if (!update) {
+        //             alert("The app is up to date!");
+        //         } else {
+        //             alert("An update is available! Should we download it?");
+        //         }
+        //         console.log(update);
+        //     });
     }
 
     render() {
