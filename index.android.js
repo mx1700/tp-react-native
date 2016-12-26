@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-class tp_react_native extends Component {
+export default class timepill_app extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('tp_react_native', () => tp_react_native);
+AppRegistry.registerComponent('timepill_app', () => timepill_app);

@@ -6,23 +6,21 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  AppState,
+    AppRegistry,
+    AppState,
 } from 'react-native';
 import TPNavigator from './js/components/TPNavigator'
 import CodePush from "react-native-code-push";
 import * as Api from './js/Api'
-import fc from 'react-native-fabric-crashlytics';
-var Fabric = require('react-native-fabric');
-var { Crashlytics } = Fabric;
+//import fc from 'react-native-fabric-crashlytics';
+//var Fabric = require('react-native-fabric');
+//var { Crashlytics } = Fabric;
 
-class tp_react_native extends Component {
-
+export default class timepill_app extends Component {
   componentDidMount() {
-    fc.init();
     AppState.addEventListener('change', this.handleAppStateChange);
     CodePush.sync();
-    this.initFabric().done();
+    //this.initFabric().done();
   }
 
   handleAppStateChange(appState) {
@@ -32,6 +30,7 @@ class tp_react_native extends Component {
   }
 
   async initFabric() {
+    fc.init();
     let user;
     try {
       user = await Api.getSelfInfoByStore();
@@ -51,4 +50,4 @@ class tp_react_native extends Component {
   }
 }
 
-AppRegistry.registerComponent('tp_react_native', () => tp_react_native);
+AppRegistry.registerComponent('timepill_app', () => timepill_app);
