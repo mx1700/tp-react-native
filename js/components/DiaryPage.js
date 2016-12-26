@@ -653,7 +653,8 @@ const styles = StyleSheet.create({
   },
   body: {
     flexDirection: "column",
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
     paddingTop: 2
   },
   title: {
@@ -662,7 +663,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   title_name: {
-    flex: 1,
+    flexGrow: 1,
     fontWeight: 'bold',
     color: TPColors.contentText,
     fontSize: 14,
@@ -673,7 +674,7 @@ const styles = StyleSheet.create({
     color: TPColors.inactiveText
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     lineHeight: 26,
     color: TPColors.contentText,
     fontSize: 15,
@@ -693,7 +694,7 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   comment_input: {
-    flex: 1,
+    flexGrow: 1,
     borderColor: '#bbb',
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 19,
@@ -705,7 +706,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   comment_sending: {
-    flex: 1,
+    flexGrow: 1,
     opacity: 0.8,
     backgroundColor: "#fff",
     top: 0,

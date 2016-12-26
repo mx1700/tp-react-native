@@ -1,4 +1,6 @@
 rootProject.name = 'timepill_app'
+include ':react-native-fabric'
+project(':react-native-fabric').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fabric/android')
 include ':react-native-code-push', ':jpush-react-native'
 project(':jpush-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/jpush-react-native/android')
 

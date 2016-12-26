@@ -217,10 +217,23 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         flexDirection: "row"
     },
+    user_icon_box: {
+        padding: 10,
+        marginTop: -10,
+        marginLeft: -10,
+    },
+    user_icon: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: TPColors.spaceBackground,
+        marginRight: 2,
+    },
     body: {
         flexDirection: "column",
-        flex: 1,
-        paddingTop: 2
+        flexGrow: 1,
+        flexShrink: 1,
+        paddingTop: 2,
     },
     title: {
         flexDirection: "row",
@@ -233,7 +246,7 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     title_h: {
-        flex: 1,
+        flexGrow: 1,
         fontWeight: 'bold',
         color: '#222222',
         fontSize: 14
@@ -242,20 +255,8 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: TPColors.inactiveText
     },
-    user_icon_box: {
-        padding: 10,
-        marginLeft: -10,
-        marginTop: -10,
-    },
-    user_icon: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        backgroundColor: TPColors.spaceBackground,
-        marginRight: 2,
-    },
     content: {
-        flex: 1,
+        flexGrow: 1,
         lineHeight: 24,
         color: TPColors.contentText,
         fontSize: 15,
@@ -269,7 +270,7 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     photo: {
-        flex: 1,
+        flexGrow: 1,
         width: 160,
         height: 160,
     },
