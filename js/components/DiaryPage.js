@@ -659,7 +659,7 @@ const styles = StyleSheet.create({
   },
   title: {
     flexDirection: "row",
-    paddingBottom: 10,
+    paddingBottom: 5,
     alignItems: "flex-end",
   },
   title_name: {
@@ -678,7 +678,7 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     color: TPColors.contentText,
     fontSize: 15,
-    marginBottom: 5
+    marginBottom: 10
   },
   line: {
     height: StyleSheet.hairlineWidth,
