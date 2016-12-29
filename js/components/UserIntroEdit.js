@@ -406,7 +406,7 @@ class UserIntroEditIntro extends Component {
                             ref="input"
                             onChangeText={(text) => this.setState({intro: text})}
                             multiline={true}
-                            style={{flex: 1, fontSize: 16, margin: 15, color: TPColors.contentText, height: 200}}
+                            style={{flexGrow: 1, fontSize: 16, margin: 15, color: TPColors.contentText, height: 200}}
                         />
                 </View>
             </View>
