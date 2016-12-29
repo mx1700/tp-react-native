@@ -45,7 +45,6 @@ export default class HomePage extends Component {
         this.setState({
             tipCount: count > 0 ? count : null
         });
-        PushNotificationIOS.setApplicationIconBadgeNumber(count);       //TODO:没起作用
     }
 
     _onWriteDiary() {
