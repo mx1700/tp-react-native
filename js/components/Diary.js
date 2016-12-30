@@ -86,7 +86,7 @@ export default class Diary extends Component {
 
     const content = this.props.showAllContent
         ? (
-            <TouchableOpacity delayLongPress={500} activeOpacity={0.5} onLongPress={this.contentLongPress}>
+            <TouchableOpacity delayLongPress={500} activeOpacity={0.7} onLongPress={this.contentLongPress}>
                 <Text style={styles.content}>{diary.content}</Text>
             </TouchableOpacity>
         )
