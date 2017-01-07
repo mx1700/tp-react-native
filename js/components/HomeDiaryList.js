@@ -112,7 +112,7 @@ export default class HomeDiaryList extends Component {
     return (
         <View>
           <TouchableOpacity onPress={this._toTopicPage.bind(this)} activeOpacity={0.7}>
-            <Text style={{ padding: 15, paddingTop: 20, fontSize: 20, paddingBottom: 25 }}>今日话题：{topic.title}</Text>
+            <Text style={{ padding: 15, paddingTop: 20, fontSize: 20, paddingBottom: 25 }}>话题：{topic.title}</Text>
             <Image key={topic.id} source={{uri: topic.imageUrl}} style={{flexGrow:1, height: 160, backgroundColor:'#f1f7ff'}}>
               <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
                 <View style={{backgroundColor: 'white', position: 'absolute', flex: 1, top: 0, bottom: 0, left: 0, right: 0, opacity: 0.35}}></View>
