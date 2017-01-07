@@ -73,14 +73,14 @@ export default class PhotoPage extends Component {
             await CameraRoll.saveToCameraRoll(this.props.source.uri);
             Toast.show('照片已保存', {
                 duration: 2000,
-                position: Toast.positions.CENTER,
+                position: Toast.positions.BOTTOM,
                 shadow: false,
                 hideOnPress: true,
             })
         } catch (err) {
             Toast.show('照片保存失败', {
                 duration: 2000,
-                position: Toast.positions.CENTER,
+                position: Toast.positions.BOTTOM,
                 shadow: false,
                 hideOnPress: true,
             })

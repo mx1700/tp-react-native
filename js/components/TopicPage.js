@@ -71,10 +71,11 @@ export default class TopicPage extends Component {
 
     render() {
         const rightButton = <NavigationBar.Icon name="ios-create-outline" onPress={this._toWritePage.bind(this)} />;
+        const title = "话题 · " + this.props.topic.title;
         return (
             <View style={{flex: 1, backgroundColor: "white"}}>
                 <NavigationBar
-                    title="今日话题"
+                    title={title}
                     backPress={() => {
                         this.props.navigator.pop()
                     }}
@@ -86,7 +87,7 @@ export default class TopicPage extends Component {
                     navigator={this.props.navigator}
                     getDiariesPage={this._loadTodayDiaries.bind(this)}
                     onDiaryPress={this._toDiaryPage.bind(this)}
-                    renderHeader={this.renderHeader.bind(this)}
+                    //renderHeader={this.renderHeader.bind(this)}
                 />
             </View>
         )
