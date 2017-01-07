@@ -165,7 +165,7 @@ export default class ViewTransformer extends React.Component {
     this.longPressTimer = setTimeout(() => {
       this.props.onLongPress && this.props.onLongPress();
       this.longPressTimer = null;
-    }, 750);
+    }, 1500);
   }
 
   onResponderMove(evt, gestureState) {
