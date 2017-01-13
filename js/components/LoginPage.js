@@ -4,11 +4,11 @@ import {
     Text,
     View,
     Image,
-    ToolbarAndroid,
     Platform,
     ActivityIndicator,
     TextInput,
     Modal,
+    TouchableOpacity,
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'
@@ -26,10 +26,16 @@ export default class LoginPage extends Component {
     constructor() {
         super();
         this.state = ({
+            nickname: '',
             username: '',
             password: '',
             loading: false,
+            isLoginPage: true,
         });
+    }
+
+    _nicknameSubmit() {
+        this.refs.inputEmail.focus();
     }
 
     _usernameSubmit() {
@@ -37,18 +43,24 @@ export default class LoginPage extends Component {
     }
 
     _passwordSubmit() {
-        this._login()
+        this._click()
     }
 
-    _cancel() {
-
-    }
-
-    async _login() {
+    async _click() {
+        //邮箱@符号转换
+        if(!this.state.isLoginPage && this.state.nickname.length == '') {
+            Toast.show("请输入名字", {
+                duration: 2000,
+                position: 172,
+                shadow: false,
+                hideOnPress: true,
+            });
+            return;
+        }
         if (this.state.username.length == '') {
             Toast.show("请输入邮箱", {
                 duration: 2000,
-                position: 172,
+                position: this.state.isLoginPage ? 172 : 218,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -57,13 +69,21 @@ export default class LoginPage extends Component {
         if (this.state.password.length == '') {
             Toast.show("请输入密码", {
                 duration: 2000,
-                position: 218,
+                position: this.state.isLoginPage ? 218 : 264,
                 shadow: false,
                 hideOnPress: true,
             });
             return;
         }
 
+        if(this.state.isLoginPage) {
+            this.login()
+        } else {
+            this.register()
+        }
+    }
+
+    async login() {
         let result;
         this.setState({loading: true});
         try {
@@ -90,16 +110,70 @@ export default class LoginPage extends Component {
         }
     }
 
+    async register() {
+        let result;
+        let errMsg;
+        this.setState({loading: true});
+        try {
+            result = await Api.register(this.state.nickname, this.state.username, this.state.password);
+        } catch (err) {
+            Answers.logCustom('RegisterError', {message: err.message});
+            errMsg = err.message;
+        }
+        this.setState({loading: false});
+        if (result) {
+            //Answers.logLogin('Email', true);
+            this.props.navigator.resetTo({
+                name: 'HomePage',
+                component: HomePage
+            });
+        } else {
+            //Answers.logLogin('Email', false);
+            Answers.logCustom('RegisterError', {message: errMsg});
+            Toast.show(errMsg ? errMsg : "注册失败", {
+                duration: 2000,
+                position: 218,
+                shadow: false,
+                hideOnPress: true,
+            });
+        }
+    }
+
+    toRegister() {
+         this.setState({
+             isLoginPage: !this.state.isLoginPage
+         });
+    }
 
     render() {
+        const nicknameInput = !this.state.isLoginPage ? (
+            <View style={{flexDirection: 'row'}}>
+                <View style={styles.icon_box}>
+                    <Icon name="ios-mail-outline" size={20} color={TPColors.inactiveText}
+                          style={{paddingTop: 2}}/>
+                </View>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(text) => this.setState({nickname: text})}
+                    value={this.state.nickname}
+                    onSubmitEditing={this._nicknameSubmit.bind(this)}
+                    keyboardType="email-address"
+                    autoCorrect={false}
+                    autoFocus={false}
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                    placeholderTextColor={TPColors.inactiveText}
+                    placeholder="名字"/>
+            </View>
+        ) : null;
+        const nicknameInputLine = !this.state.isLoginPage ? (<View style={styles.line} />) : null;
         return (
             <Image resizeMode='cover'
                    style={{flex: 1, width: undefined, height: undefined, backgroundColor: "white"}}>
                 <View style={{flex: 1, paddingTop: 100, paddingHorizontal: 20}}>
                     <Modal
                         visible={this.state.loading}
-                        transparent={true}
-                        onRequestClose={this._cancel.bind(this)}>
+                        transparent={true}>
                         <View style={{
                             flex: 1,
                             justifyContent: "center",
@@ -109,14 +183,19 @@ export default class LoginPage extends Component {
                             <ActivityIndicator animating={true} color={TPColors.light}/>
                         </View>
                     </Modal>
-                    <Text style={{fontSize: 26, paddingBottom: 40, color: '#222', textAlign: 'center'}}>欢迎来到胶囊日记</Text>
+                    <Text style={{fontSize: 26, paddingBottom: 40, color: '#222', textAlign: 'center'}}>
+                        {this.state.isLoginPage ? '欢迎来到胶囊日记' : '注册胶囊日记账号'}
+                    </Text>
                     <View style={styles.inputBox}>
+                        {nicknameInput}
+                        {nicknameInputLine}
                         <View style={{flexDirection: 'row'}}>
                             <View style={styles.icon_box}>
                                 <Icon name="ios-mail-outline" size={20} color={TPColors.inactiveText}
                                       style={{paddingTop: 2}}/>
                             </View>
                             <TextInput
+                                ref="inputEmail"
                                 style={styles.input}
                                 onChangeText={(text) => this.setState({username: text})}
                                 value={this.state.username}
@@ -127,7 +206,7 @@ export default class LoginPage extends Component {
                                 autoCapitalize="none"
                                 returnKeyType="next"
                                 placeholderTextColor={TPColors.inactiveText}
-                                placeholder="登录邮箱"/>
+                                placeholder="邮箱"/>
                         </View>
                         <View style={styles.line} />
                         <View style={{flexDirection: 'row'}}>
@@ -150,11 +229,17 @@ export default class LoginPage extends Component {
                         </View>
                     </View>
                     <TPButton
-                        caption="登录"
-                        onPress={this._login.bind(this)}
+                        caption={this.state.isLoginPage ? "登录" : "注册"}
+                        onPress={this._passwordSubmit.bind(this)}
                         type="bordered"
                         style={{marginTop: 25, marginHorizontal: 30}}/>
-
+                    <View style={{flex: 1, alignItems: "center", paddingTop: 22}}>
+                        <TouchableOpacity onPress={this.toRegister.bind(this)}>
+                            <Text style={{fontSize: 13}}>
+                                {this.state.isLoginPage ? '没有账号？注册一个' : '已有账号？马上登录'}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Image>
         );
