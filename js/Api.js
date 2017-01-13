@@ -298,10 +298,10 @@ export async function getSettings() {
 
 //==========================================================================
 
-var baseUrl = 'https://open.timepill.net/api';
+var baseUrl = 'http://open.timepill.net/api';
 //var baseUrl = 'http://openbeta.timepill.net/api';
 async function call(method, api, body, _timeout = 10000) {
-  console.log('request:', baseUrl + api, body);
+  //console.log('request:', baseUrl + api, body);
   var token = await TokenManager.getToken();
   // if (body) {
   //   let formData = new FormData();
@@ -363,7 +363,7 @@ async function checkStatus(response) {
     } catch (err) {
       errInfo = {
         code: 0,
-        message: '服务器开小差了'
+        message: '服务器开小差了 :('
       }
     }
     var error = new Error(errInfo.message, errInfo.code ? errInfo.code : errInfo.status_code);
