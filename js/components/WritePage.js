@@ -48,6 +48,7 @@ var locale = require('moment/locale/zh-cn');
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 const dismissKeyboard = require('dismissKeyboard');
+import PhotoPage from './PhotoPage'
 
 export default class WritePage extends Component {
 
@@ -342,9 +343,9 @@ export default class WritePage extends Component {
         // console.log(photoUri);
         let options, deleteIndex, cancelIndex;
         if (this.state.photoUri !== null) {
-            options = ['拍照','从相册选择', '删除照片', '取消'];
-            deleteIndex = 2;
-            cancelIndex = 3
+            options = ['预览照片', '删除照片', '取消'];
+            deleteIndex = 1;
+            cancelIndex = 2
         } else {
             options = ['拍照','从相册选择', '取消'];
             deleteIndex = -1;
@@ -363,6 +364,8 @@ export default class WritePage extends Component {
                     });
                 } else if (index == cancelIndex) {
                     console.log('cancel');
+                } else if (this.state.photoUri !== null && index == 0) {
+                    this.openPhoto(this.state.photoSource)
                 } else {
                     let imageSelect = index == 0
                         ? ImagePicker.openCamera({cropping: false}) : ImagePicker.openPicker({cropping: false});
@@ -412,6 +415,17 @@ export default class WritePage extends Component {
                 this._autoSaveTempDraft()
             }
         }, 10 * 1000)
+    };
+
+    openPhoto = (source) => {
+        const diary = this.props.data;
+        this.props.navigator.push({
+            name: 'PhotoPage',
+            component: PhotoPage,
+            params: {
+                source: source
+            }
+        });
     };
 
     render() {
