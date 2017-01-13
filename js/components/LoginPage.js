@@ -149,7 +149,7 @@ export default class LoginPage extends Component {
         const nicknameInput = !this.state.isLoginPage ? (
             <View style={{flexDirection: 'row'}}>
                 <View style={styles.icon_box}>
-                    <Icon name="ios-mail-outline" size={20} color={TPColors.inactiveText}
+                    <Icon name="ios-person-outline" size={22} color={TPColors.inactiveText}
                           style={{paddingTop: 2}}/>
                 </View>
                 <TextInput
@@ -235,7 +235,7 @@ export default class LoginPage extends Component {
                         style={{marginTop: 25, marginHorizontal: 30}}/>
                     <View style={{flex: 1, alignItems: "center", paddingTop: 22}}>
                         <TouchableOpacity onPress={this.toRegister.bind(this)}>
-                            <Text style={{fontSize: 13}}>
+                            <Text style={{fontSize: 13, color: "#555"}}>
                                 {this.state.isLoginPage ? '没有账号？注册一个' : '已有账号？马上登录'}
                             </Text>
                         </TouchableOpacity>
