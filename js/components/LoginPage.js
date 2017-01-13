@@ -9,6 +9,9 @@ import {
     TextInput,
     Modal,
     TouchableOpacity,
+    ScrollView,
+    Keyboard,
+    Animated
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'
@@ -20,6 +23,7 @@ import Toast from 'react-native-root-toast';
 var Fabric = require('react-native-fabric');
 var { Answers } = Fabric;
 
+const TIP_TOP = 45;
 
 export default class LoginPage extends Component {
 
@@ -31,8 +35,35 @@ export default class LoginPage extends Component {
             password: '',
             loading: false,
             isLoginPage: true,
+            paddingAnim: new Animated.Value(100)
         });
     }
+
+    componentWillMount () {
+        this.keyboardDidShowListener =
+            Keyboard.addListener('keyboardWillShow', this._keyboardDidShow);
+        // this.keyboardDidHideListener =
+        //     Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove();
+        // this.keyboardDidHideListener.remove();
+    }
+
+    _keyboardDidShow = () => {
+        Animated.timing(          // Uses easing functions
+            this.state.paddingAnim,    // The value to drive
+            { toValue: 55, duration: 250 }            // Configuration
+        ).start();
+    };
+
+    // _keyboardDidHide = () => {
+    //     Animated.timing(          // Uses easing functions
+    //         this.state.paddingAnim,    // The value to drive
+    //         {toValue: 100, duration: 250 }            // Configuration
+    //     ).start();
+    // }
 
     _nicknameSubmit() {
         this.refs.inputEmail.focus();
@@ -51,7 +82,7 @@ export default class LoginPage extends Component {
         if(!this.state.isLoginPage && this.state.nickname.length == '') {
             Toast.show("请输入名字", {
                 duration: 2000,
-                position: 172,
+                position: 172 - TIP_TOP,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -60,7 +91,7 @@ export default class LoginPage extends Component {
         if (this.state.username.length == '') {
             Toast.show("请输入邮箱", {
                 duration: 2000,
-                position: this.state.isLoginPage ? 172 : 218,
+                position: (this.state.isLoginPage ? 172 : 218) - TIP_TOP,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -69,7 +100,7 @@ export default class LoginPage extends Component {
         if (this.state.password.length == '') {
             Toast.show("请输入密码", {
                 duration: 2000,
-                position: this.state.isLoginPage ? 218 : 264,
+                position: (this.state.isLoginPage ? 218 : 264) - TIP_TOP,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -103,7 +134,7 @@ export default class LoginPage extends Component {
             Answers.logCustom('LoginError', {message: 'Password error'});
             Toast.show("邮箱或密码不正确", {
                 duration: 2000,
-                position: 195,
+                position: 195 - TIP_TOP,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -132,7 +163,7 @@ export default class LoginPage extends Component {
             Answers.logCustom('RegisterError', {message: errMsg});
             Toast.show(errMsg ? errMsg : "注册失败", {
                 duration: 2000,
-                position: 218,
+                position: 218 - TIP_TOP,
                 shadow: false,
                 hideOnPress: true,
             });
@@ -168,9 +199,10 @@ export default class LoginPage extends Component {
         ) : null;
         const nicknameInputLine = !this.state.isLoginPage ? (<View style={styles.line} />) : null;
         return (
-            <Image resizeMode='cover'
-                   style={{flex: 1, width: undefined, height: undefined, backgroundColor: "white"}}>
-                <View style={{flex: 1, paddingTop: 100, paddingHorizontal: 20}}>
+            <ScrollView
+                    ref="body"
+                   style={{flex: 1, backgroundColor: "white"}}>
+                <Animated.View style={{flex: 1, paddingTop: this.state.paddingAnim, paddingHorizontal: 20}}>
                     <Modal
                         visible={this.state.loading}
                         transparent={true}>
@@ -235,13 +267,13 @@ export default class LoginPage extends Component {
                         style={{marginTop: 25, marginHorizontal: 30}}/>
                     <View style={{flex: 1, alignItems: "center", paddingTop: 22}}>
                         <TouchableOpacity onPress={this.toRegister.bind(this)}>
-                            <Text style={{fontSize: 13, color: "#555"}}>
+                            <Text style={{fontSize: 13, color: "#555", padding: 10}}>
                                 {this.state.isLoginPage ? '没有账号？注册一个' : '已有账号？马上登录'}
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-            </Image>
+                </Animated.View>
+            </ScrollView>
         );
     }
 }
