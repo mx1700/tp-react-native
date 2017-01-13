@@ -11,7 +11,8 @@ import {
     TouchableOpacity,
     ScrollView,
     Keyboard,
-    Animated
+    Animated,
+    LayoutAnimation,
 } from 'react-native';
 import * as Api from '../Api'
 import TPButton from 'TPButton'
@@ -171,6 +172,7 @@ export default class LoginPage extends Component {
     }
 
     toRegister() {
+        LayoutAnimation.easeInEaseOut();
          this.setState({
              isLoginPage: !this.state.isLoginPage
          });
@@ -199,8 +201,7 @@ export default class LoginPage extends Component {
         ) : null;
         const nicknameInputLine = !this.state.isLoginPage ? (<View style={styles.line} />) : null;
         return (
-            <ScrollView
-                    ref="body"
+            <View
                    style={{flex: 1, backgroundColor: "white"}}>
                 <Animated.View style={{flex: 1, paddingTop: this.state.paddingAnim, paddingHorizontal: 20}}>
                     <Modal
@@ -273,7 +274,7 @@ export default class LoginPage extends Component {
                         </TouchableOpacity>
                     </View>
                 </Animated.View>
-            </ScrollView>
+            </View>
         );
     }
 }
