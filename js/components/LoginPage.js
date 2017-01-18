@@ -43,28 +43,32 @@ export default class LoginPage extends Component {
     componentWillMount () {
         this.keyboardDidShowListener =
             Keyboard.addListener('keyboardWillShow', this._keyboardDidShow);
-        // this.keyboardDidHideListener =
-        //     Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+        this.keyboardDidHideListener =
+            Keyboard.addListener('keyboardWillHide', this._keyboardDidHide);
     }
 
     componentWillUnmount () {
         this.keyboardDidShowListener.remove();
-        // this.keyboardDidHideListener.remove();
+        this.keyboardDidHideListener.remove();
     }
 
     _keyboardDidShow = () => {
-        Animated.timing(          // Uses easing functions
+        // if (this.hideAnim) this.hideAnim.stop();
+        this.showAnim = Animated.timing(          // Uses easing functions
             this.state.paddingAnim,    // The value to drive
             { toValue: 55, duration: 250 }            // Configuration
-        ).start();
+        );
+        this.showAnim.start();
     };
 
-    // _keyboardDidHide = () => {
-    //     Animated.timing(          // Uses easing functions
-    //         this.state.paddingAnim,    // The value to drive
-    //         {toValue: 100, duration: 250 }            // Configuration
-    //     ).start();
-    // }
+    _keyboardDidHide = () => {
+        // if (this.showAnim) this.showAnim.stop();
+        // this.hideAnim = Animated.timing(          // Uses easing functions
+        //     this.state.paddingAnim,    // The value to drive
+        //     {toValue: 100, duration: 250 }            // Configuration
+        // );
+        // this.hideAnim.start();
+    };
 
     _nicknameSubmit() {
         this.refs.inputEmail.focus();

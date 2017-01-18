@@ -12,15 +12,15 @@ import {
 import TPNavigator from './js/components/TPNavigator'
 import CodePush from "react-native-code-push";
 import * as Api from './js/Api'
-//import fc from 'react-native-fabric-crashlytics';
-//var Fabric = require('react-native-fabric');
-//var { Crashlytics } = Fabric;
+import fc from 'react-native-fabric-crashlytics';
+var Fabric = require('react-native-fabric');
+var { Crashlytics } = Fabric;
 
 export default class timepill_app extends Component {
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
     CodePush.sync();
-    //this.initFabric().done();
+    this.initFabric().done();
   }
 
   handleAppStateChange(appState) {

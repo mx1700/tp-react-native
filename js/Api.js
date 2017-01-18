@@ -314,7 +314,7 @@ export async function getSettings() {
 
 //==========================================================================
 
-var baseUrl = 'http://openbeta.timepill.net/api';
+var baseUrl = 'http://open.timepill.net/api';
 //var baseUrl = 'http://openbeta.timepill.net/api';
 async function call(method, api, body, _timeout = 10000) {
   //console.log('request:', baseUrl + api, body);
