@@ -75,6 +75,15 @@ react-native link react-native-fabric
 
 应用图标
 
+打开推送
+
+关闭横屏
+
+几个访问权限
+
+#图标
+#启动屏
+
 增加 http 权限
 在NSAppTransportSecurity下添加NSAllowsArbitraryLoads类型Boolean,值设为YES
 
