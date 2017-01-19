@@ -86,9 +86,10 @@ export default class HomeDiaryList extends Component {
   }
 
   render() {
+    //        <NavigationBar title="胶囊日记" />
+
     return (
-      <View style={{flex: 1, marginBottom: 49}}>
-        <NavigationBar title="胶囊日记" />
+      <View style={{flex: 1, marginBottom: 49, marginTop: 20}}>
         <DiaryList
             ref="list"
           navigator={this.props.navigator}
@@ -101,21 +102,26 @@ export default class HomeDiaryList extends Component {
   }
 
   renderHeader() {
-    if (!this.state.topic) return null;
+    if (!this.state.topic) return (
+        <Text style={{ padding: 15, paddingTop: 25,fontSize: 20}}>最新日记</Text>
+    );
     const topic = this.state.topic;
     //TODO:高度按照设备宽度计算，固定 16：9
     //topic.intro = '有没有正义？';
     //topic.imageUrl = 'https://devimages.apple.com.edgekey.net/home/images/t1ile-wwdc_small_2x.jpg';
     return (
-        <TouchableOpacity onPress={this._toTopicPage.bind(this)}>
-          <Image key={topic.id} source={{uri: topic.imageUrl}} style={{flex:1, height: 160, backgroundColor:'#f1f7ff'}}>
-            <Text style={{fontSize: 26, padding: 15, color: '#444', textShadowColor: '#fff', textShadowOffset: {width: 1.8, height: 1}, textShadowRadius: 1.5, backgroundColor: 'transparent'}}>{topic.title}</Text>
-            <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
-              <View style={{backgroundColor: 'white', position: 'absolute', flex: 1, top: 0, bottom: 0, left: 0, right: 0, opacity: 0.35}}></View>
-              <Text style={{flex: 1, color: '#111', padding: 15, paddingVertical: 5, paddingBottom: 7,lineHeight: 17, backgroundColor: 'transparent'}}>{topic.intro}</Text>
-            </View>
-          </Image>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity onPress={this._toTopicPage.bind(this)} activeOpacity={0.7}>
+            <Text style={{ padding: 15, paddingTop: 20, fontSize: 20, paddingBottom: 25 }}>话题 · {topic.title}</Text>
+            <Image key={topic.id} source={{uri: topic.imageUrl}} style={{flexGrow:1, height: 160, backgroundColor:'#f1f7ff'}}>
+              <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+                <View style={{backgroundColor: 'white', position: 'absolute', flex: 1, top: 0, bottom: 0, left: 0, right: 0, opacity: 0.35}}></View>
+                <Text style={{flex: 1, color: '#111', padding: 15, paddingVertical: 5, paddingBottom: 7,lineHeight: 17, backgroundColor: 'transparent'}}>{topic.intro}</Text>
+              </View>
+            </Image>
+          </TouchableOpacity>
+          <Text style={{ padding: 15, paddingTop: 30,fontSize: 20 }}>最新日记</Text>
+        </View>
     );
   }
 }

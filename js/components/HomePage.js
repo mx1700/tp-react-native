@@ -29,8 +29,8 @@ export default class HomePage extends Component {
   }
 
     componentDidMount() {
-        NotificationCenter. addLister('tipCount', this.updateTipCount);
-        NotificationCenter. addLister('onWriteDiary', this._onWriteDiary);
+        NotificationCenter.addLister('tipCount', this.updateTipCount);
+        NotificationCenter.addLister('onWriteDiary', this._onWriteDiary);
         this.setState({
             selectedTab: 'home'
         })
@@ -45,7 +45,6 @@ export default class HomePage extends Component {
         this.setState({
             tipCount: count > 0 ? count : null
         });
-        PushNotificationIOS.setApplicationIconBadgeNumber(count);
     }
 
     _onWriteDiary() {

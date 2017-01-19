@@ -1,4 +1,4 @@
 <resources>
-    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
-    <string name="app_name">tp_react_native</string>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">Db6Lo1A8ksUtmHSAp2uyyJGC6Ah1EJXGcF0d</string>
+    <string name="app_name">timepill_app</string>
 </resources>

@@ -19,7 +19,7 @@ function bookView(props) {
         <Text style={{position: 'absolute', fontSize: 11, top: 0, right: 7, padding: 3,backgroundColor: 'red', color: 'white', opacity: 0.75}}>私密</Text>
     );
     return (
-        <TouchableOpacity key={book.id} onPress={props.onPress} style={props.style}>
+        <TouchableOpacity key={book.id} onPress={props.onPress} style={props.style} activeOpacity={0.7}>
             <View style={{
                 width: 140,
                 shadowColor: '#444',

@@ -12,6 +12,7 @@ import {
     RefreshControl,
     NativeAppEventEmitter,
     DeviceEventEmitter,
+    PushNotificationIOS,
 } from 'react-native';
 import * as Api from '../Api'
 import TPColors from '../common/TPColors'
@@ -215,10 +216,12 @@ export default class MessagePage extends Component {
             messages: list,
             refreshing: false,
         });
+        // JPushModule.setBadge(list.length, function(err) {
+        //     console.log('setBadge');
+        //     console.log(err);
+        // });      //TODO:严重闪退 bug
+        PushNotificationIOS.setApplicationIconBadgeNumber(list.length);
         NotificationCenter.trigger('tipCount', list.length);
-        // JPushModule.setBadge(list.length, (err) => {
-        //     console.log('setBadge: ' + err);
-        // });
     }
 
     render() {
